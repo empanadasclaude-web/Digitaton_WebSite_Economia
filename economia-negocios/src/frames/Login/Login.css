@@ -1,0 +1,147 @@
+.login {
+  position: relative;
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+}
+
+.login__card {
+  z-index: 1;
+  width: min(100%, 460px);
+  padding: clamp(36px, 6vw, 56px) clamp(24px, 5vw, 48px);
+  text-align: center;
+  animation: card-in 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.login__eyebrow {
+  margin: 0 0 14px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.login__title {
+  margin: 0;
+  font-size: clamp(2.4rem, 7vw, 3.1rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.login__lead {
+  margin: 16px auto 36px;
+  max-width: 32ch;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+/* Botón de Google: píldora blanca, como en el diseño */
+.login__google {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 56px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #141414;
+  font-size: 0.98rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 10px 30px -8px rgba(0, 0, 0, 0.5);
+  transition: transform 220ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+.login__google:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: #fff;
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 16px 36px -8px rgba(0, 0, 0, 0.6);
+}
+.login__google:active:not(:disabled) {
+  transform: translateY(0);
+}
+.login__google:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.login__missing {
+  padding: 14px 16px;
+  border-radius: 18px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+}
+.login__missing code,
+.login__dev code {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.85em;
+  color: var(--ink);
+}
+
+.login__error {
+  min-height: 1.5em;
+  margin: 18px 0 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--danger);
+}
+
+/* Acceso de prueba (solo `npm run dev` sin Client ID) */
+.login__dev {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  text-align: left;
+}
+.login__dev-label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.login__dev-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.login__dev-actions button {
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 200ms ease;
+}
+.login__dev-actions button:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}

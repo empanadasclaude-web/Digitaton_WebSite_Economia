@@ -1,0 +1,70 @@
+:root {
+  /* Superficie */
+  --bg: #070a09;
+  --ink: #f3f1ea;
+  --ink-soft: rgba(243, 241, 234, 0.68);
+  --ink-faint: rgba(243, 241, 234, 0.45);
+
+  /* Acentos del fondo */
+  --jade: #3f9a76;
+  --forest: #17392f;
+  --brass: #c2a86a;
+
+  /* Liquid glass */
+  --glass-fill: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0.05) 55%,
+    rgba(255, 255, 255, 0.09) 100%
+  );
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-blur: 22px;
+
+  --danger: #ff8d82;
+
+  --font: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
