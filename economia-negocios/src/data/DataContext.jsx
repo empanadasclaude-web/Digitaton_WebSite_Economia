@@ -32,16 +32,41 @@ import teoria from './seed/teoria.json'
  */
 const DB_KEY = 'edn.db.v1'
 
-/** Datos guardados antes de que existieran las preguntas de simulación: se completan con las de la semilla. */
+/**
+ * Datos guardados antes de que existieran las preguntas, los gráficos vivos o las noticias de la
+ * simulación: se completan con los de la semilla (mismo id de empresa; preguntas por id o texto).
+ */
 function conPreguntasSemilla(db) {
   let cambio = false
   const empresas = db.empresas.map((e) => {
     const semilla = empresasSeed.find((s) => s.id === e.id)
-    if (semilla?.preguntas?.length && !(e.preguntas ?? []).length) {
+    if (!semilla) return e
+    let out = e
+    if (semilla.preguntas?.length && !(e.preguntas ?? []).length) {
       cambio = true
-      return { ...e, preguntas: structuredClone(semilla.preguntas) }
+      out = { ...out, preguntas: structuredClone(semilla.preguntas) }
+    } else if (semilla.preguntas?.length) {
+      const preguntas = e.preguntas.map((p) => {
+        if (p.grafico) return p
+        const sp = semilla.preguntas.find((x) => x.id === p.id || x.texto === p.texto)
+        if (!sp?.grafico) return p
+        cambio = true
+        return {
+          ...p,
+          grafico: structuredClone(sp.grafico),
+          opciones: p.opciones.map((o) => {
+            const so = sp.opciones.find((x) => x.id === o.id)
+            return so?.grafico ? { ...o, grafico: structuredClone(so.grafico) } : o
+          }),
+        }
+      })
+      out = { ...out, preguntas }
     }
-    return e
+    if (e.eventos === undefined && semilla.eventos?.length) {
+      cambio = true
+      out = { ...out, eventos: structuredClone(semilla.eventos) }
+    }
+    return out
   })
   return cambio ? { ...db, empresas } : db
 }

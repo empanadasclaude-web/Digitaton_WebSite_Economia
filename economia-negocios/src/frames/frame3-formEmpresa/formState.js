@@ -40,6 +40,7 @@ export function emptyForm(catalogo) {
     logo: null,
     indicadores: catalogo.slice(0, 3).map(fromIndicador),
     preguntas: [newPregunta()],
+    eventos: [], // noticias de última hora: se conservan tal cual (aún no tienen editor)
   }
 }
 
@@ -65,13 +66,16 @@ export function fromEmpresa(e) {
     retos: e.retos ?? '',
     logo: e.logo ?? null,
     indicadores: (e.indicadores ?? []).map(fromIndicador),
+    eventos: e.eventos ?? [],
     preguntas: (e.preguntas ?? []).map((p) => ({
       uid: uid(),
+      grafico: p.grafico ?? null, // datos del gráfico vivo: se conservan tal cual
       temaId: p.temaId ?? '',
       concepto: p.conceptoAcademico ?? '',
       texto: p.texto ?? '',
       opciones: p.opciones.map((o) => ({
         texto: o.texto,
+        grafico: o.grafico ?? null,
         efectos: Object.fromEntries((o.efectos ?? []).map((ef) => [ef.indicadorId, String(ef.delta)])),
       })),
     })),
@@ -107,10 +111,12 @@ export function toEmpresa(form, id) {
       id: `${id}-p${n + 1}`,
       temaId: p.temaId,
       conceptoAcademico: p.concepto.trim(),
+      ...(p.grafico ? { grafico: p.grafico } : {}),
       texto: p.texto.trim(),
       opciones: p.opciones.map((o, i) => ({
         id: LETTERS[i],
         texto: o.texto.trim(),
+        ...(o.grafico ? { grafico: o.grafico } : {}),
         efectos: Object.entries(o.efectos)
           .filter(([indicadorId, v]) => validIds.has(indicadorId) && num(v) !== null && num(v) !== 0)
           .map(([indicadorId, v]) => ({ indicadorId, delta: num(v) })),
@@ -132,6 +138,7 @@ export function toEmpresa(form, id) {
     logo: form.logo,
     indicadores,
     preguntas,
+    ...(form.eventos?.length ? { eventos: form.eventos } : {}),
   }
 }
 

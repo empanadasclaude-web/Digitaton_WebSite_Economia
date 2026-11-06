@@ -227,6 +227,30 @@ export default function Estudiante() {
         <p className="est__pulse">Esperando la siguiente pregunta…</p>
       </div>
     )
+  } else if (st.estado === 'noticia' && st.noticia) {
+    cuerpo = (
+      <div className="est__card est__card--news" key={st.noticia.titular}>
+        <p className="est__flash">
+          <i aria-hidden="true" /> Última hora
+        </p>
+        <h1 className="est__q est__q--news">{st.noticia.titular}</h1>
+        <p className="est__text">{st.noticia.detalle}</p>
+        <ul className="est__inds">
+          {st.indicadores.map((i) => {
+            const c = st.noticia.cambios.find((x) => x.indicadorId === i.id)
+            const cambió = !!c && c.delta !== 0
+            return (
+              <li key={i.id} className={cambió ? 'is-changed' : 'is-still'}>
+                <span>{i.nombre}</span>
+                <b>{Math.round(i.valor)}</b>
+                {cambió && <em className={c.delta > 0 ? 'up' : 'down'}>{c.delta > 0 ? `▲ +${c.delta}` : `▼ ${c.delta}`}</em>}
+              </li>
+            )
+          })}
+        </ul>
+        <p className="est__pulse">Esperando la siguiente pregunta…</p>
+      </div>
+    )
   } else {
     cuerpo = (
       <div className="est__card est__card--center">

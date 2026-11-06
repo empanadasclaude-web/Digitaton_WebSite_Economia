@@ -9,7 +9,10 @@ import { useTransition } from '../../components/PageTransition'
 import ThemeSwitch from '../../components/ThemeSwitch'
 import { useData } from '../../data/DataContext'
 import IsoScene from '../frame4-homeGrupo/IsoScene'
-import { contarVotos, decidir, estadoPublico, generarCodigo, generarToken, indicadoresIniciales, nivel, preguntasDelTema, saludEmpresa, ETIQUETA_SALUD } from '../../sim/motor'
+import { aplicarNoticia, contarVotos, decidir, estadoPublico, generarCodigo, generarToken, indicadoresIniciales, nivel, preguntasDelTema, saludEmpresa, ETIQUETA_SALUD } from '../../sim/motor'
+import GraficoVivo from '../../sim/GraficoVivo'
+import { especificacion, especificacionNoticia, lineaTiempo, noticiasDisponibles } from '../../sim/graficos'
+import Periodico from '../../sim/Periodico'
 import QrCode from '../../sim/QrCode'
 import { getTransport } from '../../sim/transport'
 import { descargarXlsx, libroSimulacion } from '../../sim/xlsx'
@@ -61,6 +64,7 @@ export default function Simulacion() {
   const [aviso, setAviso] = useState('')
   const [confirmSalir, setConfirmSalir] = useState(false)
   const [trabajando, setTrabajando] = useState(false)
+  const [verPeriodico, setVerPeriodico] = useState(false)
   const sesRef = useRef(ses)
   const liveRef = useRef(live)
   const arrancado = useRef(false)
@@ -130,6 +134,9 @@ export default function Simulacion() {
           valores,
           valoresIniciales: valores,
           decisiones: [],
+          noticias: [],
+          autoNoticia: true,
+          autoUsada: false,
           guardado: false,
           creada: new Date().toISOString(),
         }
@@ -233,6 +240,8 @@ export default function Simulacion() {
         valoresIniciales: s.valoresIniciales,
         valoresFinales: s.valores,
         participantes: participantes.map(({ id, nombre }) => ({ id, nombre })),
+        noticias: (s.noticias ?? []).map(({ grafico, ...n }) => n),
+        linea: lineaTiempo(s).map(({ tipo, indice, id, titular, valores }) => ({ tipo, indice, id, titular, valores })),
         respuestas: s.decisiones.flatMap((d) => Object.entries(d.votos ?? {}).map(([participanteId, opcionId]) => ({ participanteId, preguntaId: d.preguntaId, opcionId }))),
         preguntas: s.preguntas.slice(0, hechas).map((p, i) => ({
           id: p.id,
@@ -257,11 +266,29 @@ export default function Simulacion() {
     [transport, curso, empresa, tema, temaId, cursoId, guardarSimulacion, commit],
   )
 
+  /** Lanza una noticia de última hora (al azar entre las disponibles) y aplica sus efectos. */
+  const lanzarNoticia = async () => {
+    const s = sesRef.current
+    const lista = noticiasDisponibles(empresa, curso, temaId, temas, (s.noticias ?? []).map((n) => n.id))
+    if (!lista.length) return false
+    const ev = lista[Math.floor(Math.random() * lista.length)]
+    const n = aplicarNoticia({ empresa, noticia: ev, valores: s.valores, despuesDePregunta: s.idx })
+    await commit({ ...s, fase: 'noticia', noticiaActual: n, noticias: [...(s.noticias ?? []), n], autoUsada: true, valores: n.despues })
+    return true
+  }
+
   const siguiente = async () => {
     const s = sesRef.current
-    if (s.idx + 1 < s.preguntas.length) await commit({ ...s, fase: 'votando', idx: s.idx + 1 })
+    const total = s.preguntas.length
+    // Noticia sorpresa a mitad de la simulación (si el docente la dejó activada)
+    if (s.fase === 'resultado' && s.autoNoticia && !s.autoUsada && s.idx === Math.ceil(total / 2) - 1 && s.idx + 1 < total) {
+      if (await lanzarNoticia()) return
+    }
+    if (s.idx + 1 < total) await commit({ ...s, fase: 'votando', idx: s.idx + 1, noticiaActual: undefined })
     else await finalizar()
   }
+
+  const alternarAuto = () => commit({ ...sesRef.current, autoNoticia: !sesRef.current.autoNoticia })
 
   const salir = () => go(`/curso/${cursoId}`, { label: curso.nombre })
   const pedirSalir = () => (ses && ses.fase !== 'fin' && ses.fase !== 'sala' ? setConfirmSalir(true) : salir())
@@ -274,6 +301,19 @@ export default function Simulacion() {
   const decActual = ses?.decisiones[ses.idx]
   const fase = ses?.fase
   const salud = saludEmpresa(empresa.indicadores, ses?.valores)
+  const disponibles = ses ? noticiasDisponibles(empresa, curso, temaId, temas, (ses.noticias ?? []).map((n) => n.id)) : []
+  const hayNoticias = noticiasDisponibles(empresa, curso, temaId, temas, []).length > 0
+  const noticia = fase === 'noticia' ? ses.noticiaActual : null
+  const esResultado = fase === 'resultado' || fase === 'noticia'
+  const cambiosFase = fase === 'resultado' ? decActual?.cambios : noticia?.cambios
+  // Gráfico vivo: solo de temas ya vistos (ver sim/graficos.js)
+  const specGrafico =
+    fase === 'resultado' && decActual && preguntaActual
+      ? especificacion(preguntaActual, preguntaActual.opciones.find((o) => o.id === decActual.opcionId), temaId, temas, curso)
+      : noticia
+        ? especificacionNoticia(noticia, temaId, temas, curso)
+        : null
+  const claveGrafico = noticia ? `n-${noticia.id}` : `p-${ses?.idx}-${decActual?.opcionId}`
 
   return (
     <main className={`sim${fase === 'fin' ? ' sim--fin' : ''}`}>
@@ -321,19 +361,25 @@ export default function Simulacion() {
         <span className="sim__rail-label">Participantes</span>
       </aside>
 
+      <div className="sim__center">
+      {specGrafico && (
+        <GlassPanel flat className="sim__chart glass--dense">
+          <GraficoVivo spec={specGrafico} clave={claveGrafico} etiqueta={noticia ? 'Última hora' : undefined} />
+        </GlassPanel>
+      )}
       <section className="sim__inds rise" style={{ '--d': 2 }}>
         <h2 className="sim__inds-title">Estado Indicadores</h2>
         <p className={`salud salud--${salud}`}>
           <i aria-hidden="true" />
           {ETIQUETA_SALUD[salud]}
         </p>
-        <ul className={`sim__inds-list${fase === 'resultado' ? ' is-result' : ''}`}>
+        <ul className={`sim__inds-list${esResultado ? ' is-result' : ''}`}>
           {empresa.indicadores.map((i) => {
             const valor = ses?.valores[i.id] ?? i.valorInicial
-            const cambio = fase === 'resultado' ? decActual?.cambios.find((c) => c.indicadorId === i.id) : null
+            const cambio = esResultado ? cambiosFase?.find((c) => c.indicadorId === i.id) : null
             const cambió = !!cambio && cambio.aplicado !== 0
             return (
-              <li key={i.id} className={`ind-row${fase === 'resultado' ? (cambió ? ' is-changed' : ' is-still') : ''}${cambió && cambio.aplicado > 0 ? ' is-up' : ''}${cambió && cambio.aplicado < 0 ? ' is-down' : ''}`}>
+              <li key={i.id} className={`ind-row${esResultado ? (cambió ? ' is-changed' : ' is-still') : ''}${cambió && cambio.aplicado > 0 ? ' is-up' : ''}${cambió && cambio.aplicado < 0 ? ' is-down' : ''}`}>
                 <span className="ind-row__name">{i.nombre}</span>
                 <b className={`ind-row__val ind-row__val--${nivel(i, valor)}`}>{Math.round(valor)}</b>
                 {cambio && cambio.aplicado !== 0 && (
@@ -347,6 +393,7 @@ export default function Simulacion() {
           })}
         </ul>
       </section>
+      </div>
 
       <section className="sim__stage rise" style={{ '--d': 3 }} aria-live="polite">
         {sinPreguntas && (
@@ -389,6 +436,14 @@ export default function Simulacion() {
                 Modo de prueba: sin servidor en línea, solo funcionan pestañas de este mismo navegador. Para que entren celulares,
                 configura Upstash Redis en Vercel (ver README).
               </p>
+            )}
+            {hayNoticias && (
+              <label className="sala__auto">
+                <input type="checkbox" checked={ses.autoNoticia !== false} onChange={alternarAuto} />
+                <span>
+                  <b>Noticia de última hora</b> sorpresa a mitad de la simulación
+                </span>
+              </label>
             )}
             <button type="button" className="pill-btn q__go" onClick={iniciar} disabled={!live.participantes.length}>
               {live.participantes.length ? `Iniciar simulación · ${ses.preguntas.length} preguntas` : 'Esperando participantes…'}
@@ -454,11 +509,35 @@ export default function Simulacion() {
                   {decActual.desempatada ? 'Empate: decidió el docente. ' : ''}
                   {decActual.votantes} {decActual.votantes === 1 ? 'voto' : 'votos'}
                 </p>
-                <button type="button" className="pill-btn q__go" onClick={siguiente}>
-                  {ses.idx + 1 < ses.preguntas.length ? 'Siguiente pregunta' : 'Ver resultados finales'}
-                </button>
+                <div className="qcard__btns">
+                  {disponibles.length > 0 && !(ses.noticias ?? []).some((n) => n.despuesDePregunta === ses.idx) && (
+                    <button type="button" className="pill-btn pill-btn--ghost" onClick={lanzarNoticia} title="Lanza un hecho inesperado que mueve los indicadores">
+                      ⚡ Última hora
+                    </button>
+                  )}
+                  <button type="button" className="pill-btn q__go" onClick={siguiente}>
+                    {ses.idx + 1 < ses.preguntas.length ? 'Siguiente pregunta' : 'Ver resultados finales'}
+                  </button>
+                </div>
               </div>
             )}
+          </Tarjeta>
+        )}
+
+        {ses && fase === 'noticia' && noticia && (
+          <Tarjeta className="noticia">
+            <p className="noticia__tag">
+              <i aria-hidden="true" /> Última hora
+            </p>
+            <h2 className="noticia__titular">{noticia.titular}</h2>
+            <p className="q__text">{noticia.detalle}</p>
+            <p className="q__aviso">Mira cómo cambian los indicadores: la clase no eligió esto, pero tendrá que reaccionar.</p>
+            <div className="qcard__foot">
+              <span />
+              <button type="button" className="pill-btn q__go" onClick={siguiente}>
+                {ses.idx + 1 < ses.preguntas.length ? 'Siguiente pregunta' : 'Ver resultados finales'}
+              </button>
+            </div>
           </Tarjeta>
         )}
 
@@ -472,6 +551,9 @@ export default function Simulacion() {
             <Evolucion ses={ses} empresa={empresa} />
             <p className="q__aviso">La participación no es una calificación: coincidir con la mayoría no significa responder correctamente.</p>
             <div className="qcard__foot">
+              <button type="button" className="pill-btn" onClick={() => setVerPeriodico(true)}>
+                📰 Ver el periódico
+              </button>
               <button type="button" className="pill-btn" onClick={() => descargarXlsx(libroSimulacion(ses.resultado.datos), ses.resultado.nombre)}>
                 <DownloadIcon size={18} /> Descargar Excel
               </button>
@@ -495,6 +577,8 @@ export default function Simulacion() {
         </div>
       )}
 
+      {verPeriodico && ses?.resultado && <Periodico datos={ses.resultado.datos} onClose={() => setVerPeriodico(false)} />}
+
       {confirmSalir && (
         <ConfirmDialog
           title="¿Salir de la simulación?"
@@ -516,7 +600,8 @@ function Tarjeta({ className = '', children }) {
 function Evolucion({ ses, empresa }) {
   const W = 560
   const H = 190
-  const pasos = [ses.valoresIniciales, ...ses.decisiones.map((d) => d.despues)]
+  const linea = lineaTiempo(ses)
+  const pasos = linea.map((p) => p.valores)
   const x = (i) => 30 + (i / Math.max(1, pasos.length - 1)) * (W - 50)
   const y = (v, ind) => H - 24 - ((v - ind.min) / (ind.max - ind.min || 1)) * (H - 40)
   return (
@@ -536,9 +621,9 @@ function Evolucion({ ses, empresa }) {
             points={pasos.map((p, i) => `${x(i)},${y(p[ind.id], ind)}`).join(' ')}
           />
         ))}
-        {pasos.map((_, i) => (
+        {linea.map((p, i) => (
           <text key={i} x={x(i)} y={H - 6} textAnchor="middle" className="evo__t">
-            {i === 0 ? 'Inicio' : i}
+            {p.tipo === 'inicio' ? 'Inicio' : p.tipo === 'noticia' ? '⚡' : p.indice + 1}
           </text>
         ))}
       </svg>

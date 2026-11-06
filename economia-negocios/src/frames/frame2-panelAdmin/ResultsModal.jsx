@@ -1,6 +1,7 @@
-import { useEffect, useId } from 'react'
+import { useEffect, useId, useState } from 'react'
 import GlassPanel from '../../components/GlassPanel'
 import { CloseIcon, DownloadIcon, SheetIcon } from '../../components/Icons'
+import Periodico from '../../sim/Periodico'
 import { descargarXlsx, libroConsolidado, libroSimulacion } from '../../sim/xlsx'
 
 const formatDate = (iso) =>
@@ -13,12 +14,13 @@ const formatDate = (iso) =>
  */
 export default function ResultsModal({ curso, temas, onClose }) {
   const uid = useId()
+  const [periodico, setPeriodico] = useState(null) // datos de la simulación cuyo periódico se está viendo
   const resultados = [...(curso.resultados ?? [])].sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
   const temaNombre = (id) => temas.find((t) => t.id === id)?.nombre ?? 'Simulación'
 
   useEffect(() => {
     const previous = document.activeElement
-    const onKey = (e) => e.key === 'Escape' && onClose()
+    const onKey = (e) => e.key === 'Escape' && !e.defaultPrevented && onClose()
     document.addEventListener('keydown', onKey)
     const scrollLock = document.body.style.overflow
     document.body.style.overflow = 'hidden'
@@ -85,10 +87,15 @@ export default function ResultsModal({ curso, temas, onClose }) {
                   </p>
                 </div>
                 {r.datos ? (
-                  <button type="button" className="pill-btn pill-btn--sm" onClick={() => descargarXlsx(libroSimulacion(r.datos), r.nombre)}>
-                    <DownloadIcon size={18} />
-                    Descargar
-                  </button>
+                  <div className="results__btns">
+                    <button type="button" className="pill-btn pill-btn--sm" onClick={() => setPeriodico(r.datos)}>
+                      📰 Periódico
+                    </button>
+                    <button type="button" className="pill-btn pill-btn--sm" onClick={() => descargarXlsx(libroSimulacion(r.datos), r.nombre)}>
+                      <DownloadIcon size={18} />
+                      Descargar
+                    </button>
+                  </div>
                 ) : r.url ? (
                   <a className="pill-btn pill-btn--sm" href={r.url} download={r.nombre}>
                     <DownloadIcon size={18} />
@@ -105,6 +112,7 @@ export default function ResultsModal({ curso, temas, onClose }) {
           </>
         )}
       </GlassPanel>
+      {periodico && <Periodico datos={periodico} onClose={() => setPeriodico(null)} />}
     </div>
   )
 }

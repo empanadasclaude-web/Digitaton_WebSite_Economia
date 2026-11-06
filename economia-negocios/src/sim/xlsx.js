@@ -197,16 +197,34 @@ export function libroSimulacion(d) {
       respuestas.push([pt.nombre, i + 1, p.texto, op ?? 'Sin respuesta', op ? (op === p.decision.opcionId ? 'Sí' : 'No') : ''])
     }),
   )
-  const evol = [['Paso', 'Decisión', ...d.indicadores.map((i) => i.nombre)]]
-  evol.push(['Inicio', 'Valores de partida', ...d.indicadores.map((i) => d.valoresIniciales[i.id])])
-  d.preguntas.forEach((p, i) =>
-    evol.push([i + 1, `${p.decision.opcionId}. ${p.opciones.find((o) => o.id === p.decision.opcionId)?.texto ?? ''}`, ...d.indicadores.map((ind) => p.decision.despues[ind.id])]),
+  const evol = [['Paso', 'Decisión o noticia', ...d.indicadores.map((i) => i.nombre)]]
+  if (d.linea?.length) {
+    // Cronología completa: inicio, cada decisión y cada noticia de última hora, en orden.
+    d.linea.forEach((p, k) => {
+      const nombre =
+        p.tipo === 'inicio'
+          ? 'Valores de partida'
+          : p.tipo === 'noticia'
+            ? `⚡ Última hora: ${p.titular}`
+            : `${d.preguntas[p.indice].decision.opcionId}. ${d.preguntas[p.indice].opciones.find((o) => o.id === d.preguntas[p.indice].decision.opcionId)?.texto ?? ''}`
+      evol.push([p.tipo === 'inicio' ? 'Inicio' : k, nombre, ...d.indicadores.map((ind) => p.valores[ind.id])])
+    })
+  } else {
+    evol.push(['Inicio', 'Valores de partida', ...d.indicadores.map((i) => d.valoresIniciales[i.id])])
+    d.preguntas.forEach((p, i) =>
+      evol.push([i + 1, `${p.decision.opcionId}. ${p.opciones.find((o) => o.id === p.decision.opcionId)?.texto ?? ''}`, ...d.indicadores.map((ind) => p.decision.despues[ind.id])]),
+    )
+  }
+  const noticias = [['Después de la pregunta', 'Titular', 'Detalle', 'Efectos aplicados']]
+  ;(d.noticias ?? []).forEach((n) =>
+    noticias.push([n.despuesDePregunta + 1, n.titular, n.detalle, n.cambios.map((c) => `${indNombre(c.indicadorId)} ${c.aplicado > 0 ? '+' : ''}${c.aplicado}`).join('; ')]),
   )
   return crearXlsx([
     { nombre: 'Resumen', filas: resumen, anchos: [28, 90] },
     { nombre: 'Votaciones', filas: votaciones, anchos: [6, 60, 40, 10, ...Array(12).fill(18), 40, 12, 22, 60] },
     { nombre: 'Respuestas', filas: respuestas, anchos: [24, 12, 70, 16, 30] },
     { nombre: 'Indicadores', filas: evol, anchos: [10, 60, ...d.indicadores.map(() => 18)] },
+    ...(noticias.length > 1 ? [{ nombre: 'Noticias', filas: noticias, anchos: [14, 50, 80, 50] }] : []),
   ])
 }
 

@@ -72,7 +72,11 @@
                 "indicadorId": "presupuesto",
                 "delta": -3
               }
-            ]
+            ],
+            "grafico": {
+              "dDemanda": -5,
+              "nota": "La frescura y el origen local compensan parte del golpe: la demanda se desplaza menos hacia la izquierda y el precio de equilibrio cae menos."
+            }
           },
           {
             "id": "B",
@@ -86,7 +90,12 @@
                 "indicadorId": "rentabilidad",
                 "delta": -8
               }
-            ]
+            ],
+            "grafico": {
+              "dDemanda": -15,
+              "precio": 40,
+              "nota": "Bajar el precio es moverse a lo largo de la curva: vendes más unidades, pero la demanda sigue desplazada a la izquierda por el sustituto más barato."
+            }
           },
           {
             "id": "C",
@@ -100,9 +109,17 @@
                 "indicadorId": "satisfaccion",
                 "delta": -3
               }
-            ]
+            ],
+            "grafico": {
+              "dDemanda": -15,
+              "nota": "Sin respuesta, el sustituto barato desplaza la demanda a la izquierda: bajan el precio y la cantidad de equilibrio."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "mercado",
+          "producto": "Yogur"
+        }
       },
       {
         "id": "emp-1-tema-1-p2",
@@ -122,7 +139,11 @@
                 "indicadorId": "ventas",
                 "delta": -8
               }
-            ]
+            ],
+            "grafico": {
+              "dOferta": -15,
+              "nota": "El mercado se ajusta con un precio de equilibrio más alto y menos cantidad: trasladar el costo es la salida natural, aunque se vende menos."
+            }
           },
           {
             "id": "B",
@@ -140,7 +161,13 @@
                 "indicadorId": "satisfaccion",
                 "delta": 2
               }
-            ]
+            ],
+            "grafico": {
+              "dOferta": -15,
+              "precio": 50,
+              "brecha": true,
+              "nota": "Mantener el precio con costos más altos genera escasez: a ese precio la cantidad ofrecida queda por debajo de la demandada."
+            }
           },
           {
             "id": "C",
@@ -158,9 +185,17 @@
                 "indicadorId": "rentabilidad",
                 "delta": 3
               }
-            ]
+            ],
+            "grafico": {
+              "dOferta": -6,
+              "nota": "Proveedores alternativos y eficiencia reducen el desplazamiento de la oferta: el costo sube menos y el precio de equilibrio sube menos."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "mercado",
+          "producto": "Leche"
+        }
       },
       {
         "id": "emp-1-tema-1-p3",
@@ -184,7 +219,11 @@
                 "indicadorId": "satisfaccion",
                 "delta": 5
               }
-            ]
+            ],
+            "grafico": {
+              "dDemanda": 10,
+              "nota": "Entrar al mercado de lo deslactosado y bajo en azúcar capta la preferencia que crece: la demanda se desplaza a la derecha, sube el precio y la cantidad."
+            }
           },
           {
             "id": "B",
@@ -198,7 +237,11 @@
                 "indicadorId": "ventas",
                 "delta": 4
               }
-            ]
+            ],
+            "grafico": {
+              "dDemanda": 4,
+              "nota": "La publicidad refuerza los gustos hacia la leche, pero no cambia el producto: la demanda se desplaza poco."
+            }
           },
           {
             "id": "C",
@@ -212,9 +255,17 @@
                 "indicadorId": "satisfaccion",
                 "delta": -2
               }
-            ]
+            ],
+            "grafico": {
+              "dDemanda": -8,
+              "nota": "La preferencia se va hacia otros productos: la demanda de tu portafolio actual se desplaza a la izquierda."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "mercado",
+          "producto": "Productos de LacteosVida"
+        }
       },
       {
         "id": "emp-1-tema-1-p4",
@@ -238,7 +289,12 @@
                 "indicadorId": "productividad",
                 "delta": 2
               }
-            ]
+            ],
+            "grafico": {
+              "precio": 52,
+              "brecha": true,
+              "nota": "Al bajar el precio hacia el equilibrio, la cantidad demandada sube, la ofrecida baja y el excedente casi desaparece."
+            }
           },
           {
             "id": "B",
@@ -256,7 +312,13 @@
                 "indicadorId": "rentabilidad",
                 "delta": 3
               }
-            ]
+            ],
+            "grafico": {
+              "dOferta": -15,
+              "precio": 70,
+              "brecha": true,
+              "nota": "Reducir la producción desplaza la oferta a la izquierda y achica el excedente, pero al precio de 70 todavía sobra producto."
+            }
           },
           {
             "id": "C",
@@ -270,9 +332,22 @@
                 "indicadorId": "rentabilidad",
                 "delta": -5
               }
-            ]
+            ],
+            "grafico": {
+              "precio": 70,
+              "brecha": true,
+              "nota": "Mantener el precio no corrige el desequilibrio: el excedente sigue ahí y el inventario se acumula."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "mercado",
+          "producto": "Yogur",
+          "antes": {
+            "precio": 70,
+            "brecha": true
+          }
+        }
       },
       {
         "id": "emp-1-tema-1-p5",
@@ -292,7 +367,13 @@
                 "indicadorId": "ventas",
                 "delta": 2
               }
-            ]
+            ],
+            "grafico": {
+              "dDemanda": 15,
+              "precio": 57.5,
+              "brecha": true,
+              "nota": "Subir el precio hacia el nuevo equilibrio elimina la escasez: la cantidad demandada y la ofrecida vuelven a coincidir."
+            }
           },
           {
             "id": "B",
@@ -310,7 +391,14 @@
                 "indicadorId": "productividad",
                 "delta": 4
               }
-            ]
+            ],
+            "grafico": {
+              "dDemanda": 15,
+              "dOferta": 15,
+              "precio": 50,
+              "brecha": true,
+              "nota": "Producir más desplaza la oferta a la derecha: el mercado se equilibra con más cantidad y sin necesidad de subir el precio."
+            }
           },
           {
             "id": "C",
@@ -328,9 +416,24 @@
                 "indicadorId": "rentabilidad",
                 "delta": 2
               }
-            ]
+            ],
+            "grafico": {
+              "dDemanda": 15,
+              "precio": 50,
+              "brecha": true,
+              "nota": "El racionamiento no cierra la brecha: a ese precio todavía hay más demanda que oferta."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "mercado",
+          "producto": "Queso",
+          "antes": {
+            "dDemanda": 15,
+            "precio": 50,
+            "brecha": true
+          }
+        }
       },
       {
         "id": "emp-1-tema-2-p1",
@@ -354,7 +457,11 @@
                 "indicadorId": "satisfaccion",
                 "delta": -3
               }
-            ]
+            ],
+            "grafico": {
+              "dPrecio": 10,
+              "nota": "Demanda inelástica: el precio sube 10 % y la cantidad cae solo 5 %. El ingreso total aumenta."
+            }
           },
           {
             "id": "B",
@@ -372,7 +479,11 @@
                 "indicadorId": "satisfaccion",
                 "delta": 4
               }
-            ]
+            ],
+            "grafico": {
+              "dPrecio": -10,
+              "nota": "Demanda inelástica: bajar el precio 10 % solo sube la cantidad 5 %. El ingreso total cae."
+            }
           },
           {
             "id": "C",
@@ -382,9 +493,18 @@
                 "indicadorId": "satisfaccion",
                 "delta": 1
               }
-            ]
+            ],
+            "grafico": {
+              "dPrecio": 0,
+              "nota": "Sin cambios en el precio: ni la cantidad ni el ingreso se mueven."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "elasticidad",
+          "producto": "Leche entera",
+          "e": 0.5
+        }
       },
       {
         "id": "emp-1-tema-2-p2",
@@ -404,7 +524,11 @@
                 "indicadorId": "rentabilidad",
                 "delta": -2
               }
-            ]
+            ],
+            "grafico": {
+              "dPrecio": 10,
+              "nota": "Demanda elástica: el precio sube 10 % y la cantidad cae 15 %. El ingreso total disminuye."
+            }
           },
           {
             "id": "B",
@@ -422,7 +546,11 @@
                 "indicadorId": "satisfaccion",
                 "delta": 3
               }
-            ]
+            ],
+            "grafico": {
+              "dPrecio": -10,
+              "nota": "Demanda elástica: bajar el precio 10 % sube la cantidad 15 %. El ingreso total aumenta."
+            }
           },
           {
             "id": "C",
@@ -440,9 +568,18 @@
                 "indicadorId": "satisfaccion",
                 "delta": 2
               }
-            ]
+            ],
+            "grafico": {
+              "dQ": 6,
+              "nota": "Dar más producto al mismo precio es como bajar el precio por unidad: la demanda se desplaza a la derecha y aumenta la cantidad."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "elasticidad",
+          "producto": "Kumis",
+          "e": 1.5
+        }
       },
       {
         "id": "emp-1-tema-2-p3",
@@ -466,7 +603,11 @@
                 "indicadorId": "satisfaccion",
                 "delta": 4
               }
-            ]
+            ],
+            "grafico": {
+              "dQ": 5,
+              "nota": "El combo aprovecha la relación de complementariedad: al vender queso con pan, la demanda del queso se desplaza a la derecha."
+            }
           },
           {
             "id": "B",
@@ -480,7 +621,12 @@
                 "indicadorId": "rentabilidad",
                 "delta": 2
               }
-            ]
+            ],
+            "grafico": {
+              "dQ": -10,
+              "dPrecio": 10,
+              "nota": "Con la demanda ya desplazada por el pan más caro, subir el precio empuja la cantidad aún más abajo (elasticidad ilustrativa de 1,2)."
+            }
           },
           {
             "id": "C",
@@ -490,9 +636,18 @@
                 "indicadorId": "ventas",
                 "delta": -6
               }
-            ]
+            ],
+            "grafico": {
+              "dQ": -10,
+              "nota": "Como son complementarios, el pan más caro reduce la demanda de queso en la misma proporción de la elasticidad cruzada."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "elasticidad",
+          "producto": "Queso fresco",
+          "e": 1.2
+        }
       },
       {
         "id": "emp-1-tema-2-p4",
@@ -516,7 +671,11 @@
                 "indicadorId": "rentabilidad",
                 "delta": 6
               }
-            ]
+            ],
+            "grafico": {
+              "dQ": 20,
+              "nota": "Elasticidad ingreso de 2: con 10 % más de ingreso, la cantidad demandada del bien de lujo sube 20 %."
+            }
           },
           {
             "id": "B",
@@ -530,7 +689,11 @@
                 "indicadorId": "rentabilidad",
                 "delta": 1
               }
-            ]
+            ],
+            "grafico": {
+              "dQ": 5,
+              "nota": "Los productos básicos tienen elasticidad ingreso baja: el mismo aumento de ingreso casi no mueve su demanda."
+            }
           },
           {
             "id": "C",
@@ -548,9 +711,19 @@
                 "indicadorId": "satisfaccion",
                 "delta": 3
               }
-            ]
+            ],
+            "grafico": {
+              "dQ": 5,
+              "dPrecio": -10,
+              "nota": "Bajar precios en productos básicos no aprovecha el mayor ingreso de los hogares y reduce el ingreso por ventas."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "elasticidad",
+          "producto": "Yogur griego",
+          "e": 1.0
+        }
       },
       {
         "id": "emp-1-tema-2-p5",
@@ -570,7 +743,13 @@
                 "indicadorId": "rentabilidad",
                 "delta": -8
               }
-            ]
+            ],
+            "grafico": {
+              "dQ": -10,
+              "dPrecio": -10,
+              "e": 0.6,
+              "nota": "Igualar descuentos en todo el portafolio incluye productos inelásticos, donde bajar el precio reduce el ingreso total."
+            }
           },
           {
             "id": "B",
@@ -588,7 +767,12 @@
                 "indicadorId": "presupuesto",
                 "delta": -3
               }
-            ]
+            ],
+            "grafico": {
+              "dQ": -10,
+              "dPrecio": -10,
+              "nota": "En un producto elástico (ε = 1,3) el descuento sube la cantidad más que proporcionalmente y recupera parte de lo perdido."
+            }
           },
           {
             "id": "C",
@@ -606,9 +790,18 @@
                 "indicadorId": "rentabilidad",
                 "delta": 2
               }
-            ]
+            ],
+            "grafico": {
+              "dQ": -10,
+              "nota": "Sin descuentos, la promoción del competidor te quita cantidad; la diferenciación por calidad busca compensarlo."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "elasticidad",
+          "producto": "Yogur convencional",
+          "e": 1.3
+        }
       },
       {
         "id": "emp-1-tema-3-p1",
@@ -632,7 +825,10 @@
                 "indicadorId": "rentabilidad",
                 "delta": 4
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Con más renta por habitante, la demanda de bienes de mayor valor crece más: enfocarse en premium aprovecha el aumento."
+            }
           },
           {
             "id": "B",
@@ -646,7 +842,10 @@
                 "indicadorId": "productividad",
                 "delta": 1
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Los básicos casi no reaccionan al mayor ingreso (bienes de demanda poco sensible a la renta)."
+            }
           },
           {
             "id": "C",
@@ -660,9 +859,26 @@
                 "indicadorId": "ventas",
                 "delta": 5
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Una campaña general reparte el esfuerzo en productos que no responden igual a la mayor renta."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "macro",
+          "variable": "PIB per cápita",
+          "unidad": "miles de USD",
+          "serie": [
+            6.1,
+            6.3,
+            6.5,
+            6.6,
+            6.8
+          ],
+          "valor": 7.2,
+          "decimales": 1
+        }
       },
       {
         "id": "emp-1-tema-3-p2",
@@ -682,7 +898,10 @@
                 "indicadorId": "ventas",
                 "delta": -4
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Ajustar gradualmente traslada los costos sin espantar a la clientela de golpe."
+            }
           },
           {
             "id": "B",
@@ -696,7 +915,10 @@
                 "indicadorId": "satisfaccion",
                 "delta": 5
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Con inflación alta, congelar precios aprieta el margen: los costos siguen subiendo."
+            }
           },
           {
             "id": "C",
@@ -714,9 +936,27 @@
                 "indicadorId": "productividad",
                 "delta": 2
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Los contratos de precio fijo protegen los costos mientras dure la inflación."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "macro",
+          "variable": "Inflación anual",
+          "unidad": "%",
+          "serie": [
+            3.2,
+            3.6,
+            4.1,
+            4.9,
+            5.8
+          ],
+          "valor": 6.9,
+          "decimales": 1,
+          "meta": 3
+        }
       },
       {
         "id": "emp-1-tema-3-p3",
@@ -740,7 +980,10 @@
                 "indicadorId": "ventas",
                 "delta": -3
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Aplazar evita pagar un crédito caro, pero se pierde productividad y ventas."
+            }
           },
           {
             "id": "B",
@@ -754,7 +997,10 @@
                 "indicadorId": "productividad",
                 "delta": 8
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Con una tasa más alta, el crédito pesa en el presupuesto aunque suba la productividad."
+            }
           },
           {
             "id": "C",
@@ -772,9 +1018,26 @@
                 "indicadorId": "rentabilidad",
                 "delta": 1
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Financiar por etapas con recursos propios reduce la exposición a la tasa de interés."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "macro",
+          "variable": "Tasa de interés de política",
+          "unidad": "%",
+          "serie": [
+            6.0,
+            6.5,
+            7.5,
+            8.5,
+            9.5
+          ],
+          "valor": 11.0,
+          "decimales": 1
+        }
       },
       {
         "id": "emp-1-tema-3-p4",
@@ -798,7 +1061,10 @@
                 "indicadorId": "productividad",
                 "delta": 2
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Con un dólar más caro, exportar se vuelve más atractivo: tus productos son más baratos para el exterior."
+            }
           },
           {
             "id": "B",
@@ -816,7 +1082,10 @@
                 "indicadorId": "presupuesto",
                 "delta": -3
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Sustituir insumos importados por locales reduce el efecto del dólar sobre tus costos."
+            }
           },
           {
             "id": "C",
@@ -826,9 +1095,26 @@
                 "indicadorId": "rentabilidad",
                 "delta": -7
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Asumir el mayor costo sin cambios golpea la rentabilidad cuando el dólar sube."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "macro",
+          "variable": "Tasa de cambio",
+          "unidad": "COP por USD",
+          "serie": [
+            3900,
+            4000,
+            4150,
+            4300,
+            4450
+          ],
+          "valor": 4700,
+          "decimales": 0
+        }
       },
       {
         "id": "emp-1-tema-3-p5",
@@ -852,7 +1138,10 @@
                 "indicadorId": "satisfaccion",
                 "delta": 3
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "En contracción, una línea económica busca clientes que cuidan más el gasto."
+            }
           },
           {
             "id": "B",
@@ -870,7 +1159,10 @@
                 "indicadorId": "satisfaccion",
                 "delta": -6
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Recortar costos ayuda al presupuesto, pero deteriora el clima y la satisfacción."
+            }
           },
           {
             "id": "C",
@@ -888,9 +1180,184 @@
                 "indicadorId": "productividad",
                 "delta": 5
               }
-            ]
+            ],
+            "grafico": {
+              "nota": "Mantener la inversión prepara a la empresa para la recuperación del ciclo."
+            }
           }
-        ]
+        ],
+        "grafico": {
+          "tipo": "macro",
+          "variable": "Tasa de desempleo",
+          "unidad": "%",
+          "serie": [
+            9.8,
+            10.2,
+            10.8,
+            11.5,
+            12.4
+          ],
+          "valor": 13.6,
+          "decimales": 1
+        }
+      }
+    ],
+    "eventos": [
+      {
+        "id": "ev-1",
+        "temaId": "tema-1",
+        "titular": "Sequía en la sabana: el forraje se dispara",
+        "detalle": "Las lluvias no llegaron y alimentar a las vacas cuesta mucho más. Producir leche se encarece en toda la región.",
+        "efectos": [
+          {
+            "indicadorId": "productividad",
+            "delta": -4
+          },
+          {
+            "indicadorId": "rentabilidad",
+            "delta": -6
+          },
+          {
+            "indicadorId": "ventas",
+            "delta": -2
+          }
+        ],
+        "grafico": {
+          "tipo": "mercado",
+          "producto": "Leche",
+          "dOferta": -15,
+          "nota": "Sube el costo de producir: la oferta se desplaza a la izquierda, sube el precio de equilibrio y baja la cantidad."
+        }
+      },
+      {
+        "id": "ev-2",
+        "temaId": "tema-1",
+        "titular": "Un influencer recomienda lácteos locales",
+        "detalle": "Un video sobre consumo local se vuelve viral y miles de personas buscan marcas de productores cercanos.",
+        "efectos": [
+          {
+            "indicadorId": "ventas",
+            "delta": 6
+          },
+          {
+            "indicadorId": "satisfaccion",
+            "delta": 3
+          }
+        ],
+        "grafico": {
+          "tipo": "mercado",
+          "producto": "Lácteos locales",
+          "dDemanda": 15,
+          "nota": "Cambian los gustos y preferencias: la demanda se desplaza a la derecha, suben el precio y la cantidad de equilibrio."
+        }
+      },
+      {
+        "id": "ev-3",
+        "temaId": "tema-2",
+        "titular": "Supermercados lanzan 2x1 en lácteos de la competencia",
+        "detalle": "Las grandes cadenas promocionan marcas rivales con descuentos agresivos en todo el pasillo de lácteos.",
+        "efectos": [
+          {
+            "indicadorId": "ventas",
+            "delta": -5
+          },
+          {
+            "indicadorId": "rentabilidad",
+            "delta": -2
+          }
+        ],
+        "grafico": {
+          "tipo": "elasticidad",
+          "producto": "Yogur convencional",
+          "e": 1.3,
+          "dQ": -12,
+          "nota": "Con un sustituto mucho más barato, la demanda de tu producto se desplaza a la izquierda (elasticidad cruzada positiva)."
+        }
+      },
+      {
+        "id": "ev-4",
+        "temaId": "tema-2",
+        "titular": "Sube el salario mínimo: los hogares tienen más ingreso",
+        "detalle": "El ajuste salarial aumenta el ingreso disponible de millones de familias y cambia lo que ponen en el carrito.",
+        "efectos": [
+          {
+            "indicadorId": "ventas",
+            "delta": 5
+          },
+          {
+            "indicadorId": "satisfaccion",
+            "delta": 2
+          }
+        ],
+        "grafico": {
+          "tipo": "elasticidad",
+          "producto": "Yogur griego",
+          "e": 1.0,
+          "dQ": 12,
+          "nota": "Elasticidad ingreso positiva: con más ingreso, la cantidad demandada de bienes normales sube, y más aún en los de lujo."
+        }
+      },
+      {
+        "id": "ev-5",
+        "temaId": "tema-3",
+        "titular": "El Banco Central sube la tasa de interés",
+        "detalle": "Para frenar la inflación, la autoridad monetaria endurece la política: pedir prestado se vuelve más caro para empresas y hogares.",
+        "efectos": [
+          {
+            "indicadorId": "presupuesto",
+            "delta": -6
+          },
+          {
+            "indicadorId": "rentabilidad",
+            "delta": -3
+          }
+        ],
+        "grafico": {
+          "tipo": "macro",
+          "variable": "Tasa de interés de política",
+          "unidad": "%",
+          "serie": [
+            7.5,
+            8.5,
+            9.5,
+            11.0,
+            11.5
+          ],
+          "valor": 13.0,
+          "decimales": 1,
+          "nota": "Una tasa de interés más alta encarece el crédito y enfría la inversión y el consumo."
+        }
+      },
+      {
+        "id": "ev-6",
+        "temaId": "tema-3",
+        "titular": "El dólar se dispara",
+        "detalle": "La tasa de cambio da un salto en pocos días: los empaques y la maquinaria importados cuestan bastante más.",
+        "efectos": [
+          {
+            "indicadorId": "rentabilidad",
+            "delta": -5
+          },
+          {
+            "indicadorId": "productividad",
+            "delta": -2
+          }
+        ],
+        "grafico": {
+          "tipo": "macro",
+          "variable": "Tasa de cambio",
+          "unidad": "COP por USD",
+          "serie": [
+            4150,
+            4300,
+            4450,
+            4700,
+            4850
+          ],
+          "valor": 5200,
+          "decimales": 0,
+          "nota": "Un dólar más caro encarece los insumos importados, pero favorece a quienes exportan."
+        }
       }
     ]
   }

@@ -128,6 +128,21 @@ export function decidir({ empresa, pregunta, votos, valores, eleccion }) {
   }
 }
 
+/** Aplica los efectos de una noticia de última hora (mismos datos [{indicadorId, delta}] que una opción). */
+export function aplicarNoticia({ empresa, noticia, valores, despuesDePregunta }) {
+  const { despues, cambios } = aplicarEfectos(empresa, valores, noticia)
+  return {
+    id: noticia.id,
+    titular: noticia.titular,
+    detalle: noticia.detalle,
+    despuesDePregunta,
+    grafico: noticia.grafico ?? null,
+    cambios,
+    antes: valores,
+    despues,
+  }
+}
+
 /** Estado que ven los estudiantes (se publica en cada cambio de fase). */
 export function estadoPublico(ses, empresa, titulo) {
   const p = ses.preguntas[ses.idx]
@@ -154,5 +169,13 @@ export function estadoPublico(ses, empresa, titulo) {
         : null,
     indicadores: empresa.indicadores.map((i) => ({ id: i.id, nombre: i.nombre, min: i.min, max: i.max, valor: ses.valores[i.id] })),
     decisiones: ses.decisiones.length,
+    noticia:
+      ses.fase === 'noticia' && ses.noticiaActual
+        ? {
+            titular: ses.noticiaActual.titular,
+            detalle: ses.noticiaActual.detalle,
+            cambios: ses.noticiaActual.cambios.map((c) => ({ indicadorId: c.indicadorId, delta: c.aplicado })),
+          }
+        : null,
   }
 }

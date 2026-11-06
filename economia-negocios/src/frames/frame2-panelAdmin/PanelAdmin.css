@@ -302,3 +302,5 @@
   .uao-logo.panel__uao { display: none; }
 }
 .results__all { margin: 0 0 12px auto; display: inline-flex; }
+
+.results__btns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }

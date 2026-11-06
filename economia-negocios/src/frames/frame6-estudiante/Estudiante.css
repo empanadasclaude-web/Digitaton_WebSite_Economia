@@ -113,3 +113,9 @@
 .est__inds .is-still { opacity: 0.4; }
 .est__inds .is-changed { background: rgba(var(--ink-rgb), 0.08); font-weight: 600; }
 .est__inds .is-changed b { font-size: 1.05rem; }
+
+/* Noticia de última hora en el celular */
+.est__card--news { border-top: 6px solid #d3122b; animation: qin 450ms var(--ease-out) backwards; }
+.est__flash { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 8px; padding: 3px 12px 3px 9px; border-radius: 99px; background: #d3122b; color: #fff; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+.est__flash i { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: est-pulse 0.9s ease-in-out infinite; }
+.est__q--news { font-size: 1.35rem; font-weight: 700; line-height: 1.15; }
