@@ -148,3 +148,12 @@
   .pipe, .smoke, .tw__blades, .iw, .beacon, .truck--in, .truck--out { animation: none; }
   .truck--b { display: none; }
 }
+
+/* Etiqueta de salud de la empresa (también la usa la simulación) */
+.salud { display: flex; align-items: center; gap: 8px; margin: 0 0 clamp(6px, 1.2vh, 12px); font-size: 0.78rem; font-weight: 500; }
+.salud i { width: 9px; height: 9px; border-radius: 50%; flex: none; background: currentColor; box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 28%, transparent); }
+.salud--bueno { color: #6df0b0; }
+.salud--medio { color: #ffd24d; }
+.salud--malo { color: #ff8a80; }
+.salud--malo i { animation: salud-blink 1s ease-in-out infinite; }
+@keyframes salud-blink { 50% { opacity: 0.35; } }

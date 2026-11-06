@@ -415,14 +415,14 @@ export default function Simulacion() {
                   <li key={o.id}>
                     <Tag
                       type={lider ? 'button' : undefined}
-                      className={`opt${gana ? ' is-win' : ''}${d && !gana ? ' is-lose' : ''}${lider ? ' is-pick' : ''}`}
+                      className={`sopt${gana ? ' is-win' : ''}${d && !gana ? ' is-lose' : ''}${lider ? ' is-pick' : ''}`}
                       onClick={lider ? () => desempatar(o.id) : undefined}
                       style={d ? { '--pct': `${pct}%` } : undefined}
                     >
-                      <span className="opt__l">{LETRAS[i]}.</span>
-                      <span className="opt__t">{o.texto}</span>
+                      <span className="sopt__l">{LETRAS[i]}.</span>
+                      <span className="sopt__t">{o.texto}</span>
                       {d && (
-                        <span className="opt__r">
+                        <span className="sopt__r">
                           {pct}% <small>({d.conteos[o.id]})</small>
                         </span>
                       )}
@@ -433,7 +433,7 @@ export default function Simulacion() {
             </ul>
 
             {fase === 'votando' && (
-              <div className="q__foot">
+              <div className="qcard__foot">
                 <p className="q__count">
                   <b>{nVotos}</b> de {live.participantes.length} respondieron
                 </p>
@@ -449,7 +449,7 @@ export default function Simulacion() {
               </p>
             )}
             {fase === 'resultado' && decActual && (
-              <div className="q__foot">
+              <div className="qcard__foot">
                 <p className="q__count">
                   {decActual.desempatada ? 'Empate: decidió el docente. ' : ''}
                   {decActual.votantes} {decActual.votantes === 1 ? 'voto' : 'votos'}
@@ -471,7 +471,7 @@ export default function Simulacion() {
             </p>
             <Evolucion ses={ses} empresa={empresa} />
             <p className="q__aviso">La participación no es una calificación: coincidir con la mayoría no significa responder correctamente.</p>
-            <div className="q__foot">
+            <div className="qcard__foot">
               <button type="button" className="pill-btn" onClick={() => descargarXlsx(libroSimulacion(ses.resultado.datos), ses.resultado.nombre)}>
                 <DownloadIcon size={18} /> Descargar Excel
               </button>

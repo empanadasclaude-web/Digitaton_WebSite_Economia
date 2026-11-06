@@ -1,4 +1,4 @@
-/* Simulación (docente). Prefijos .sim / .qcard / .opt para no chocar con otros frames. */
+/* Simulación (docente). Prefijos .sim / .qcard / .sopt para no chocar con otros frames. */
 .sim {
   position: relative;
   height: 100vh;
@@ -161,7 +161,7 @@
 .q__text { margin-top: clamp(4px, 1vh, 10px); font-size: clamp(0.9rem, min(1.35vw, 2.6vh), 1.15rem); line-height: 1.4; font-weight: 300; }
 .q__aviso { margin-top: 10px; font-size: 0.85rem; line-height: 1.4; color: rgba(var(--ink-rgb), 0.7); }
 .q__aviso--strong { font-weight: 600; color: var(--warm); }
-.q__foot { margin-top: clamp(8px, 1.6vh, 16px); display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; }
+.qcard__foot { margin-top: clamp(8px, 1.6vh, 16px); display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; }
 .q__count { font-size: 0.9rem; color: rgba(var(--ink-rgb), 0.7); }
 .q__count b { font-size: 1.1rem; color: var(--ink-on-light); }
 .qcard .pill-btn { background: #fff; color: rgb(var(--deep-rgb)); }
@@ -170,7 +170,7 @@
 .q__go { margin-left: auto; }
 
 .opts { list-style: none; margin: clamp(8px, 1.8vh, 18px) 0 0; padding: 0; display: grid; gap: clamp(6px, 1.2vh, 12px); }
-.opt {
+.sopt {
   position: relative;
   overflow: hidden;
   display: flex;
@@ -187,11 +187,11 @@
   line-height: 1.25;
   text-align: left;
 }
-.opt__l { font-weight: 700; flex: none; }
-.opt__t { flex: 1; min-width: 0; position: relative; z-index: 1; }
-.opt__r { flex: none; position: relative; z-index: 1; font-weight: 600; }
-.opt__r small { font-weight: 400; opacity: 0.8; }
-.opt::before {
+.sopt__l { font-weight: 700; flex: none; }
+.sopt__t { flex: 1; min-width: 0; position: relative; z-index: 1; }
+.sopt__r { flex: none; position: relative; z-index: 1; font-weight: 600; }
+.sopt__r small { font-weight: 400; opacity: 0.8; }
+.sopt::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -199,10 +199,10 @@
   background: rgba(255, 255, 255, 0.22);
   transition: width 900ms var(--ease-out);
 }
-.opt.is-win { background: var(--a-strong); box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--a-strong); }
-.opt.is-lose { opacity: 0.55; }
-.opt.is-pick { cursor: pointer; outline: 3px dashed var(--warm); outline-offset: 3px; animation: pulse 1.4s ease-in-out infinite; }
-.opt.is-pick:hover { background: var(--a-strong); }
+.sopt.is-win { background: var(--a-strong); box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--a-strong); }
+.sopt.is-lose { opacity: 0.55; }
+.sopt.is-pick { cursor: pointer; outline: 3px dashed var(--warm); outline-offset: 3px; animation: pulse 1.4s ease-in-out infinite; }
+.sopt.is-pick:hover { background: var(--a-strong); }
 @keyframes pulse { 50% { outline-offset: 7px; } }
 
 /* Sala */
@@ -238,7 +238,7 @@
 /* Ventanas bajas o angostas */
 @media (max-height: 720px) {
   .qcard { border-radius: 20px; }
-  .opt { padding: 6px 16px; }
+  .sopt { padding: 6px 16px; }
   .sim__rail-label { display: none; }
 }
 @media (max-width: 1100px) {
@@ -260,3 +260,7 @@
 .ind-row.is-changed .ind-row__delta { font-size: 0.92rem; padding: 1px 9px; border-radius: 99px; background: rgba(0, 0, 0, 0.28); }
 @keyframes bump { 0% { transform: scale(1); } 35% { transform: scale(1.35); } 100% { transform: scale(1); } }
 .sim__inds .salud { margin-bottom: clamp(4px, 0.8vh, 8px); }
+
+/* Sala: aire entre el QR y el botón */
+.qcard > .pill-btn.q__go { display: flex; margin-top: clamp(14px, 2.6vh, 24px); }
+.qcard > .q__aviso { margin-top: clamp(10px, 1.8vh, 16px); }
