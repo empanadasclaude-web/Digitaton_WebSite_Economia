@@ -74,7 +74,7 @@ export default function TemaTeoria() {
         {secciones.map((s, i) => (
           <Seccion key={i} s={s} />
         ))}
-        <Cierre t={contenido} onVolver={volver} onSimular={() => {}} />
+        <Cierre t={contenido} onVolver={volver} onSimular={() => go(`/curso/${cursoId}/tema/${temaId}/simulacion`, { label: `Simulación T${tema.orden}` })} simulacionLista />
       </ScrollyRoot>
     </main>
   )

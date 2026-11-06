@@ -301,3 +301,4 @@
 @media (max-width: 1100px) {
   .uao-logo.panel__uao { display: none; }
 }
+.results__all { margin: 0 0 12px auto; display: inline-flex; }

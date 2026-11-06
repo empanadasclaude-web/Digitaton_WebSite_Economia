@@ -129,6 +129,25 @@ function Solar({ x, y, w, d }) {
   )
 }
 
+/** Llama animada (solo visible cuando la empresa está en mal estado). */
+function Flame({ x, y, z, s = 1, d = 0 }) {
+  const [sx, sy] = P(x, y, z)
+  return (
+    <g className="fx fx--fire" transform={`translate(${sx} ${sy}) scale(${s})`} aria-hidden="true">
+      <circle className="smoke smoke--dark" r="9" style={{ '--i': d }} />
+      <circle className="smoke smoke--dark" r="9" style={{ '--i': d + 2 }} />
+      <path className="fl fl--o" style={{ '--d': d }} d="M0,0 C-14,-2 -17,-18 -8,-30 C-7,-22 -3,-20 -2,-28 C0,-40 7,-44 6,-58 C18,-42 17,-10 0,0 Z" />
+      <path className="fl fl--i" style={{ '--d': d + 1 }} d="M0,0 C-8,-2 -9,-12 -4,-21 C-3,-15 0,-14 1,-19 C4,-27 7,-18 6,-9 C5,-3 3,-1 0,0 Z" />
+    </g>
+  )
+}
+
+/** Grieta en una cara del edificio; `level` 'm' aparece desde estado medio, 'b' solo en mal estado. */
+function Crack({ list, level = 'm' }) {
+  const d = list.map(([x, y, z], i) => `${i ? 'L' : 'M'}${P(x, y, z)[0].toFixed(1)},${P(x, y, z)[1].toFixed(1)}`).join(' ')
+  return <path className={`fx crack crack--${level}`} d={d} aria-hidden="true" />
+}
+
 /** Estado visual de un tema: 'completo' | 'parcial' | 'pendiente'. */
 export function estadoTema(p) {
   if (!p) return 'pendiente'
@@ -137,7 +156,8 @@ export function estadoTema(p) {
 
 const line = (list) => list.map(([x, y], i) => `${i ? 'L' : 'M'}${P(x, y)[0]},${P(x, y)[1]}`).join(' ')
 
-export default function IsoScene({ temas, progreso, activeId, onHover, onSelect }) {
+/** `salud`: 'bueno' | 'medio' | 'malo' — cambia colores, grietas, fuego y ritmo de trabajo. */
+export default function IsoScene({ temas, progreso, activeId, onHover, onSelect, salud = 'medio' }) {
   const base = [P(0, 0), P(N, 0), P(N, N), P(0, N)]
   const slabL = [P(0, N), P(N, N), P(N, N, -SLAB), P(0, N, -SLAB)]
   const slabR = [P(N, 0), P(N, N), P(N, N, -SLAB), P(N, 0, -SLAB)]
@@ -180,7 +200,7 @@ export default function IsoScene({ temas, progreso, activeId, onHover, onSelect 
   }
 
   return (
-    <svg className="iso" viewBox="0 0 900 620" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Complejo industrial de la empresa con un área por tema">
+    <svg className={`iso iso--${salud}`} viewBox="0 0 900 620" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Complejo industrial de la empresa con un área por tema">
       <defs>
         <linearGradient id="iso-slab" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" style={{ stopColor: 'var(--tint-1)' }} />
@@ -227,6 +247,7 @@ export default function IsoScene({ temas, progreso, activeId, onHover, onSelect 
           <Cyl cx={3.9} cy={0.9} r={0.5} h={96} tone="ic--blue" />
           <Cyl cx={4.8} cy={1.7} r={0.5} h={96} tone="ic--blue" />
           <Cyl cx={3.8} cy={2.1} r={0.42} h={74} tone="ic--white" />
+          <Flame x={4.35} y={1.3} z={96} s={0.6} d={1} />
         </>,
       )}
 
@@ -244,6 +265,14 @@ export default function IsoScene({ temas, progreso, activeId, onHover, onSelect 
           <polygon className="gate" points={pts([P(3.2, 6.1, 30), P(4.2, 6.1, 30), P(4.2, 6.1, 0), P(3.2, 6.1, 0)])} />
           <Cyl cx={4.5} cy={4.4} r={0.26} h={64} z0={78} tone="ic--white" />
           <circle className="beacon" cx={P(2.2, 5.5, 114)[0]} cy={P(2.2, 5.5, 114)[1]} r="3" />
+          <Crack list={[[2.0, 6.1, 78], [2.18, 6.1, 66], [2.02, 6.1, 58], [2.3, 6.1, 46], [2.2, 6.1, 38]]} />
+          <Crack list={[[4.9, 6.1, 70], [4.75, 6.1, 60], [4.95, 6.1, 52], [4.8, 6.1, 42]]} />
+          <Crack list={[[5.5, 4.2, 78], [5.5, 4.4, 64], [5.5, 4.3, 54], [5.5, 4.6, 40]]} />
+          <Crack level="b" list={[[3.6, 6.1, 78], [3.7, 6.1, 70], [3.5, 6.1, 60], [3.72, 6.1, 48], [3.55, 6.1, 36], [3.7, 6.1, 28]]} />
+          <Crack level="b" list={[[3.5, 6.1, 60], [3.9, 6.1, 56], [4.05, 6.1, 48]]} />
+          <Crack level="b" list={[[5.5, 5.4, 70], [5.5, 5.3, 58], [5.5, 5.6, 44], [5.5, 5.5, 30]]} />
+          <Flame x={3.1} y={4.9} z={102} s={1} d={0} />
+          <Flame x={2.6} y={6.1} z={40} s={0.55} d={2} />
         </>,
       )}
       <Smoke x={4.5} y={4.4} z={142} />
@@ -257,6 +286,10 @@ export default function IsoScene({ temas, progreso, activeId, onHover, onSelect 
           <polygon className="gate" points={pts([P(6.0, 8.1, 24), P(7.2, 8.1, 24), P(7.2, 8.1, 0), P(6.0, 8.1, 0)])} />
           <Windows face="r" at={8.2} from={6.9} to={7.9} z={14} h={12} n={2} />
           <Box x={8.5} y={7.0} w={0.9} d={0.9} h={22} tone="ib--white" />
+          <Crack list={[[5.6, 8.1, 36], [5.75, 8.1, 26], [5.6, 8.1, 18], [5.8, 8.1, 8]]} />
+          <Crack level="b" list={[[7.9, 8.1, 34], [7.75, 8.1, 24], [7.95, 8.1, 14]]} />
+          <Crack level="b" list={[[8.2, 7.5, 34], [8.2, 7.65, 22], [8.2, 7.55, 10]]} />
+          <Flame x={6.7} y={7.4} z={46} s={0.75} d={3} />
         </>,
       )}
 

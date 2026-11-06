@@ -1,6 +1,7 @@
 import { useEffect, useId } from 'react'
 import GlassPanel from '../../components/GlassPanel'
 import { CloseIcon, DownloadIcon, SheetIcon } from '../../components/Icons'
+import { descargarXlsx, libroConsolidado, libroSimulacion } from '../../sim/xlsx'
 
 const formatDate = (iso) =>
   new Date(iso).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' })
@@ -59,6 +60,17 @@ export default function ResultsModal({ curso, temas, onClose }) {
             </p>
           </div>
         ) : (
+          <>
+          {resultados.filter((r) => r.datos).length > 1 && (
+            <button
+              type="button"
+              className="pill-btn pill-btn--sm results__all"
+              onClick={() => descargarXlsx(libroConsolidado(curso, resultados), `Consolidado - ${curso.nombre}.xlsx`)}
+            >
+              <DownloadIcon size={18} />
+              Consolidado del curso
+            </button>
+          )}
           <ul className="results__list">
             {resultados.map((r) => (
               <li key={r.id} className="results__item">
@@ -72,7 +84,12 @@ export default function ResultsModal({ curso, temas, onClose }) {
                     {r.participantes != null && ` · ${r.participantes} participantes`}
                   </p>
                 </div>
-                {r.url ? (
+                {r.datos ? (
+                  <button type="button" className="pill-btn pill-btn--sm" onClick={() => descargarXlsx(libroSimulacion(r.datos), r.nombre)}>
+                    <DownloadIcon size={18} />
+                    Descargar
+                  </button>
+                ) : r.url ? (
                   <a className="pill-btn pill-btn--sm" href={r.url} download={r.nombre}>
                     <DownloadIcon size={18} />
                     Descargar
@@ -85,6 +102,7 @@ export default function ResultsModal({ curso, temas, onClose }) {
               </li>
             ))}
           </ul>
+          </>
         )}
       </GlassPanel>
     </div>

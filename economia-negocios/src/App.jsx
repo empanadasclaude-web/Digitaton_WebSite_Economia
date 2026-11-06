@@ -11,17 +11,21 @@ const frames = {
   contexto: () => import('./frames/frame3b-contextoEmpresa/ContextoEmpresa'),
   home: () => import('./frames/frame4-homeGrupo/HomeGrupo'),
   teoria: () => import('./frames/frame3c-temaTeoria/TemaTeoria'),
+  simulacion: () => import('./frames/frame5-simulacion/Simulacion'),
+  estudiante: () => import('./frames/frame6-estudiante/Estudiante'),
 }
 const PanelAdmin = lazy(frames.panel)
 const EmpresaForm = lazy(frames.empresa)
 const ContextoEmpresa = lazy(frames.contexto)
 const HomeGrupo = lazy(frames.home)
 const TemaTeoria = lazy(frames.teoria)
+const Simulacion = lazy(frames.simulacion)
+const Estudiante = lazy(frames.estudiante)
 
 export default function App() {
   const { pathname } = useLocation()
   // En el home del grupo el suiche va dentro del encabezado; en el resto, flotante.
-  const inlineSwitch = /^\/curso\/[^/]+\/?$/.test(pathname)
+  const inlineSwitch = /^\/curso\/[^/]+(\/tema\/[^/]+\/simulacion)?\/?$/.test(pathname) || pathname.startsWith('/unirse')
   // Con el navegador desocupado se precargan los demás frames, así la transición
   // de cortina nunca espera una descarga.
   useEffect(() => {
@@ -35,6 +39,9 @@ export default function App() {
       {!inlineSwitch && <ThemeSwitch floating />}
       <Routes>
         <Route path="/login" element={<Login />} />
+        {/* Pública: los estudiantes entran desde el QR sin cuenta */}
+        <Route path="/unirse" element={<Estudiante />} />
+        <Route path="/unirse/:codigo" element={<Estudiante />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<PanelAdmin />} />
           <Route path="/empresas/nueva" element={<EmpresaForm />} />
@@ -42,6 +49,7 @@ export default function App() {
           <Route path="/curso/:cursoId" element={<HomeGrupo />} />
           <Route path="/curso/:cursoId/contexto" element={<ContextoEmpresa />} />
           <Route path="/curso/:cursoId/tema/:temaId" element={<TemaTeoria />} />
+          <Route path="/curso/:cursoId/tema/:temaId/simulacion" element={<Simulacion />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
