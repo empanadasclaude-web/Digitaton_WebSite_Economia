@@ -4,14 +4,14 @@
  * entran y salen, humo en la chimenea, turbinas girando, ventanas que parpadean
  * y tuberías con flujo. Todo es SVG + CSS (solo transform/opacity), sin filtros.
  *
- * Tres zonas = tres temas (se elevan al resaltarlas y llevan su insignia):
+ * Tres zonas = tres temas, de adelante hacia atrás (la 3 queda arriba, la 1 abajo):
  *   1 Mercado (bodega + vía de camiones) · 2 Tarifas (planta) · 3 Macro (tanques y energía)
  */
-const DX = 50
-const DY = 25
+const DX = 42
+const DY = 21
 const OX = 450
-const OY = 120
-const N = 8
+const OY = 150
+const N = 10
 const SLAB = 28
 
 const P = (x, y, z = 0) => [OX + (x - y) * DX, OY + (x + y) * DY - z]
@@ -129,6 +129,12 @@ function Solar({ x, y, w, d }) {
   )
 }
 
+/** Estado visual de un tema: 'completo' | 'parcial' | 'pendiente'. */
+export function estadoTema(p) {
+  if (!p) return 'pendiente'
+  return p.completo ? 'completo' : p.teoria || p.simulacion ? 'parcial' : 'pendiente'
+}
+
 const line = (list) => list.map(([x, y], i) => `${i ? 'L' : 'M'}${P(x, y)[0]},${P(x, y)[1]}`).join(' ')
 
 export default function IsoScene({ temas, progreso, activeId, onHover, onSelect }) {
@@ -138,13 +144,13 @@ export default function IsoScene({ temas, progreso, activeId, onHover, onSelect 
   const grid = []
   for (let i = 1; i < N; i++) grid.push([P(i, 0), P(i, N)], [P(0, i), P(N, i)])
 
-  // Insignia de cada tema (en orden): sobre la bodega, la planta y los tanques.
-  const badges = [P(5.05, 7.15, 60), P(3.9, 2.6, 128), P(7.0, 1.6, 150)]
+  // Insignias: 1 sobre la bodega (abajo), 2 sobre la planta (centro), 3 sobre tanques/turbinas (arriba).
+  const badges = [P(6.3, 7.2, 66), P(3.5, 4.9, 140), P(3.0, 0.9, 160)]
 
   const zone = (i, children) => {
     const t = temas[i]
     if (!t) return null
-    const estado = progreso?.[t.id] ?? 'pendiente'
+    const estado = estadoTema(progreso?.[t.id])
     const active = activeId === t.id
     const [bx, by] = badges[i]
     return (
@@ -166,7 +172,7 @@ export default function IsoScene({ temas, progreso, activeId, onHover, onSelect 
           <g className="badge" transform={`translate(${bx} ${by - 18})`}>
             <line className="badge__stem" x1="0" y1="12" x2="0" y2="30" />
             <circle className="badge__c" r="17" />
-            <text textAnchor="middle" dy="6">{estado === 'completado' ? '✓' : t.orden}</text>
+            <text textAnchor="middle" dy="6">{estado === 'completo' ? '✓' : t.orden}</text>
           </g>
         </g>
       </g>
@@ -174,90 +180,89 @@ export default function IsoScene({ temas, progreso, activeId, onHover, onSelect 
   }
 
   return (
-    <svg className="iso" viewBox="0 0 900 600" role="img" aria-label="Complejo industrial de la empresa con un área por tema">
+    <svg className="iso" viewBox="0 0 900 620" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Complejo industrial de la empresa con un área por tema">
       <defs>
         <linearGradient id="iso-slab" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#f6f9ff" />
-          <stop offset="1" stopColor="#d9e4f6" />
+          <stop offset="0" style={{ stopColor: 'var(--tint-1)' }} />
+          <stop offset="1" style={{ stopColor: 'var(--tint-2)' }} />
         </linearGradient>
         <linearGradient id="iso-tank" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#4f7df0" />
-          <stop offset="0.45" stopColor="#7fa2f7" />
-          <stop offset="1" stopColor="#2447b8" />
+          <stop offset="0" style={{ stopColor: 'var(--a-soft)' }} />
+          <stop offset="0.45" style={{ stopColor: 'var(--a-soft)' }} />
+          <stop offset="1" style={{ stopColor: 'var(--a-strong)' }} />
         </linearGradient>
         <linearGradient id="iso-tank-w" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0" stopColor="#ffffff" />
-          <stop offset="0.55" stopColor="#eef3fb" />
-          <stop offset="1" stopColor="#bccbe6" />
+          <stop offset="0.55" style={{ stopColor: 'var(--tint-1)' }} />
+          <stop offset="1" style={{ stopColor: 'var(--tint-3)' }} />
         </linearGradient>
       </defs>
 
       {/* Plataforma */}
       <g className="iso__base">
-        <polygon points={pts(slabL)} fill="#b9c9e6" />
-        <polygon points={pts(slabR)} fill="#9fb3d9" />
+        <polygon points={pts(slabL)} style={{ fill: 'var(--tint-3)' }} />
+        <polygon points={pts(slabR)} style={{ fill: 'var(--tint-4)' }} />
         <polygon points={pts(base)} fill="url(#iso-slab)" />
         {grid.map(([a, b], i) => (
-          <line key={i} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#9db8ee" strokeOpacity="0.35" strokeWidth="1" />
+          <line key={i} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} style={{ stroke: 'var(--a-soft)' }} strokeOpacity="0.35" strokeWidth="1" />
         ))}
-        {/* Vía */}
-        <polygon points={pts([P(0, 5), P(N, 5), P(N, 6.3), P(0, 6.3)])} fill="#c9d6ec" />
-        <path d={line([[0, 5.65], [N, 5.65]])} stroke="#fff" strokeWidth="2" strokeDasharray="14 12" fill="none" />
+        {/* Vía (delante de la bodega) */}
+        <polygon points={pts([P(0, 8.3), P(N, 8.3), P(N, 9.7), P(0, 9.7)])} style={{ fill: 'var(--tint-3)' }} />
+        <path d={line([[0, 9.0], [N, 9.0]])} stroke="#fff" strokeWidth="2" strokeDasharray="14 12" fill="none" />
         {/* Tuberías con flujo */}
-        <path className="pipe" d={line([[6.3, 1.6], [6.3, 2.9], [5.8, 2.9]])} />
-        <path className="pipe pipe--b" d={line([[2.2, 2.9], [1.3, 2.9], [1.3, 1.1]])} />
-        <path className="pipe pipe--c" d={line([[3.0, 3.9], [3.0, 5.0]])} />
-        <path className="pipe pipe--d" d={line([[1.2, 4.1], [2.2, 4.1], [2.2, 3.8]])} />
+        <path className="pipe" d={line([[4.4, 1.8], [4.4, 3.5], [5.6, 3.5]])} />
+        <path className="pipe pipe--b" d={line([[1.4, 4.2], [0.8, 4.2], [0.8, 1.9]])} />
+        <path className="pipe pipe--c" d={line([[5.2, 6.2], [5.2, 7.0]])} />
+        <path className="pipe pipe--d" d={line([[8.6, 2.5], [8.6, 5.8], [7.6, 5.8]])} />
       </g>
 
-      <Solar x={0.6} y={3.5} w={1.6} d={1.1} />
+      <Solar x={7.6} y={3.2} w={1.8} d={1.2} />
 
-      {/* Zona 3 · Macro: tanques y energía */}
+      {/* Zona 3 · Macro: turbinas y tanques (al fondo) */}
       {zone(
         2,
         <>
-          <Turbine x={0.9} y={1.1} i={0} />
-          <Turbine x={1.9} y={0.6} h={96} i={1} />
-          <Cyl cx={6.5} cy={0.9} r={0.5} h={96} tone="ic--blue" />
-          <Cyl cx={7.3} cy={1.7} r={0.5} h={96} tone="ic--blue" />
-          <Cyl cx={6.4} cy={2.0} r={0.42} h={74} tone="ic--white" />
+          <Turbine x={0.9} y={1.0} i={0} />
+          <Turbine x={2.0} y={0.5} h={96} i={1} />
+          <Cyl cx={3.9} cy={0.9} r={0.5} h={96} tone="ic--blue" />
+          <Cyl cx={4.8} cy={1.7} r={0.5} h={96} tone="ic--blue" />
+          <Cyl cx={3.8} cy={2.1} r={0.42} h={74} tone="ic--white" />
         </>,
       )}
 
-      {/* Zona 2 · Tarifas: la planta */}
+      {/* Zona 2 · Tarifas: la planta (al centro) */}
       {zone(
         1,
         <>
-          <Box x={2.2} y={1.6} w={3.6} d={2.2} h={78} tone="ib--white" />
-          <Box x={2.7} y={1.9} w={2.0} d={1.5} h={24} z0={78} tone="ib--white" />
-          <Box x={5.0} y={2.1} w={0.5} d={0.5} h={14} z0={78} tone="ib--blue" />
-          <Box x={2.4} y={3.1} w={0.6} d={0.5} h={10} z0={78} tone="ib--white" />
-          <Windows face="l" at={3.8} from={2.45} to={5.55} z={36} h={20} n={6} />
-          <Windows face="r" at={5.8} from={1.85} to={3.55} z={36} h={20} n={3} />
-          <Windows face="l" at={3.8} from={2.45} to={5.55} z={10} h={14} n={4} gap={0.5} className="iw iw--dim" />
-          <polygon className="gate" points={pts([P(3.5, 3.8, 30), P(4.5, 3.8, 30), P(4.5, 3.8, 0), P(3.5, 3.8, 0)])} />
-          <Cyl cx={5.2} cy={2.0} r={0.26} h={64} z0={78} tone="ic--white" />
-          <circle className="beacon" cx={P(2.9, 3.4, 114)[0]} cy={P(2.9, 3.4, 114)[1]} r="3" />
+          <Box x={1.5} y={3.8} w={4.0} d={2.3} h={78} tone="ib--white" />
+          <Box x={2.0} y={4.1} w={2.2} d={1.6} h={24} z0={78} tone="ib--white" />
+          <Box x={4.6} y={4.3} w={0.5} d={0.5} h={14} z0={78} tone="ib--blue" />
+          <Box x={1.7} y={5.3} w={0.6} d={0.5} h={10} z0={78} tone="ib--white" />
+          <Windows face="l" at={6.1} from={1.75} to={5.25} z={36} h={20} n={6} />
+          <Windows face="r" at={5.5} from={4.05} to={5.85} z={36} h={20} n={3} />
+          <Windows face="l" at={6.1} from={1.75} to={5.25} z={10} h={14} n={4} gap={0.5} className="iw iw--dim" />
+          <polygon className="gate" points={pts([P(3.2, 6.1, 30), P(4.2, 6.1, 30), P(4.2, 6.1, 0), P(3.2, 6.1, 0)])} />
+          <Cyl cx={4.5} cy={4.4} r={0.26} h={64} z0={78} tone="ic--white" />
+          <circle className="beacon" cx={P(2.2, 5.5, 114)[0]} cy={P(2.2, 5.5, 114)[1]} r="3" />
         </>,
       )}
-      <Smoke x={5.2} y={2.0} z={142} />
+      <Smoke x={4.5} y={4.4} z={142} />
 
-      <Truck dir={1} y={5.3} cls="truck--in" />
-      <Truck dir={-1} y={6.0} cls="truck--out" />
-      <Truck dir={1} y={5.3} cls="truck--in truck--b" />
-
-      {/* Zona 1 · Mercado: bodega y camiones */}
+      {/* Zona 1 · Mercado: bodega (delante) y camiones */}
       {zone(
         0,
         <>
-          <Box x={4.1} y={6.6} w={1.9} d={1.1} h={34} tone="ib--white" />
-          <Box x={4.2} y={6.7} w={1.7} d={0.9} h={10} z0={34} tone="ib--blue" />
-          <polygon className="gate" points={pts([P(4.4, 7.7, 22), P(5.0, 7.7, 22), P(5.0, 7.7, 0), P(4.4, 7.7, 0)])} />
-          <Windows face="r" at={6.0} from={6.7} to={7.6} z={14} h={12} n={2} />
-          <Box x={6.6} y={6.9} w={0.9} d={0.8} h={20} tone="ib--white" />
+          <Box x={5.2} y={6.7} w={3.0} d={1.4} h={36} tone="ib--white" />
+          <Box x={5.4} y={6.9} w={2.6} d={1.0} h={10} z0={36} tone="ib--blue" />
+          <polygon className="gate" points={pts([P(6.0, 8.1, 24), P(7.2, 8.1, 24), P(7.2, 8.1, 0), P(6.0, 8.1, 0)])} />
+          <Windows face="r" at={8.2} from={6.9} to={7.9} z={14} h={12} n={2} />
+          <Box x={8.5} y={7.0} w={0.9} d={0.9} h={22} tone="ib--white" />
         </>,
       )}
 
+      <Truck dir={1} y={8.6} cls="truck--in" />
+      <Truck dir={-1} y={9.4} cls="truck--out" />
+      <Truck dir={1} y={8.6} cls="truck--in truck--b" />
     </svg>
   )
 }

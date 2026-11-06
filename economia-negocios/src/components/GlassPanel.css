@@ -7,41 +7,29 @@
   background-color: var(--glass-tint);
   background-image: var(--glass-fill);
   border: 1px solid var(--glass-border);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(170%);
-  backdrop-filter: blur(var(--glass-blur)) saturate(170%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
   box-shadow:
     inset 0 1.5px 0 rgba(255, 255, 255, 0.5),
     inset 0 -1px 0 rgba(255, 255, 255, 0.1),
     inset 1px 0 0 rgba(255, 255, 255, 0.14),
-    0 1px 2px rgba(5, 21, 71, 0.25),
-    0 28px 70px -12px rgba(5, 21, 71, 0.5);
+    0 20px 50px -14px rgba(var(--shadow-rgb), 0.5);
 }
 
 /* Variante más opaca para modales y popovers (texto siempre legible) */
 .glass--dense {
-  --glass-tint: rgba(7, 26, 105, 0.62);
+  --glass-tint: rgba(var(--shadow-rgb), 0.62);
 }
 
-/* Chromium: refracción real del fondo antes de desenfocarlo */
-@supports (backdrop-filter: url(#liquid-glass)) {
-  .glass {
-    backdrop-filter: url(#liquid-glass) blur(var(--glass-blur)) saturate(170%);
-  }
+/* Sin blur real: para paneles grandes o que se desplazan. Mismo aspecto de vidrio
+   (tinte, luz en bordes) a una fracción del costo de pintado. */
+.glass--flat {
+  --glass-tint: rgba(8, 32, 120, 0.4);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
-
-/* Reflejo especular que sigue al puntero */
-.glass::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  z-index: -1;
-  background: radial-gradient(
-    420px circle at var(--mx) var(--my),
-    rgba(255, 255, 255, 0.22),
-    transparent 55%
-  );
-  pointer-events: none;
+.glass--flat.glass--dense {
+  --glass-tint: rgba(var(--shadow-rgb), 0.78);
 }
 
 /* Borde con brillo en las esquinas opuestas */
@@ -61,5 +49,20 @@
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+
+/* Reflejo especular que sigue al puntero (solo en .glass--live) */
+.glass--live::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+  background: radial-gradient(
+    420px circle at var(--mx) var(--my),
+    rgba(255, 255, 255, 0.22),
+    transparent 55%
+  );
   pointer-events: none;
 }

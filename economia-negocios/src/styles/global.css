@@ -6,6 +6,28 @@
   --sky: #7fa6ea;
   --ice: #dbe6f6;
 
+  /* Tokens de color por rol (los redefine [data-theme='uao']) */
+  --ink-rgb: 7, 22, 79;
+  --shadow-rgb: 5, 21, 71;
+  --deep-rgb: 6, 26, 110;
+  --mid-rgb: 31, 85, 208;
+  --a-strong: #1f45c4;
+  --a-mid: #2f5fe0;
+  --a-soft: #7fa6ea;
+  --tint-1: #f4f8ff;
+  --tint-2: #dbe6f6;
+  --tint-3: #c9d6ec;
+  --tint-4: #9fb3d9;
+  --bg-0: #06185e;
+  --bg-1: #0b2f9e;
+  --bg-2: #2f66d8;
+  --bg-3: #8fb0ea;
+  --bg-4: #d6e2f5;
+  --tint-rgb: 236, 243, 253;
+  --warm: #ff7a59;
+  --warm-dark: #d9482a;
+  --logo-dark-filter: brightness(0) saturate(100%) invert(10%) sepia(60%) saturate(3000%) hue-rotate(215deg);
+
   --bg: #06185e;
   --ink: #ffffff;
   --ink-soft: rgba(255, 255, 255, 0.78);
@@ -21,7 +43,7 @@
   );
   --glass-tint: rgba(6, 26, 110, 0.28);
   --glass-border: rgba(255, 255, 255, 0.28);
-  --glass-blur: 22px;
+  --glass-blur: 18px;
 
   --danger: #ffc2bb;
 
@@ -29,6 +51,39 @@
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
   color-scheme: dark;
+}
+
+/* Paleta institucional UAO (manual de identidad): rojo principal, crema, subordinados y acentos */
+[data-theme='uao'] {
+  --cobalt-950: #4a0a18;
+  --cobalt-800: #8a1428;
+  --cobalt-600: #ac0b32;
+  --sky: #ff836c;
+  --ice: #fbf5ec;
+  --bg: #6e0c20;
+  --ink-on-light: #4a0a18;
+  --ink-rgb: 74, 10, 24;
+  --shadow-rgb: 58, 5, 14;
+  --deep-rgb: 98, 8, 26;
+  --mid-rgb: 255, 5, 30;
+  --a-strong: #ac0b32;
+  --a-mid: #ff051e;
+  --a-soft: #ff836c;
+  --tint-1: #fbf5ec;
+  --tint-2: #f3e8da;
+  --tint-3: #e7d6c7;
+  --tint-4: #cdb6a6;
+  --bg-0: #6a0b1e;
+  --bg-1: #8a1428;
+  --bg-2: #d3082a;
+  --bg-3: #ff836c;
+  --bg-4: #fbf5ec;
+  --tint-rgb: 251, 245, 236;
+  --warm: #ff9800;
+  --warm-dark: #b35a00;
+  --glass-tint: rgba(98, 8, 26, 0.3);
+  --danger: #ffe3de;
+  --logo-dark-filter: brightness(0) saturate(100%) invert(14%) sepia(96%) saturate(7000%) hue-rotate(351deg) brightness(0.95);
 }
 
 *,

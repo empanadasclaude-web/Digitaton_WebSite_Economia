@@ -1,0 +1,459 @@
+{
+  "tema-1": {
+    "kicker": "Tema 1",
+    "titulo": "Análisis del Mercado",
+    "subtitulo": "La demanda, la oferta y el equilibrio de mercado",
+    "chips": ["La demanda", "La oferta", "El equilibrio"],
+    "secciones": [
+      {
+        "tipo": "statement",
+        "kicker": "El mercado",
+        "texto": "Un mercado es el encuentro entre consumidores y productores. En un mercado competitivo hay muchos compradores y vendedores, el bien es homogéneo y ningún agente puede influir en el precio."
+      },
+      {
+        "tipo": "definicion",
+        "kicker": "Los consumidores",
+        "termino": "La demanda",
+        "definicion": "Cantidad de un bien o servicio que desean adquirir los compradores a cada precio. Representa la toma de decisiones de los consumidores: los compradores determinan la demanda.",
+        "ejemplos": ["Consumimos para satisfacer necesidades", "Pagamos un precio", "Todos somos consumidores"]
+      },
+      {
+        "tipo": "mercado",
+        "kicker": "Curvas de demanda",
+        "titulo": "La demanda de Ana y de Jaime",
+        "ejeX": "Entradas a cine (mensual)",
+        "ejeY": "Precio (pesos)",
+        "xMax": 36,
+        "yMax": 5000,
+        "series": [
+          { "id": "ana", "nombre": "Ana", "color": "var(--a-mid)", "a": 5000, "b": -200, "mostrar": [0.04, 0.2] },
+          { "id": "jaime", "nombre": "Jaime", "color": "var(--warm)", "a": 5000, "b": -333.33, "mostrar": [0.3, 0.46] },
+          { "id": "mercado", "nombre": "Demanda del mercado", "color": "var(--ink-on-light)", "a": 5000, "b": -125, "mostrar": [0.62, 0.8], "grosor": 4 }
+        ],
+        "fases": [
+          { "en": 0, "titulo": "Ana", "texto": "Está dispuesta a comprar 5 entradas si cuestan $4.000 y 20 si cuestan $1.000." },
+          { "en": 0.26, "titulo": "Jaime", "texto": "A cada precio compra menos entradas que Ana: 3 a $4.000 y 12 a $1.000." },
+          { "en": 0.56, "titulo": "La demanda del mercado", "texto": "Es la suma horizontal de las demandas individuales. Con solo Ana y Jaime: 8 entradas a $4.000 y 32 a $1.000." }
+        ]
+      },
+      {
+        "tipo": "statement",
+        "kicker": "La ley de la demanda",
+        "texto": "Existe una relación inversa entre el precio de un bien y la cantidad que los compradores están dispuestos a adquirir, ceteris paribus. Lo escaso es costoso y lo abundante es barato."
+      },
+      {
+        "tipo": "mercado",
+        "kicker": "Moverse o desplazarse",
+        "titulo": "Cambios en la cantidad demandada y cambios en la demanda",
+        "ejeX": "Cantidad",
+        "ejeY": "Precio",
+        "xMax": 24,
+        "yMax": 5000,
+        "series": [{ "id": "D", "nombre": "Demanda", "color": "var(--a-mid)", "a": 5000, "b": -200, "mostrar": [0, 0.1], "desplaza": "D" }],
+        "fases": [
+          { "en": 0, "titulo": "La demanda", "texto": "Relaciona cada precio con la cantidad que los consumidores quieren comprar." },
+          { "en": 0.22, "titulo": "Movimiento a lo largo de la curva", "texto": "Si cambia el precio del bien, nos movemos sobre la misma curva: cambia la cantidad demandada.", "precio": 3000, "punto": "D" },
+          { "en": 0.44, "precio": 2000, "punto": "D", "titulo": "Menor precio, mayor cantidad", "texto": "Todo lo que modifique el precio del bien se refleja como un movimiento sobre la curva." },
+          { "en": 0.6, "titulo": "Desplazamiento a la derecha", "texto": "Aumenta la demanda: sube el ingreso (bien normal), los gustos, el precio de un sustituto o el número de compradores.", "dD": 4 },
+          { "en": 0.82, "titulo": "Desplazamiento a la izquierda", "texto": "Disminuye la demanda: baja el ingreso (bien normal), el precio de un sustituto, o sube el precio de un complementario.", "dD": -4 }
+        ]
+      },
+      {
+        "tipo": "tarjetas",
+        "kicker": "Determinantes de la demanda",
+        "titulo": "¿Qué desplaza la demanda?",
+        "items": [
+          { "titulo": "Ingreso o renta", "texto": "Bien normal: al subir el ingreso, sube la demanda. Bien inferior: baja (mondongo, ullucos)." },
+          { "titulo": "Precio de otros bienes", "texto": "Sustitutos: si sube uno, aumenta la demanda del otro. Complementarios: disminuye. Independientes: no cambia." },
+          { "titulo": "Gustos o preferencias", "texto": "Si el bien se pone de moda, la curva se desplaza a la derecha." },
+          { "titulo": "Número de compradores", "texto": "Más consumidores, más demanda de mercado." },
+          { "titulo": "Expectativas", "texto": "Lo que los consumidores esperan que pase con precios e ingresos en el futuro." }
+        ]
+      },
+      {
+        "tipo": "definicion",
+        "kicker": "Los productores",
+        "termino": "La oferta",
+        "definicion": "Cantidad de un bien o servicio que desean y pueden ofrecer los productores a cada precio. Representa las elecciones de los productores. Para analizarla, hay que pensar como productor.",
+        "ejemplos": ["No todos producimos", "Los productores determinan la oferta", "Precio ↑ → producir más"]
+      },
+      {
+        "tipo": "mercado",
+        "kicker": "Curvas de oferta",
+        "titulo": "Dos panaderías, una oferta de mercado",
+        "ejeX": "Panes (diario)",
+        "ejeY": "Precio del pan (pesos)",
+        "xMax": 26,
+        "yMax": 3500,
+        "series": [
+          { "id": "pyc", "nombre": "Pan y más", "color": "var(--a-mid)", "a": 1200, "b": 100, "mostrar": [0.04, 0.2] },
+          { "id": "pc", "nombre": "Pan casero", "color": "var(--warm)", "a": 1000, "b": 500, "mostrar": [0.3, 0.46] },
+          { "id": "mercadoS", "nombre": "Oferta del mercado", "color": "var(--ink-on-light)", "a": 1166.7, "b": 83.3, "mostrar": [0.62, 0.8], "grosor": 4 }
+        ],
+        "fases": [
+          { "en": 0, "titulo": "Pan y más", "texto": "Produce y vende 3 panes si el precio es $1.500 y 18 si el precio es $3.000." },
+          { "en": 0.26, "titulo": "Pan casero", "texto": "1 pan a $1.500 y 4 panes a $3.000. A menos de $1.000 no produce nada." },
+          { "en": 0.56, "titulo": "La oferta del mercado", "texto": "Suma horizontal de las ofertas individuales. Pendiente positiva: ley de la oferta, a mayor precio, mayor cantidad ofrecida." }
+        ]
+      },
+      {
+        "tipo": "tarjetas",
+        "kicker": "Determinantes de la oferta",
+        "titulo": "¿Qué desplaza la oferta?",
+        "items": [
+          { "titulo": "Precio de los factores", "texto": "Si suben los insumos o salarios, la oferta se desplaza a la izquierda." },
+          { "titulo": "Tecnología", "texto": "Producir mejor y más barato desplaza la oferta a la derecha." },
+          { "titulo": "Expectativas", "texto": "Si se espera un precio mayor a futuro, la oferta de hoy disminuye." },
+          { "titulo": "Número de productores", "texto": "Más vendedores en el mercado, más oferta." }
+        ]
+      },
+      {
+        "tipo": "mercado",
+        "kicker": "El equilibrio de mercado",
+        "titulo": "El mercado de la papa",
+        "ejeX": "Cantidad",
+        "ejeY": "Precio (pesos)",
+        "xMax": 12,
+        "yMax": 600,
+        "series": [
+          { "id": "D", "nombre": "Demanda", "color": "var(--a-mid)", "a": 600, "b": -50, "mostrar": [0.02, 0.1], "desplaza": "D" },
+          { "id": "S", "nombre": "Oferta", "color": "var(--ink-on-light)", "a": 0, "b": 50, "mostrar": [0.08, 0.16], "desplaza": "S" }
+        ],
+        "fases": [
+          { "en": 0, "titulo": "Oferta y demanda", "texto": "El comprador mira el precio hacia abajo; el productor, hacia arriba. Se encuentran en un punto." },
+          { "en": 0.2, "titulo": "Equilibrio", "texto": "El precio llega al nivel en el que la cantidad ofrecida equivale a la demandada: $300 y 6 unidades.", "eq": true },
+          { "en": 0.42, "titulo": "Excedente: exceso de oferta", "texto": "Con el precio por encima del equilibrio ($400) se ofrecen 8 y se demandan 4: sobran 4 unidades.", "eq": true, "precio": 400, "brecha": "excedente" },
+          { "en": 0.64, "titulo": "Escasez: exceso de demanda", "texto": "Con el precio por debajo del equilibrio ($200) se demandan 8 y se ofrecen 4: faltan 4 unidades.", "eq": true, "precio": 200, "brecha": "escasez" },
+          { "en": 0.86, "titulo": "El mercado se ajusta", "texto": "Sobra o falta producto, el precio se mueve y regresa al equilibrio.", "eq": true }
+        ]
+      },
+      {
+        "tipo": "pasos",
+        "kicker": "Método",
+        "titulo": "Tres pasos para analizar cambios en el equilibrio",
+        "items": [
+          { "titulo": "Parte siempre de un equilibrio", "texto": "Cero: dibuja la oferta y la demanda iniciales." },
+          { "titulo": "¿Qué curva se desplaza?", "texto": "Decide si el acontecimiento mueve la oferta, la demanda, o ambas." },
+          { "titulo": "¿En qué dirección?", "texto": "Derecha si aumenta; izquierda si disminuye." },
+          { "titulo": "Lee el nuevo equilibrio", "texto": "Usa el diagrama para ver cómo cambian el precio y la cantidad de equilibrio." }
+        ]
+      },
+      {
+        "tipo": "mercado",
+        "kicker": "Ejemplos en el mercado de la papa",
+        "titulo": "Cuando una curva se desplaza",
+        "ejeX": "Cantidad",
+        "ejeY": "Precio (pesos)",
+        "xMax": 12,
+        "yMax": 600,
+        "series": [
+          { "id": "D", "nombre": "Demanda", "color": "var(--a-mid)", "a": 600, "b": -50, "mostrar": [0, 0.02], "desplaza": "D" },
+          { "id": "S", "nombre": "Oferta", "color": "var(--ink-on-light)", "a": 0, "b": 50, "mostrar": [0, 0.02], "desplaza": "S" }
+        ],
+        "fases": [
+          { "en": 0, "titulo": "Punto de partida", "texto": "Mercado de la papa en equilibrio.", "eq": true },
+          { "en": 0.18, "titulo": "Sube el salario de los recolectores", "texto": "La oferta disminuye (izquierda). El precio de equilibrio aumenta y la cantidad de equilibrio disminuye.", "eq": true, "dS": -2.5 },
+          { "en": 0.36, "titulo": "Baja el salario de los recolectores", "texto": "La oferta aumenta (derecha). El precio de equilibrio disminuye y la cantidad aumenta.", "eq": true, "dS": 2.5 },
+          { "en": 0.54, "titulo": "Disminuye el número de consumidores", "texto": "La demanda disminuye (izquierda). El precio y la cantidad de equilibrio disminuyen.", "eq": true, "dD": -2.5 },
+          { "en": 0.72, "titulo": "Aumenta el número de consumidores", "texto": "La demanda aumenta (derecha). El precio y la cantidad de equilibrio aumentan.", "eq": true, "dD": 2.5 },
+          { "en": 0.9, "titulo": "Si se mueven ambas curvas", "texto": "Si oferta y demanda disminuyen en la misma magnitud, el precio se mantiene y la cantidad disminuye.", "eq": true, "dD": -2.5, "dS": -2.5 }
+        ]
+      },
+      {
+        "tipo": "comparar",
+        "kicker": "Cuando se mueven las dos",
+        "titulo": "El resultado depende de cuánto se mueva cada curva",
+        "columnas": [
+          { "titulo": "Disminuye más la oferta", "subtitulo": "Sube el salario y bajan los consumidores", "puntos": ["El precio de equilibrio aumenta", "La cantidad de equilibrio disminuye"] },
+          { "titulo": "Disminuye más la demanda", "subtitulo": "Mismos acontecimientos, otra magnitud", "puntos": ["El precio de equilibrio disminuye", "La cantidad de equilibrio disminuye"] }
+        ],
+        "nota": "Si no se sabe cuánto se desplazó cada curva, el efecto sobre el precio es incierto; la cantidad sí disminuye."
+      }
+    ],
+    "cierre": {
+      "titulo": "Lo esencial del mercado",
+      "puntos": [
+        "La demanda es inversa al precio; la oferta es directa.",
+        "El precio cambia = movimiento sobre la curva. Cambia otro determinante = desplazamiento.",
+        "El equilibrio iguala cantidad ofrecida y demandada; por encima hay excedente, por debajo escasez.",
+        "Para analizar un cambio: equilibrio, qué curva, qué dirección, nuevo equilibrio."
+      ]
+    }
+  },
+  "tema-2": {
+    "kicker": "Tema 2",
+    "titulo": "Decisiones Tarifarias",
+    "subtitulo": "Elasticidades de la demanda y decisiones de precio",
+    "chips": ["Elasticidad precio", "Elasticidad cruzada", "Elasticidad ingreso"],
+    "secciones": [
+      {
+        "tipo": "statement",
+        "kicker": "Rompiendo supuestos",
+        "texto": "En un mercado competitivo las empresas no influyen en el precio. Aquí rompemos ese supuesto: las empresas sí pueden influir en el precio para vender más, ganar más y posicionarse."
+      },
+      {
+        "tipo": "preguntas",
+        "kicker": "Piensa estas situaciones",
+        "titulo": "¿Por qué suceden?",
+        "items": [
+          "Una empresa de lácteos promociona algunos productos con menores precios, pero otros no.",
+          "Al bajar precios, algunos grupos deciden no consumir mientras otros consumen mucho más.",
+          "Si una productora de leche de almendras baja sus precios, ¿pueden alterarse los ingresos de la empresa de lácteos?"
+        ]
+      },
+      {
+        "tipo": "definicion",
+        "kicker": "El concepto",
+        "termino": "Elasticidad",
+        "definicion": "El grado de respuesta de una variable como resultado de un cambio originado en otra variable relacionada. Esa relación y su intensidad se pueden medir con un cálculo.",
+        "ejemplos": ["Elasticidad precio de la demanda", "Elasticidad ingreso", "Elasticidad precio cruzada"]
+      },
+      {
+        "tipo": "elasticidad",
+        "kicker": "Elasticidad precio de la demanda",
+        "titulo": "¿Cuánto responde la cantidad cuando cambia el precio?",
+        "etapas": [
+          { "nombre": "Perfectamente elástica", "simbolo": "ε = ∞", "angulo": 0, "q": 100, "texto": "La cantidad demandada es extremadamente sensible: cualquier variación del precio la hace desaparecer o dispararse." },
+          { "nombre": "Elástica", "simbolo": "ε > 1", "angulo": 28, "q": 62, "texto": "La cantidad demandada responde más que proporcionalmente a la variación del precio." },
+          { "nombre": "Unitaria", "simbolo": "ε = 1", "angulo": 45, "q": 40, "texto": "La cantidad varía exactamente en la misma proporción que el precio." },
+          { "nombre": "Inelástica", "simbolo": "ε < 1", "angulo": 64, "q": 16, "texto": "La cantidad responde en menor proporción que la variación del precio." },
+          { "nombre": "Perfectamente inelástica", "simbolo": "ε = 0", "angulo": 90, "q": 0, "texto": "La cantidad demandada no responde en absoluto a los cambios en el precio." }
+        ]
+      },
+      {
+        "tipo": "pasos",
+        "kicker": "Cómo se calcula",
+        "titulo": "Elasticidad = % cambio en cantidad ÷ % cambio en precio",
+        "items": [
+          { "titulo": "Método básico", "texto": "Si el precio del helado sube 10% y la cantidad baja 20%: ε = 20 ÷ 10 = 2. Como es mayor que 1, la demanda de helado es elástica." },
+          { "titulo": "Datos de dos momentos", "texto": "Necesitas precio y cantidad inicial y final. Y la variación de la cantidad debe deberse solo al precio, no a otros determinantes." },
+          { "titulo": "Paso 1: % de la cantidad", "texto": "El consumo cae de 100 a 70 unidades: (70 − 100) ÷ 100 = −30%." },
+          { "titulo": "Paso 2: % del precio", "texto": "El precio sube de $10 a $12: (12 − 10) ÷ 10 = +20%." },
+          { "titulo": "Paso 3: el cociente", "texto": "−30% ÷ 20% = −1,5. En valor absoluto, 1,5 > 1: la demanda es elástica." }
+        ]
+      },
+      {
+        "tipo": "tarjetas",
+        "kicker": "Dos elasticidades más",
+        "titulo": "Cruzada e ingreso",
+        "columnas": 2,
+        "items": [
+          { "etiqueta": "Cruzada · café y té", "valor": "1,5", "titulo": "Sustitutos", "texto": "El café sube de $2 a $2,20 y el consumo de té pasa de 110 a 115 libras. Si el café sube 1%, el té sube 1,5%." },
+          { "etiqueta": "Cruzada · café y filtros", "valor": "−2", "titulo": "Complementarios", "texto": "Con el café a $2,20 los filtros pasan de 100 a 80 unidades. Si el café sube 1%, los filtros caen 2%." },
+          { "etiqueta": "Ingreso · 100 → 120 unidades", "valor": "2", "titulo": "Bien normal de lujo", "texto": "El ingreso sube de $1.000 a $1.100. Mayor que 1: el consumo aumenta más que proporcionalmente." },
+          { "etiqueta": "Ingreso · 100 → 95 unidades", "valor": "−0,5", "titulo": "Bien inferior", "texto": "Con más ingreso el consumo disminuye. Elasticidad negativa: bien inferior." }
+        ]
+      },
+      {
+        "tipo": "barras",
+        "kicker": "Decidir con elasticidad",
+        "titulo": "El vaso de avena: $2.000 × 1.000 vasos = $2.000.000",
+        "unidad": "$",
+        "referencia": 2000000,
+        "grupos": [
+          {
+            "titulo": "Demanda inelástica (ε = 0,5)",
+            "accion": "Sube el precio 20%: $2.000 → $2.400",
+            "efecto": "Pierde solo el 10% de consumidores: vende 900 vasos.",
+            "barras": [
+              { "etiqueta": "Antes", "valor": 2000000, "texto": "$2.000.000" },
+              { "etiqueta": "Después", "valor": 2160000, "texto": "$2.160.000", "destacar": true }
+            ],
+            "resultado": "Si la demanda es inelástica, conviene subir precios"
+          },
+          {
+            "titulo": "Demanda elástica (ε = 1,5)",
+            "accion": "Baja el precio 10%: $2.000 → $1.800",
+            "efecto": "El consumo sube 15%: vende 1.150 vasos.",
+            "barras": [
+              { "etiqueta": "Antes", "valor": 2000000, "texto": "$2.000.000" },
+              { "etiqueta": "Después", "valor": 2070000, "texto": "$2.070.000", "destacar": true }
+            ],
+            "resultado": "Si la demanda es elástica, conviene bajar precios"
+          }
+        ]
+      },
+      {
+        "tipo": "tarjetas",
+        "kicker": "Por qué importa",
+        "titulo": "Conocer la elasticidad precio de la demanda",
+        "items": [
+          { "titulo": "Estrategias de precios más efectivas", "texto": "Saber si subir o bajar para mejorar los ingresos." },
+          { "titulo": "Evaluación de riesgos y oportunidades", "texto": "Anticipar cuánto se pierde o se gana ante un cambio." },
+          { "titulo": "Planificación y producción", "texto": "Producir lo que realmente se va a vender." },
+          { "titulo": "Competencia y posicionamiento", "texto": "Entender cómo reaccionan los consumidores frente a otras ofertas." }
+        ]
+      }
+    ],
+    "cierre": {
+      "titulo": "Lo esencial de las elasticidades",
+      "puntos": [
+        "La elasticidad mide cuánto responde la cantidad cuando cambia el precio.",
+        "ε > 1 elástica: baja precios para ganar más. ε < 1 inelástica: sube precios.",
+        "Cruzada: positiva = sustitutos, negativa = complementarios.",
+        "Ingreso: mayor que 1 bien de lujo, negativa bien inferior."
+      ]
+    }
+  },
+  "tema-3": {
+    "kicker": "Tema 3",
+    "titulo": "Indicadores Macroeconómicos",
+    "subtitulo": "PIB, inflación, ciclos económicos y políticas",
+    "chips": ["PIB", "Inflación e IPC", "Ciclos y política"],
+    "secciones": [
+      {
+        "tipo": "preguntas",
+        "kicker": "Para pensar",
+        "titulo": "¿Por qué no siempre es igual?",
+        "items": [
+          "¿Por qué algunas veces es más difícil conseguir empleo que otras?",
+          "¿Por qué prosperar algunas veces es más difícil que otras?",
+          "¿Qué debería hacer el Gobierno, y qué el Banco de la República, ante una recesión?"
+        ]
+      },
+      {
+        "tipo": "comparar",
+        "kicker": "Dos lentes",
+        "titulo": "Micro y macroeconomía",
+        "columnas": [
+          { "titulo": "Microeconomía", "subtitulo": "Decisiones individuales", "puntos": ["Agentes: consumidores y empresas", "Nivel de precios: un producto específico", "Alcance: un bien particular"] },
+          { "titulo": "Macroeconomía", "subtitulo": "La economía en conjunto", "puntos": ["Agentes: países y gobiernos", "Nivel general de precios: la inflación", "Alcance: la economía nacional"] }
+        ],
+        "nota": "La macroeconomía estudia producción total, nivel de precios y comercio exterior para entender el crecimiento y mitigar crisis."
+      },
+      {
+        "tipo": "definicion",
+        "kicker": "El tamaño de la economía",
+        "termino": "El PIB",
+        "definicion": "El valor de mercado de todos los bienes y servicios finales producidos en un país durante un periodo de tiempo determinado.",
+        "ejemplos": ["Identificar bienes finales", "Multiplicar precio por cantidad", "Sumar los valores totales"]
+      },
+      {
+        "tipo": "barras",
+        "kicker": "No todo crecimiento es real",
+        "titulo": "PIB nominal vs. PIB real",
+        "unidad": "M",
+        "referencia": 0,
+        "grupos": [
+          {
+            "titulo": "PIB nominal · precios actuales",
+            "accion": "Incluye la inflación",
+            "efecto": "El valor pasa de $200 M a $250 M.",
+            "barras": [
+              { "etiqueta": "2025", "valor": 200, "texto": "$200 M" },
+              { "etiqueta": "2026", "valor": 250, "texto": "$250 M", "destacar": true }
+            ],
+            "resultado": "Crecimiento percibido: +25%"
+          },
+          {
+            "titulo": "PIB real · precios constantes de 2025",
+            "accion": "Elimina la inflación",
+            "efecto": "100 unidades a $2 M siguen siendo $200 M.",
+            "barras": [
+              { "etiqueta": "2025", "valor": 200, "texto": "$200 M" },
+              { "etiqueta": "2026", "valor": 200, "texto": "$200 M", "destacar": true }
+            ],
+            "resultado": "Crecimiento real: 0%, estancamiento"
+          }
+        ]
+      },
+      {
+        "tipo": "tarjetas",
+        "kicker": "La inflación",
+        "titulo": "El impuesto silencioso",
+        "items": [
+          { "titulo": "Aumento sostenido de precios", "texto": "Un incremento continuo y generalizado de los precios." },
+          { "titulo": "Pérdida de poder adquisitivo", "texto": "No es un producto subiendo: es el valor del dinero cayendo." },
+          { "titulo": "Erosión de obligaciones", "texto": "El valor nominal de las deudas se deteriora si no hay cláusulas de ajuste." }
+        ]
+      },
+      {
+        "tipo": "cifras",
+        "kicker": "El IPC en la canasta",
+        "titulo": "Cuánto cambió el costo de vida",
+        "items": [
+          { "valor": 25, "texto": "+25%", "etiqueta": "Arroz (kg)", "detalle": "$4.000 → $5.000" },
+          { "valor": 18.5, "texto": "+18,5%", "etiqueta": "Transporte (pasaje)", "detalle": "$2.700 → $3.200" },
+          { "valor": 12.5, "texto": "+12,5%", "etiqueta": "Alquiler promedio", "detalle": "$1.200.000 → $1.350.000" }
+        ],
+        "max": 30,
+        "nota": "El IPC mide la variación de precios de una canasta de bienes y servicios de consumo final de los hogares urbanos, en 12 divisiones de gasto."
+      },
+      {
+        "tipo": "comparar",
+        "kicker": "¿Existe una inflación buena?",
+        "titulo": "Moderada frente a alta",
+        "columnas": [
+          { "titulo": "Inflación moderada (2-4%)", "subtitulo": "Acompaña el crecimiento", "puntos": ["Incentiva la producción", "Facilita pagos fijos", "Contratos predecibles"] },
+          { "titulo": "Inflación alta o hiperinflación", "subtitulo": "Reduce la capacidad de compra", "puntos": ["Frena la inversión", "Destruye el ahorro", "Renegociación constante"] }
+        ]
+      },
+      {
+        "tipo": "ciclo",
+        "kicker": "El ritmo cardíaco de la nación",
+        "titulo": "El ciclo económico",
+        "nota": "Si el PIB real cae dos trimestres consecutivos hay recesión; si es fuerte, depresión. Los ciclos se deben mitigar para hacerlos breves y suaves.",
+        "fases": [
+          { "nombre": "Expansión", "rango": [0, 0.2], "texto": "La producción y el empleo suben, hay optimismo y crecen el consumo y la inversión.", "indicadores": [["PIB", "↑"], ["Empleo", "↑"], ["Consumo", "↑"]] },
+          { "nombre": "Auge o pico", "rango": [0.2, 0.32], "texto": "Máxima capacidad: escasez de recursos y fuertes presiones inflacionarias.", "indicadores": [["PIB", "↑↑"], ["Inflación", "↑"], ["Crédito", "↑"]] },
+          { "nombre": "Recesión", "rango": [0.32, 0.7], "texto": "Cae la producción y la inversión privada, y el desempleo comienza a subir.", "indicadores": [["PIB", "↓"], ["Empleo", "↓"], ["Inversión", "↓"]] },
+          { "nombre": "Valle", "rango": [0.7, 0.84], "texto": "Punto más bajo: poco consumo y capacidad ociosa, hasta que inicia la recuperación.", "indicadores": [["PIB", "↓↓↓"], ["Consumo", "↓↓↓"], ["Quiebras", "↑"]] },
+          { "nombre": "Recuperación", "rango": [0.84, 1], "texto": "Retorno gradual del crecimiento económico.", "indicadores": [["PIB", "↑"], ["Empleo", "↑"], ["Confianza", "↑"]] }
+        ]
+      },
+      {
+        "tipo": "comparar",
+        "kicker": "¿Es posible manejar una crisis?",
+        "titulo": "Política fiscal y política monetaria",
+        "columnas": [
+          { "titulo": "Fiscal · el Gobierno", "subtitulo": "Gasto público, impuestos y transferencias", "puntos": ["Expansiva (en recesión): más gasto, menos impuestos", "Contractiva (inflación o déficit): menos gasto, más impuestos"] },
+          { "titulo": "Monetaria · el Banco Central", "subtitulo": "Su instrumento es la tasa de interés", "puntos": ["Expansiva: baja tasas, crédito barato, más consumo e inversión", "Contractiva: sube tasas, crédito caro, reduce la inflación"] }
+        ]
+      },
+      {
+        "tipo": "cadena",
+        "kicker": "Economía abierta",
+        "titulo": "¿Qué pasa si Colombia sube sus tasas de interés?",
+        "filas": [
+          {
+            "etiqueta": "Sube la tasa",
+            "nodos": [
+              { "titulo": "Más rendimientos", "texto": "Entran capitales y divisas." },
+              { "titulo": "Más dólares", "texto": "El peso se aprecia y el dólar baja." },
+              { "titulo": "Comercio exterior", "texto": "Exportaciones más caras, importaciones más baratas." },
+              { "titulo": "Balanza de pagos", "texto": "Mejora la cuenta financiera; la corriente puede deteriorarse." }
+            ]
+          },
+          {
+            "etiqueta": "Baja la tasa",
+            "nodos": [
+              { "titulo": "Salen capitales", "texto": "Los inversionistas buscan mayor rendimiento." },
+              { "titulo": "Sube el dólar", "texto": "El peso se deprecia." },
+              { "titulo": "Efectos comerciales", "texto": "Exportaciones más competitivas, importaciones más costosas." },
+              { "titulo": "Consecuencia", "texto": "Mejora comercial posible, pero más inflación importada." }
+            ]
+          }
+        ]
+      },
+      {
+        "tipo": "tarjetas",
+        "kicker": "Reflexión final",
+        "titulo": "¿Dónde estamos hoy?",
+        "items": [
+          { "titulo": "Banco de la República", "texto": "Revisa los comunicados recientes sobre la tasa de interés vigente." },
+          { "titulo": "Reportes del DANE", "texto": "Analiza los indicadores del mercado laboral: empleo y desempleo." },
+          { "titulo": "Canasta básica", "texto": "Monitorea la variación de precios de bienes esenciales." }
+        ]
+      }
+    ],
+    "cierre": {
+      "titulo": "Las políticas no actúan solas",
+      "puntos": [
+        "El PIB real mide el crecimiento verdadero; el nominal incluye la inflación.",
+        "La inflación erosiona el poder adquisitivo y las deudas.",
+        "El ciclo tiene expansión, auge, recesión y valle.",
+        "Empleo, inflación, dólar y exportaciones se mueven juntos."
+      ]
+    }
+  }
+}

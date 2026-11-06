@@ -3,6 +3,7 @@ import temas from './seed/temas.json'
 import catalogoIndicadores from './seed/catalogoIndicadores.json'
 import empresasSeed from './seed/empresas.json'
 import cursosSeed from './seed/cursos.json'
+import teoria from './seed/teoria.json'
 
 /**
  * Capa de datos provisional.
@@ -17,6 +18,8 @@ import cursosSeed from './seed/cursos.json'
  *   con la misma empresa nunca se afectan entre sí.
  * - `curso.resultados` guarda los archivos Excel generados por las simulaciones:
  *   { id, nombre, temaId, fecha, participantes, url }.
+ * - `curso.estado.progresoTemas[temaId]` = { teoria, simulacion } (booleans). Un tema está
+ *   completado cuando ambos son true. Se aceptan los valores antiguos 'pendiente'/'completado'.
  * - `curso.estado.contextoVisto` indica si el grupo ya vio el contexto de la
  *   empresa (scrollytelling); la primera vez que se entra al curso se muestra.
  *
@@ -65,6 +68,15 @@ export function nextEmpresaId(empresas) {
 
 const DataContext = createContext(null)
 
+/** Progreso normalizado de un tema: { teoria, simulacion, completo }. Acepta los valores antiguos. */
+export function progresoDeTema(curso, temaId) {
+  const v = curso?.estado?.progresoTemas?.[temaId]
+  const obj = typeof v === 'object' && v
+  const teoria = obj ? Boolean(v.teoria) : v === 'completado'
+  const simulacion = obj ? Boolean(v.simulacion) : v === 'completado'
+  return { teoria, simulacion, completo: teoria && simulacion }
+}
+
 export function DataProvider({ children }) {
   const [db, setDb] = useState(loadDb)
 
@@ -87,7 +99,7 @@ export function DataProvider({ children }) {
         creadoEn: new Date().toISOString(),
         estado: {
           indicadores: empresa.indicadores.map((i) => ({ id: i.id, valor: i.valorInicial })),
-          progresoTemas: Object.fromEntries(temas.map((t) => [t.id, 'pendiente'])),
+          progresoTemas: Object.fromEntries(temas.map((t) => [t.id, { teoria: false, simulacion: false }])),
           contextoVisto: false,
         },
         resultados: [],
@@ -130,7 +142,25 @@ export function DataProvider({ children }) {
     }))
   }, [])
 
-  /** Copia de todos los datos en un objeto listo para guardar como .json. */
+  /** Marca la teoría de un tema como vista en un curso. */
+  const markTeoriaVistaCb = useCallback((cursoId, temaId) => {
+    setDb((prev) => {
+      const c = prev.cursos.find((x) => x.id === cursoId)
+      if (!c) return prev
+      const actual = progresoDeTema(c, temaId)
+      if (actual.teoria) return prev
+      return {
+        ...prev,
+        cursos: prev.cursos.map((x) =>
+          x.id === cursoId
+            ? { ...x, estado: { ...x.estado, progresoTemas: { ...x.estado.progresoTemas, [temaId]: { teoria: true, simulacion: actual.simulacion } } } }
+            : x,
+        ),
+      }
+    })
+  }, [])
+
+/** Copia de todos los datos en un objeto listo para guardar como .json. */
   const exportDb = useCallback(
     () => ({ version: DB_VERSION, exportadoEn: new Date().toISOString(), empresas: db.empresas, cursos: db.cursos }),
     [db],
@@ -150,6 +180,7 @@ export function DataProvider({ children }) {
   const value = useMemo(
     () => ({
       temas,
+      teoria,
       catalogoIndicadores,
       empresas: db.empresas,
       cursos: db.cursos,
@@ -158,10 +189,11 @@ export function DataProvider({ children }) {
       deleteCurso,
       saveEmpresa,
       markContextoVisto,
+      markTeoriaVista: markTeoriaVistaCb,
       exportDb,
       importDb,
     }),
-    [db, createCurso, updateCurso, deleteCurso, saveEmpresa, markContextoVisto, exportDb, importDb],
+    [db, createCurso, updateCurso, deleteCurso, saveEmpresa, markContextoVisto, markTeoriaVistaCb, exportDb, importDb],
   )
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>
 }

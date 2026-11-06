@@ -201,7 +201,7 @@
   right: 10px;
   width: 36px;
   height: 36px;
-  background: rgba(7, 26, 105, 0.7);
+  background: rgba(var(--shadow-rgb), 0.7);
 }
 
 /* ---------- Indicadores ---------- */

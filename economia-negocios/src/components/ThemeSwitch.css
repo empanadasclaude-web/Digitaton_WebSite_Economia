@@ -1,0 +1,52 @@
+.tswitch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+.tswitch__track {
+  position: relative;
+  width: 44px;
+  height: 26px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: background 250ms ease;
+}
+.tswitch__knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 280ms var(--ease-out);
+}
+.tswitch.is-on .tswitch__track { background: #ff051e; border-color: #fff; }
+.tswitch.is-on .tswitch__knob { transform: translateX(18px); }
+.tswitch:focus-visible .tswitch__track { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* Flotante: esquina inferior derecha, sobre cualquier fondo */
+.tswitch--float {
+  position: fixed;
+  right: 16px;
+  bottom: 14px;
+  z-index: 70;
+  padding: 7px 14px 7px 8px;
+  border-radius: 99px;
+  color: #fff;
+  background: rgba(var(--deep-rgb), 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+@media (max-width: 520px) {
+  .tswitch--float .tswitch__label { display: none; }
+  .tswitch--float { padding: 7px 8px; }
+}

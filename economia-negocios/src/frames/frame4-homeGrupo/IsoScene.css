@@ -1,41 +1,41 @@
 /* Escena isométrica: colores y animaciones en loop (solo transform/opacity). */
 .ib__t { fill: #ffffff; }
-.ib__l { fill: #e3eaf6; }
-.ib__r { fill: #c6d4ec; }
+.ib__l { fill: var(--tint-2); }
+.ib__r { fill: var(--tint-3); }
 .ib__t, .ib__l, .ib__r { stroke: rgba(120, 150, 205, 0.45); stroke-width: 0.8; stroke-linejoin: round; }
-.ib--blue .ib__t { fill: #6a93f5; }
-.ib--blue .ib__l { fill: #3d6ae6; }
-.ib--blue .ib__r { fill: #2a4fc2; }
+.ib--blue .ib__t { fill: var(--a-soft); }
+.ib--blue .ib__l { fill: var(--a-mid); }
+.ib--blue .ib__r { fill: var(--a-strong); }
 
 .ic__body { fill: url(#iso-tank-w); }
-.ic__top { fill: #f4f7fd; }
+.ic__top { fill: var(--tint-1); }
 .ic__cap { fill: none; stroke: rgba(120, 150, 205, 0.55); }
 .ic--blue .ic__body { fill: url(#iso-tank); }
-.ic--blue .ic__top { fill: #9db9fa; }
+.ic--blue .ic__top { fill: var(--a-soft); }
 .ic__body, .ic__top { stroke: rgba(80, 110, 190, 0.4); stroke-width: 0.8; }
 
-.iw { fill: #4a78f0; }
-.iw--dim { fill: #8fb0f7; }
-.gate { fill: #2a4fc2; }
-.pipe { fill: none; stroke: #5b86f2; stroke-width: 2.4; stroke-linejoin: round; stroke-dasharray: 3 9; stroke-linecap: round; }
+.iw { fill: var(--a-mid); }
+.iw--dim { fill: var(--a-soft); }
+.gate { fill: var(--a-strong); }
+.pipe { fill: none; stroke: var(--a-soft); stroke-width: 2.4; stroke-linejoin: round; stroke-dasharray: 3 9; stroke-linecap: round; }
 
-.sol { fill: #3a64d8; stroke: #fff; stroke-width: 1; }
+.sol { fill: var(--a-mid); stroke: #fff; stroke-width: 1; }
 .sol__l { stroke: rgba(255, 255, 255, 0.55); stroke-width: 1; }
 
 .tw__pole { fill: #fff; stroke: rgba(120, 150, 205, 0.6); stroke-width: 0.6; }
 .tw__blade { fill: #fff; stroke: rgba(80, 110, 190, 0.55); stroke-width: 0.6; }
-.tw__hub { fill: #3d6ae6; }
+.tw__hub { fill: var(--a-mid); }
 
-.truck__sh { fill: rgba(30, 60, 140, 0.18); }
+.truck__sh { fill: rgba(var(--shadow-rgb), 0.18); }
 .smoke { fill: #fff; opacity: 0; }
-.beacon { fill: #ff7a59; }
+.beacon { fill: var(--warm); }
 .badge__stem { stroke: rgba(255, 255, 255, 0.85); stroke-width: 1.5; stroke-dasharray: 3 3; }
-.badge__c { fill: #fff; stroke: #2a4fc2; stroke-width: 2.5; }
-.badge text { fill: #07164f; font: 600 17px var(--font); }
-.zone--en-curso .badge__c { fill: #2f5fe0; }
-.zone--en-curso .badge text { fill: #fff; }
-.zone--completado .badge__c { fill: #07164f; stroke: #fff; }
-.zone--completado .badge text { fill: #fff; }
+.badge__c { fill: #fff; stroke: var(--a-strong); stroke-width: 2.5; }
+.badge text { fill: var(--ink-on-light); font: 600 17px var(--font); }
+.zone--parcial .badge__c { fill: var(--a-mid); }
+.zone--parcial .badge text { fill: #fff; }
+.zone--completo .badge__c { fill: var(--ink-on-light); stroke: #fff; }
+.zone--completo .badge text { fill: #fff; }
 
 /* Interacción */
 .zone { cursor: pointer; outline: none; }
@@ -77,18 +77,18 @@
 .truck--b { animation-delay: -7s; }
 .truck--out { animation: truck-out 11s linear infinite; animation-delay: -3s; }
 @keyframes truck-in {
-  0%   { transform: translate(-75px, -37.5px); opacity: 0; }
+  0%   { transform: translate(-63px, -31.5px); opacity: 0; }
   6%   { opacity: 1; }
-  34%  { transform: translate(170px, 85px); }
-  50%  { transform: translate(170px, 85px); }
+  34%  { transform: translate(250px, 125px); }
+  50%  { transform: translate(250px, 125px); }
   92%  { opacity: 1; }
-  100% { transform: translate(450px, 225px); opacity: 0; }
+  100% { transform: translate(483px, 241.5px); opacity: 0; }
 }
 @keyframes truck-out {
-  0%   { transform: translate(450px, 225px); opacity: 0; }
+  0%   { transform: translate(483px, 241.5px); opacity: 0; }
   6%   { opacity: 1; }
   94%  { opacity: 1; }
-  100% { transform: translate(-75px, -37.5px); opacity: 0; }
+  100% { transform: translate(-63px, -31.5px); opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

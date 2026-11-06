@@ -80,7 +80,7 @@
   font-size: 0.85rem;
   line-height: 1.5;
   color: var(--ink-soft);
-  background: rgba(5, 21, 71, 0.35);
+  background: rgba(var(--shadow-rgb), 0.35);
   border: 1px dashed rgba(255, 255, 255, 0.35);
 }
 .login__missing code,
