@@ -8,7 +8,7 @@ import UaoLogo from '../../components/UaoLogo'
 import GoogleIcon from '../../components/GoogleIcon'
 import { useTransition } from '../../components/PageTransition'
 import { useAuth } from '../../context/AuthContext'
-import { ALLOWED_EMAILS, DEV_FALLBACK, GOOGLE_CLIENT_ID, REVIEW_EMAIL } from '../../config/auth'
+import { ALLOWED_EMAILS, DEV_FALLBACK, GOOGLE_CLIENT_ID, REVIEW_EMAIL, REVIEW_VISIBLE } from '../../config/auth'
 import './Login.css'
 
 const MESSAGES = {
@@ -131,6 +131,7 @@ export default function Login() {
           </div>
         )}
 
+        {REVIEW_VISIBLE && (
         <div className="login__codigo">
           {verCodigo ? (
             <form onSubmit={entrarEvaluador}>
@@ -151,6 +152,7 @@ export default function Login() {
             </button>
           )}
         </div>
+        )}
 
         <p className="login__error" role="alert" aria-live="assertive">
           {error}

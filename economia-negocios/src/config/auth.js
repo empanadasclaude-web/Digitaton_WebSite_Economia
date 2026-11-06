@@ -32,3 +32,6 @@ export function isAuthorizedEmail(email) {
   const dominio = normalized.split('@')[1]
   return Boolean(dominio) && ALLOWED_DOMAINS.includes(dominio)
 }
+
+// El enlace «Soy evaluador» solo se muestra si VITE_REVIEW_ACCESS vale «true». Para quitarlo: borra la variable y redespliega.
+export const REVIEW_VISIBLE = import.meta.env.VITE_REVIEW_ACCESS === 'true'
