@@ -37,6 +37,7 @@ export function ScrollyRoot({ children, className = '', onSceneChange }) {
       scenes.current.forEach((sc, i) => {
         const p = clamp01((s.cur - sc.top) / sc.range)
         sc.el.style.setProperty('--p', p.toFixed(4))
+        sc.cb?.current?.(p)
         // La escena activa es la que ocupa el centro de la pantalla.
         if (s.cur + s.vh * 0.5 >= sc.top) active = i
       })
@@ -63,8 +64,8 @@ export function ScrollyRoot({ children, className = '', onSceneChange }) {
       if (!s.raf) s.raf = requestAnimationFrame(tick)
     }
     return {
-      register(el) {
-        const sc = { el, top: 0, range: 1 }
+      register(el, cb) {
+        const sc = { el, cb, top: 0, range: 1 }
         scenes.current.push(sc)
         scenes.current.sort((a, b) => (a.el.compareDocumentPosition(b.el) & 4 ? -1 : 1))
         measure()
@@ -117,10 +118,13 @@ export function ScrollyRoot({ children, className = '', onSceneChange }) {
  * Escena fijada: `height` en vh es el recorrido de scroll (más alto = más lento).
  * Los hijos leen `--p` (0 → 1) con calc()/clamp().
  */
-export function Scene({ height = 300, className = '', id, children }) {
+export function Scene({ height = 300, className = '', id, onProgress, children }) {
   const engine = useContext(EngineContext)
   const ref = useRef(null)
-  useLayoutEffect(() => engine.register(ref.current), [engine])
+  // `onProgress(p)` se llama en cada cuadro de scroll: sirve para gráficos que se dibujan sin re-renderizar React.
+  const cb = useRef(onProgress)
+  cb.current = onProgress
+  useLayoutEffect(() => engine.register(ref.current, cb), [engine])
   // Las imágenes/fuentes que llegan tarde cambian alturas: se vuelve a medir.
   useEffect(() => {
     const t = setTimeout(() => {

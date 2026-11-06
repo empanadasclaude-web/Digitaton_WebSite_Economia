@@ -18,20 +18,10 @@
   position: relative;
   flex: 1;
   margin-right: -1px; /* evita líneas finas entre barras */
-  background: linear-gradient(180deg, var(--cobalt-950), var(--cobalt-800) 70%, #1b4cc4);
+  background: linear-gradient(180deg, var(--cobalt-950), var(--cobalt-800) 70%, var(--a-strong));
   transform: scaleY(0);
   transform-origin: bottom;
 }
-/* grano para que la cortina tenga la misma textura que el fondo */
-.curtain__bar::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.16;
-  mix-blend-mode: soft-light;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.2 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-
 .curtain--cover .curtain__bar {
   animation: bar-in 750ms var(--ease-curtain) both;
   animation-delay: calc(var(--i) * 70ms);
@@ -96,6 +86,6 @@
   animation-delay: calc(380ms + var(--d, 0) * 70ms);
 }
 @keyframes rise {
-  from { opacity: 0; transform: translateY(26px); filter: blur(8px); }
-  to   { opacity: 1; transform: none; filter: none; }
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: none; }
 }

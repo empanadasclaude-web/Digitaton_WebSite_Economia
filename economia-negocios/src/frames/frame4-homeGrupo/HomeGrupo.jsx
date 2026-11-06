@@ -4,14 +4,13 @@ import AccountMenu from '../../components/AccountMenu'
 import AuroraBackground from '../../components/AuroraBackground'
 import GlassPanel from '../../components/GlassPanel'
 import UaoLogo from '../../components/UaoLogo'
+import ThemeSwitch from '../../components/ThemeSwitch'
 import { ChevronIcon } from '../../components/Icons'
 import { useTransition } from '../../components/PageTransition'
-import { useData } from '../../data/DataContext'
+import { useData, progresoDeTema } from '../../data/DataContext'
 import IsoScene from './IsoScene'
 import './HomeGrupo.css'
 import './IsoScene.css'
-
-const ESTADO = { pendiente: 'Pendiente', 'en-curso': 'En curso', completado: 'Completado' }
 
 export default function HomeGrupo() {
   const { cursoId } = useParams()
@@ -34,7 +33,7 @@ export default function HomeGrupo() {
   // Primera vez en el grupo: antes del home va el contexto de la empresa.
   if (!curso.estado.contextoVisto) return <Navigate to={`/curso/${curso.id}/contexto`} replace />
 
-  const progreso = curso.estado.progresoTemas ?? {}
+  const progresos = Object.fromEntries(temas.map((t) => [t.id, progresoDeTema(curso, t.id)]))
   const indicadores = (curso.estado.indicadores ?? [])
     .map((i) => {
       const def = empresa.indicadores.find((d) => d.id === i.id)
@@ -42,89 +41,93 @@ export default function HomeGrupo() {
     })
     .filter(Boolean)
 
-  const openTema = (t) => showToast(`El Tema ${t.orden} se abre en el siguiente frame`)
+  const openTema = (t) => go(`/curso/${curso.id}/tema/${t.id}`, { label: `Tema ${t.orden}` })
 
   return (
     <main className="home">
       <AuroraBackground variant="panel" />
 
       <header className="home__bar rise" style={{ '--d': 0 }}>
-        <button type="button" className="chip-btn" onClick={() => go('/', { label: 'Mis cursos' })}>
-          <span className="chip-btn__chev">
-            <ChevronIcon size={16} />
-          </span>
-          Mis cursos
-        </button>
-        <UaoLogo height={24} className="home__uao" />
-        <AccountMenu onNotice={showToast} />
-      </header>
-
-      <section className="home__grid">
-        <div className="home__stage rise" style={{ '--d': 1 }}>
-          <p className="home__eyebrow">{empresa.nombre}</p>
-          <h1 className="home__title">{curso.nombre}</h1>
-          <IsoScene
-            temas={temas}
-            progreso={progreso}
-            activeId={hover}
-            onHover={setHover}
-            onSelect={openTema}
-          />
+        <div className="home__head">
+          <button type="button" className="chip-btn" onClick={() => go('/', { label: 'Mis cursos' })}>
+            <span className="chip-btn__chev">
+              <ChevronIcon size={16} />
+            </span>
+            Mis cursos
+          </button>
+          <div className="home__titles">
+            <h1 className="home__title">{curso.nombre}</h1>
+            <p className="home__eyebrow">{empresa.nombre}</p>
+          </div>
         </div>
-
-        <aside className="home__side">
-          <GlassPanel flat className="side-card rise" style={{ '--d': 2 }}>
-            <h2 className="side-card__title">Temas</h2>
-            <ol className="temas">
-              {temas.map((t) => {
-                const estado = progreso[t.id] ?? 'pendiente'
-                return (
-                  <li key={t.id}>
-                    <button
-                      type="button"
-                      className={`tema${hover === t.id ? ' is-active' : ''}`}
-                      onMouseEnter={() => setHover(t.id)}
-                      onMouseLeave={() => setHover(null)}
-                      onFocus={() => setHover(t.id)}
-                      onBlur={() => setHover(null)}
-                      onClick={() => openTema(t)}
-                    >
-                      <span className="tema__n">{t.orden}</span>
-                      <span className="tema__body">
-                        <span className="tema__name">{t.nombre}</span>
-                        <span className={`tema__state tema__state--${estado}`}>{ESTADO[estado] ?? estado}</span>
-                      </span>
-                      <ChevronIcon size={18} />
-                    </button>
-                  </li>
-                )
-              })}
-            </ol>
-          </GlassPanel>
-
-          <GlassPanel flat className="side-card rise" style={{ '--d': 3 }}>
-            <h2 className="side-card__title">Indicadores</h2>
-            <ul className="inds-mini">
-              {indicadores.map((i) => (
-                <li key={i.id}>
-                  <span>{i.nombre}</span>
-                  <b>{Math.round(i.valor)}</b>
-                  <i style={{ '--w': Math.min(1, Math.max(0, (i.valor - (i.min ?? 0)) / ((i.max ?? 100) - (i.min ?? 0)))) }} />
-                </li>
-              ))}
-            </ul>
-          </GlassPanel>
-
+        <div className="home__tools">
+          <UaoLogo height={22} className="home__uao" />
+          <ThemeSwitch className="home__theme" />
           <button
             type="button"
-            className="pill-btn replay rise"
-            style={{ '--d': 4 }}
+            className="pill-btn pill-btn--sm replay"
             onClick={() => go(`/curso/${curso.id}/contexto`, { label: empresa.nombre, state: { replay: true } })}
           >
-            Ver contexto de la empresa
+            Ver contexto
           </button>
+          <AccountMenu onNotice={showToast} />
+        </div>
+      </header>
+
+      <div className="home__mid">
+        <aside className="metrics rise" style={{ '--d': 1 }} aria-label="Métricas de la empresa">
+          <h2 className="metrics__title">Métricas de la empresa</h2>
+          <ul className="metrics__list">
+            {indicadores.map((i) => {
+              const min = i.min ?? 0
+              const max = i.max ?? 100
+              const w = Math.min(1, Math.max(0, (i.valor - min) / (max - min || 1)))
+              return (
+                <li key={i.id} className="metric">
+                  <span className="metric__name">{i.nombre}</span>
+                  <b className="metric__val">{Math.round(i.valor)}</b>
+                  <i className="metric__bar" style={{ '--w': w }} />
+                </li>
+              )
+            })}
+          </ul>
         </aside>
-      </section>
+        <section className="home__scene rise" style={{ '--d': 1 }}>
+          <IsoScene temas={temas} progreso={progresos} activeId={hover} onHover={setHover} onSelect={openTema} />
+        </section>
+      </div>
+
+      <ol className="tcards">
+        {temas.map((t, i) => {
+          const p = progresos[t.id]
+          return (
+            <li
+              key={t.id}
+              className={`tcard rise${p.completo ? ' is-done' : ''}${hover === t.id ? ' is-active' : ''}`}
+              style={{ '--d': 2 + i }}
+              onMouseEnter={() => setHover(t.id)}
+              onMouseLeave={() => setHover(null)}
+            >
+              {p.completo && (
+                <span className="tcard__check" aria-label="Tema completado">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12.5l4.5 4.5L19 7.5" />
+                  </svg>
+                </span>
+              )}
+              <p className="tcard__n">Tema {t.orden}</p>
+              <h2 className="tcard__name">{t.nombre}</h2>
+              <ul className="tcard__st">
+                <li className={p.teoria ? 'ok' : ''}>{p.teoria ? 'Teoría vista' : 'Teoría pendiente'}</li>
+                <li className={p.simulacion ? 'ok' : ''}>{p.simulacion ? 'Simulación realizada' : 'Sin simulación'}</li>
+              </ul>
+              <button type="button" className="pill-btn tcard__go" onClick={() => openTema(t)}>
+                {p.completo ? 'Repasar tema' : 'Ir a Tema'}
+              </button>
+            </li>
+          )
+        })}
+      </ol>
 
       <div className="toast-region" role="status" aria-live="polite">
         {toast && (

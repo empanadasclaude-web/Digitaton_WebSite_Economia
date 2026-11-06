@@ -28,9 +28,18 @@
         }
       ],
       "progresoTemas": {
-        "tema-1": "completado",
-        "tema-2": "pendiente",
-        "tema-3": "pendiente"
+        "tema-1": {
+          "teoria": true,
+          "simulacion": true
+        },
+        "tema-2": {
+          "teoria": false,
+          "simulacion": false
+        },
+        "tema-3": {
+          "teoria": false,
+          "simulacion": false
+        }
       },
       "contextoVisto": true
     },
@@ -65,9 +74,18 @@
         }
       ],
       "progresoTemas": {
-        "tema-1": "pendiente",
-        "tema-2": "pendiente",
-        "tema-3": "pendiente"
+        "tema-1": {
+          "teoria": false,
+          "simulacion": false
+        },
+        "tema-2": {
+          "teoria": false,
+          "simulacion": false
+        },
+        "tema-3": {
+          "teoria": false,
+          "simulacion": false
+        }
       },
       "contextoVisto": false
     },

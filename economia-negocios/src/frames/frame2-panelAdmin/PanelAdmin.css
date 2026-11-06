@@ -142,11 +142,11 @@
   display: grid;
   place-items: center;
   cursor: pointer;
-  background: rgba(5, 21, 71, 0.22);
+  background: rgba(var(--shadow-rgb), 0.22);
 }
 .tile:hover {
   transform: translateY(-3px);
-  background: rgba(5, 21, 71, 0.34);
+  background: rgba(var(--shadow-rgb), 0.34);
 }
 .tile__plus {
   display: grid;
@@ -156,7 +156,7 @@
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.94);
   color: var(--ink-on-light);
-  box-shadow: 0 10px 24px -8px rgba(5, 21, 71, 0.6);
+  box-shadow: 0 10px 24px -8px rgba(var(--shadow-rgb), 0.6);
   transition: transform 260ms var(--ease-out);
 }
 .tile:hover .tile__plus {
