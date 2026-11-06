@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import AuroraBackground from '../../components/AuroraBackground'
 import ConfirmDialog from '../../components/ConfirmDialog'
+import EliminarEmpresaDialog from '../../components/EliminarEmpresaDialog'
 import GlassPanel from '../../components/GlassPanel'
 import { CloseIcon, PlusIcon } from '../../components/Icons'
 import { setFlash } from '../../components/flash'
@@ -38,7 +39,7 @@ export default function EmpresaForm() {
   const { id } = useParams()
   const editing = Boolean(id)
   const go = useTransition()
-  const { empresas, temas, catalogoIndicadores, saveEmpresa } = useData()
+  const { empresas, cursos, temas, catalogoIndicadores, saveEmpresa, deleteEmpresa } = useData()
 
   const existing = editing ? empresas.find((e) => e.id === id) : null
   const [newId] = useState(() => nextEmpresaId(empresas))
@@ -52,6 +53,7 @@ export default function EmpresaForm() {
   const [errors, setErrors] = useState([])
   const [submitted, setSubmitted] = useState(false)
   const [confirmClose, setConfirmClose] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const [focusUid, setFocusUid] = useState(null)
   const saved = useRef(false)
 
@@ -157,7 +159,7 @@ export default function EmpresaForm() {
           </p>
         )}
 
-        <GlassPanel className="ef__panel rise" style={{ '--d': 1 }}>
+        <GlassPanel flat className="ef__panel rise" style={{ '--d': 1 }}>
           {/* ---------- Datos generales ---------- */}
           <section aria-labelledby="sec-general" className="ef__section">
             <h2 id="sec-general" className="ef__h2">Datos generales</h2>
@@ -300,7 +302,7 @@ export default function EmpresaForm() {
           </section>
         </GlassPanel>
 
-        <GlassPanel className="glass--dense ef__bar">
+        <GlassPanel flat className="glass--dense ef__bar">
           <p className="ef__bar-msg" role="alert">
             {errors.length > 0 && (
               <>
@@ -309,6 +311,11 @@ export default function EmpresaForm() {
             )}
           </p>
           <div className="ef__bar-actions">
+            {editing && (
+              <button type="button" className="link-btn link-btn--danger ef__delete" onClick={() => setConfirmDelete(true)}>
+                Eliminar empresa
+              </button>
+            )}
             <button type="button" className="link-btn" onClick={requestClose}>
               Cancelar
             </button>
@@ -318,6 +325,21 @@ export default function EmpresaForm() {
           </div>
         </GlassPanel>
       </form>
+
+      {confirmDelete && existing && (
+        <EliminarEmpresaDialog
+          empresa={existing}
+          cursos={cursos}
+          onConfirm={() => {
+            saved.current = true // ya no hay nada que descartar
+            setFlash('Empresa eliminada')
+            deleteEmpresa(existing.id)
+            setConfirmDelete(false)
+            go('/', { label: 'Panel' })
+          }}
+          onCancel={() => setConfirmDelete(false)}
+        />
+      )}
 
       {confirmClose && (
         <ConfirmDialog

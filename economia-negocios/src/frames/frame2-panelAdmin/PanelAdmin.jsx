@@ -3,12 +3,13 @@ import AuroraBackground from '../../components/AuroraBackground'
 import GlassPanel from '../../components/GlassPanel'
 import UaoLogo from '../../components/UaoLogo'
 import AccountMenu from '../../components/AccountMenu'
-import { DownloadIcon, LogoMark, PencilIcon, PlusIcon } from '../../components/Icons'
+import { DownloadIcon, LogoMark, PencilIcon, PlusIcon, TrashIcon } from '../../components/Icons'
 import { takeFlash } from '../../components/flash'
 import { useTransition } from '../../components/PageTransition'
 import { useAuth } from '../../context/AuthContext'
 import { useData } from '../../data/DataContext'
 import CourseModal from './CourseModal'
+import EliminarEmpresaDialog from '../../components/EliminarEmpresaDialog'
 import ResultsModal from './ResultsModal'
 import './PanelAdmin.css'
 
@@ -52,11 +53,12 @@ function AddTile({ label, onClick, delay }) {
 export default function PanelAdmin() {
   const { user } = useAuth()
   const go = useTransition()
-  const { temas, cursos, empresas, createCurso, updateCurso, deleteCurso } = useData()
+  const { temas, cursos, empresas, createCurso, updateCurso, deleteCurso, deleteEmpresa } = useData()
 
   // { mode: 'create' } | { mode: 'edit', cursoId } | { mode: 'results', cursoId }
   const [modal, setModal] = useState(null)
   const [toast, setToast] = useState(null)
+  const [empresaDel, setEmpresaDel] = useState(null) // empresa pendiente de confirmar eliminación
 
   const showToast = useCallback((msg) => setToast({ msg, key: Date.now() }), [])
 
@@ -91,6 +93,12 @@ export default function PanelAdmin() {
     deleteCurso(modal.cursoId)
     setModal(null)
     showToast('Curso eliminado')
+  }
+
+  const handleDeleteEmpresa = () => {
+    const res = deleteEmpresa(empresaDel.id)
+    setEmpresaDel(null)
+    showToast(res.ok ? 'Empresa eliminada' : 'No se pudo eliminar: hay cursos que la usan')
   }
 
   const empresaNombre = (id) => empresas.find((e) => e.id === id)?.nombre ?? 'Sin empresa'
@@ -165,6 +173,12 @@ export default function PanelAdmin() {
                       icon: <PencilIcon size={20} />,
                       onClick: () => go(`/empresas/${e.id}`, { label: e.nombre }),
                     },
+                    {
+                      label: 'Eliminar',
+                      'aria-label': `Eliminar ${e.nombre}`,
+                      icon: <TrashIcon size={20} />,
+                      onClick: () => setEmpresaDel(e),
+                    },
                   ]}
                 />
               ))}
@@ -187,6 +201,15 @@ export default function PanelAdmin() {
           onClose={closeModal}
           onSubmit={handleSubmit}
           onDelete={handleDelete}
+        />
+      )}
+
+      {empresaDel && (
+        <EliminarEmpresaDialog
+          empresa={empresaDel}
+          cursos={cursos}
+          onConfirm={handleDeleteEmpresa}
+          onCancel={() => setEmpresaDel(null)}
         />
       )}
 

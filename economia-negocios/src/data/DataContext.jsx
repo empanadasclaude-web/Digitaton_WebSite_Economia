@@ -224,6 +224,13 @@ export function DataProvider({ children }) {
     })
   }, [])
 
+  /** Elimina una empresa. No lo hace si algún curso todavía la usa (devuelve { ok:false }). */
+  const deleteEmpresa = useCallback((id) => {
+    if (dbRef.current.cursos.some((c) => c.empresaId === id)) return { ok: false, error: 'en-uso' }
+    setDb((prev) => ({ ...prev, empresas: prev.empresas.filter((e) => e.id !== id) }))
+    return { ok: true }
+  }, [])
+
   /** Marca que el grupo ya vio el contexto de la empresa. */
   const markContextoVisto = useCallback((id) => {
     setDb((prev) => ({
@@ -310,6 +317,7 @@ export function DataProvider({ children }) {
       updateCurso,
       deleteCurso,
       saveEmpresa,
+      deleteEmpresa,
       markContextoVisto,
       markTeoriaVista: markTeoriaVistaCb,
       guardarSimulacion,
@@ -317,7 +325,7 @@ export function DataProvider({ children }) {
       importDb,
       sync,
     }),
-    [db, sync, createCurso, updateCurso, deleteCurso, saveEmpresa, markContextoVisto, markTeoriaVistaCb, guardarSimulacion, exportDb, importDb],
+    [db, sync, createCurso, updateCurso, deleteCurso, saveEmpresa, deleteEmpresa, markContextoVisto, markTeoriaVistaCb, guardarSimulacion, exportDb, importDb],
   )
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>
 }

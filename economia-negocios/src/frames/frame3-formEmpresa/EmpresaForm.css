@@ -485,3 +485,5 @@
     margin-left: 0;
   }
 }
+.ef__delete { margin-right: auto; }
+@media (max-width: 860px) { .ef__delete { margin-right: 0; } }
