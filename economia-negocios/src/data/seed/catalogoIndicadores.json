@@ -1,0 +1,7 @@
+[
+  { "id": "ventas", "nombre": "Ventas", "valorInicial": 50, "min": 0, "max": 100 },
+  { "id": "presupuesto", "nombre": "Presupuesto", "valorInicial": 50, "min": 0, "max": 100 },
+  { "id": "rentabilidad", "nombre": "Rentabilidad", "valorInicial": 50, "min": 0, "max": 100 },
+  { "id": "productividad", "nombre": "Productividad", "valorInicial": 50, "min": 0, "max": 100 },
+  { "id": "satisfaccion", "nombre": "Satisfacción de clientes", "valorInicial": 50, "min": 0, "max": 100 }
+]

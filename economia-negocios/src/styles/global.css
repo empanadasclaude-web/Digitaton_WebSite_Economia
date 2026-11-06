@@ -1,28 +1,33 @@
 :root {
-  /* Superficie */
-  --bg: #070a09;
-  --ink: #f3f1ea;
-  --ink-soft: rgba(243, 241, 234, 0.68);
-  --ink-faint: rgba(243, 241, 234, 0.45);
+  /* Paleta: cobalto profundo → azul cielo → hielo (referencias de diseño) */
+  --cobalt-950: #051547;
+  --cobalt-800: #0b2f9e;
+  --cobalt-600: #1f55d0;
+  --sky: #7fa6ea;
+  --ice: #dbe6f6;
 
-  /* Acentos del fondo */
-  --jade: #3f9a76;
-  --forest: #17392f;
-  --brass: #c2a86a;
+  --bg: #06185e;
+  --ink: #ffffff;
+  --ink-soft: rgba(255, 255, 255, 0.78);
+  --ink-faint: rgba(255, 255, 255, 0.56);
+  --ink-on-light: #07164f;
 
   /* Liquid glass */
   --glass-fill: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.16) 0%,
-    rgba(255, 255, 255, 0.05) 55%,
-    rgba(255, 255, 255, 0.09) 100%
+    rgba(255, 255, 255, 0.24) 0%,
+    rgba(255, 255, 255, 0.08) 55%,
+    rgba(255, 255, 255, 0.14) 100%
   );
-  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-tint: rgba(6, 26, 110, 0.28);
+  --glass-border: rgba(255, 255, 255, 0.28);
   --glass-blur: 22px;
 
-  --danger: #ff8d82;
+  --danger: #ffc2bb;
 
   --font: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
   color-scheme: dark;
 }
 
@@ -49,13 +54,20 @@ body {
   overflow-x: hidden;
 }
 
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
 button {
   font: inherit;
   color: inherit;
 }
 
 :focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid #fff;
   outline-offset: 3px;
 }
 
@@ -64,6 +76,7 @@ button {
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }

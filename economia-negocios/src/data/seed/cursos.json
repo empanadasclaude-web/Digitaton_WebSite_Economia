@@ -1,0 +1,76 @@
+[
+  {
+    "id": "curso-2m",
+    "nombre": "Curso 2 M",
+    "empresaId": "emp-1",
+    "creadoEn": "2026-08-01T00:00:00.000Z",
+    "estado": {
+      "indicadores": [
+        {
+          "id": "ventas",
+          "valor": 50
+        },
+        {
+          "id": "presupuesto",
+          "valor": 50
+        },
+        {
+          "id": "rentabilidad",
+          "valor": 50
+        },
+        {
+          "id": "productividad",
+          "valor": 50
+        },
+        {
+          "id": "satisfaccion",
+          "valor": 50
+        }
+      ],
+      "progresoTemas": {
+        "tema-1": "completado",
+        "tema-2": "pendiente",
+        "tema-3": "pendiente"
+      },
+      "contextoVisto": true
+    },
+    "resultados": []
+  },
+  {
+    "id": "curso-3m",
+    "nombre": "Curso 3 M",
+    "empresaId": "emp-1",
+    "creadoEn": "2026-08-01T00:00:00.000Z",
+    "estado": {
+      "indicadores": [
+        {
+          "id": "ventas",
+          "valor": 50
+        },
+        {
+          "id": "presupuesto",
+          "valor": 50
+        },
+        {
+          "id": "rentabilidad",
+          "valor": 50
+        },
+        {
+          "id": "productividad",
+          "valor": 50
+        },
+        {
+          "id": "satisfaccion",
+          "valor": 50
+        }
+      ],
+      "progresoTemas": {
+        "tema-1": "pendiente",
+        "tema-2": "pendiente",
+        "tema-3": "pendiente"
+      },
+      "contextoVisto": false
+    },
+    "resultados": []
+  }
+]

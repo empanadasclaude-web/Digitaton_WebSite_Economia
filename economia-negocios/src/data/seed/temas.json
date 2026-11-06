@@ -1,0 +1,5 @@
+[
+  { "id": "tema-1", "orden": 1, "nombre": "Análisis del Mercado" },
+  { "id": "tema-2", "orden": 2, "nombre": "Decisiones Tarifarias de las empresas" },
+  { "id": "tema-3", "orden": 3, "nombre": "Indicadores Macroeconómicos" }
+]

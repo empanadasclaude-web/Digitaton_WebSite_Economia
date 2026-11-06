@@ -1,0 +1,54 @@
+[
+  {
+    "id": "emp-1",
+    "nombre": "LacteosVida",
+    "ficticia": true,
+    "sector": "Alimentos y lácteos",
+    "actividad": "Producción y distribución de leche, yogures y quesos",
+    "contexto": "LacteosVida es una empresa ficticia de productos lácteos que abastece supermercados y tiendas de barrio en varias ciudades del país.",
+    "historia": "LacteosVida nació en 1998 en una pequeña finca de la sabana, cuando dos hermanos decidieron vender el excedente de leche de su establo a los vecinos. Con el tiempo montaron una pasteurizadora artesanal y empezaron a repartir en bicicleta. En 2008 abrieron su primera planta industrial y llegaron a los supermercados de la región. Hoy producen leche, yogures y quesos para más de cuatrocientos puntos de venta.",
+    "productos": "Leche entera y deslactosada\nYogures con fruta natural\nQuesos frescos y madurados\nKumis y bebidas lácteas",
+    "publico": "Familias de ingresos medios que compran a diario en supermercados y tiendas de barrio, y que valoran un producto fresco, local y a buen precio. Cada vez más jóvenes buscan opciones saludables y sin lactosa.",
+    "situacion": "Los costos de la leche cruda subieron durante el último año y la competencia de marcas importadas presiona los precios en los supermercados. Aun así, la planta opera cerca de su capacidad y la marca mantiene una buena reputación.",
+    "retos": "Decidir cuánto del aumento de costos trasladar al precio sin perder clientes. Ampliar la capacidad de producción sin comprometer el presupuesto. Mantener la satisfacción de los clientes frente a nuevos competidores. Entender cómo los indicadores de la economía afectan las ventas.",
+    "logo": null,
+    "indicadores": [
+      {
+        "id": "ventas",
+        "nombre": "Ventas",
+        "valorInicial": 50,
+        "min": 0,
+        "max": 100
+      },
+      {
+        "id": "presupuesto",
+        "nombre": "Presupuesto",
+        "valorInicial": 50,
+        "min": 0,
+        "max": 100
+      },
+      {
+        "id": "rentabilidad",
+        "nombre": "Rentabilidad",
+        "valorInicial": 50,
+        "min": 0,
+        "max": 100
+      },
+      {
+        "id": "productividad",
+        "nombre": "Productividad",
+        "valorInicial": 50,
+        "min": 0,
+        "max": 100
+      },
+      {
+        "id": "satisfaccion",
+        "nombre": "Satisfacción de clientes",
+        "valorInicial": 50,
+        "min": 0,
+        "max": 100
+      }
+    ],
+    "preguntas": []
+  }
+]

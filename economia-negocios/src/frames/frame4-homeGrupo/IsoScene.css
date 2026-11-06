@@ -1,0 +1,97 @@
+/* Escena isométrica: colores y animaciones en loop (solo transform/opacity). */
+.ib__t { fill: #ffffff; }
+.ib__l { fill: #e3eaf6; }
+.ib__r { fill: #c6d4ec; }
+.ib__t, .ib__l, .ib__r { stroke: rgba(120, 150, 205, 0.45); stroke-width: 0.8; stroke-linejoin: round; }
+.ib--blue .ib__t { fill: #6a93f5; }
+.ib--blue .ib__l { fill: #3d6ae6; }
+.ib--blue .ib__r { fill: #2a4fc2; }
+
+.ic__body { fill: url(#iso-tank-w); }
+.ic__top { fill: #f4f7fd; }
+.ic__cap { fill: none; stroke: rgba(120, 150, 205, 0.55); }
+.ic--blue .ic__body { fill: url(#iso-tank); }
+.ic--blue .ic__top { fill: #9db9fa; }
+.ic__body, .ic__top { stroke: rgba(80, 110, 190, 0.4); stroke-width: 0.8; }
+
+.iw { fill: #4a78f0; }
+.iw--dim { fill: #8fb0f7; }
+.gate { fill: #2a4fc2; }
+.pipe { fill: none; stroke: #5b86f2; stroke-width: 2.4; stroke-linejoin: round; stroke-dasharray: 3 9; stroke-linecap: round; }
+
+.sol { fill: #3a64d8; stroke: #fff; stroke-width: 1; }
+.sol__l { stroke: rgba(255, 255, 255, 0.55); stroke-width: 1; }
+
+.tw__pole { fill: #fff; stroke: rgba(120, 150, 205, 0.6); stroke-width: 0.6; }
+.tw__blade { fill: #fff; stroke: rgba(80, 110, 190, 0.55); stroke-width: 0.6; }
+.tw__hub { fill: #3d6ae6; }
+
+.truck__sh { fill: rgba(30, 60, 140, 0.18); }
+.smoke { fill: #fff; opacity: 0; }
+.beacon { fill: #ff7a59; }
+.badge__stem { stroke: rgba(255, 255, 255, 0.85); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.badge__c { fill: #fff; stroke: #2a4fc2; stroke-width: 2.5; }
+.badge text { fill: #07164f; font: 600 17px var(--font); }
+.zone--en-curso .badge__c { fill: #2f5fe0; }
+.zone--en-curso .badge text { fill: #fff; }
+.zone--completado .badge__c { fill: #07164f; stroke: #fff; }
+.zone--completado .badge text { fill: #fff; }
+
+/* Interacción */
+.zone { cursor: pointer; outline: none; }
+.zone__rise {
+  transition: translate 380ms var(--ease-out);
+  animation: zone-in 800ms var(--ease-out) calc(500ms + var(--i) * 140ms) backwards;
+}
+.zone.is-active .zone__rise,
+.zone:focus-visible .zone__rise { translate: 0 -10px; }
+.zone.is-active .badge__c,
+.zone:focus-visible .badge__c { stroke-width: 4; }
+.iso__base { animation: fade 800ms ease 300ms backwards; }
+@keyframes zone-in { from { opacity: 0; transform: translateY(26px); } }
+
+/* Vida */
+.pipe { animation: flow 1.4s linear infinite; }
+.pipe--b { animation-duration: 1.9s; animation-direction: reverse; }
+.pipe--c { animation-duration: 1.2s; }
+.pipe--d { animation-duration: 2.2s; }
+@keyframes flow { to { stroke-dashoffset: -24; } }
+
+.smoke { animation: puff 4.8s ease-out infinite; animation-delay: calc(var(--i) * 1.2s); }
+@keyframes puff {
+  0%   { opacity: 0; transform: translate(0, 0) scale(0.5); }
+  12%  { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(26px, -78px) scale(2.6); }
+}
+
+.tw__blades { transform-box: view-box; animation: spin 6s linear infinite; animation-delay: calc(var(--i) * -2s); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.iw { animation: lit 5s ease-in-out infinite; animation-delay: calc(var(--i) * -0.7s); }
+@keyframes lit { 0%, 100% { opacity: 1; } 45% { opacity: 0.55; } 60% { opacity: 0.95; } }
+.beacon { animation: blink 1.6s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0.15; } }
+
+/* Camiones: entran por la izquierda, descargan en el centro y salen; otro cruza en sentido contrario. */
+.truck--in { animation: truck-in 14s ease-in-out infinite; }
+.truck--b { animation-delay: -7s; }
+.truck--out { animation: truck-out 11s linear infinite; animation-delay: -3s; }
+@keyframes truck-in {
+  0%   { transform: translate(-75px, -37.5px); opacity: 0; }
+  6%   { opacity: 1; }
+  34%  { transform: translate(170px, 85px); }
+  50%  { transform: translate(170px, 85px); }
+  92%  { opacity: 1; }
+  100% { transform: translate(450px, 225px); opacity: 0; }
+}
+@keyframes truck-out {
+  0%   { transform: translate(450px, 225px); opacity: 0; }
+  6%   { opacity: 1; }
+  94%  { opacity: 1; }
+  100% { transform: translate(-75px, -37.5px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pipe, .smoke, .tw__blades, .iw, .beacon, .truck--in, .truck--out { animation: none; }
+  .truck--b { display: none; }
+}

@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useGoogleLogin } from '@react-oauth/google'
 import AuroraBackground from '../../components/AuroraBackground'
 import GlassPanel from '../../components/GlassPanel'
+import UaoLogo from '../../components/UaoLogo'
 import GoogleIcon from '../../components/GoogleIcon'
+import { useTransition } from '../../components/PageTransition'
 import { useAuth } from '../../context/AuthContext'
 import { ALLOWED_EMAILS, DEV_FALLBACK, GOOGLE_CLIENT_ID } from '../../config/auth'
 import './Login.css'
@@ -54,10 +56,14 @@ function GoogleButton({ disabled, onStart, onProfile, onFail }) {
 
 export default function Login() {
   const { user, signIn } = useAuth()
+  const go = useTransition()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  // Solo se redirige directo si ya había sesión al abrir la página; un inicio
+  // de sesión nuevo navega con la transición de cortina.
+  const hadSession = useRef(Boolean(user))
 
-  if (user) return <Navigate to="/" replace />
+  if (user && hadSession.current) return <Navigate to="/" replace />
 
   const handleProfile = (profile) => {
     const result = signIn(profile)
@@ -65,7 +71,8 @@ export default function Login() {
       setError(MESSAGES[result.reason])
       setLoading(false)
     }
-    // Si fue ok, AuthContext actualiza `user` y este componente redirige.
+    const firstName = profile.given_name ?? profile.name?.split(' ')[0] ?? ''
+    go('/', { label: firstName ? `Hola, ${firstName}` : 'Bienvenido' })
   }
 
   const handleFail = (reason) => {
@@ -77,7 +84,7 @@ export default function Login() {
     <main className="login">
       <AuroraBackground />
 
-      <GlassPanel className="login__card" aria-labelledby="login-title">
+      <GlassPanel live className="login__card" aria-labelledby="login-title">
         <p className="login__eyebrow">Economía de los Negocios</p>
         <h1 id="login-title" className="login__title">
           Bienvenido
@@ -134,6 +141,7 @@ export default function Login() {
           </div>
         )}
       </GlassPanel>
+      <UaoLogo height={28} className="login__uao rise" />
     </main>
   )
 }
