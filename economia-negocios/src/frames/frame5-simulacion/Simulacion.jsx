@@ -4,7 +4,7 @@ import AccountMenu from '../../components/AccountMenu'
 import AuroraBackground from '../../components/AuroraBackground'
 import ConfirmDialog from '../../components/ConfirmDialog'
 import GlassPanel from '../../components/GlassPanel'
-import { ChevronIcon, DownloadIcon } from '../../components/Icons'
+import { BoltGlyph, BoltIcon, ChevronIcon, DownloadIcon, NewspaperIcon } from '../../components/Icons'
 import { useTransition } from '../../components/PageTransition'
 import ThemeSwitch from '../../components/ThemeSwitch'
 import { useData } from '../../data/DataContext'
@@ -512,7 +512,7 @@ export default function Simulacion() {
                 <div className="qcard__btns">
                   {disponibles.length > 0 && !(ses.noticias ?? []).some((n) => n.despuesDePregunta === ses.idx) && (
                     <button type="button" className="pill-btn pill-btn--ghost" onClick={lanzarNoticia} title="Lanza un hecho inesperado que mueve los indicadores">
-                      ⚡ Última hora
+                      <BoltIcon size={16} /> Última hora
                     </button>
                   )}
                   <button type="button" className="pill-btn q__go" onClick={siguiente}>
@@ -552,7 +552,7 @@ export default function Simulacion() {
             <p className="q__aviso">La participación no es una calificación: coincidir con la mayoría no significa responder correctamente.</p>
             <div className="qcard__foot">
               <button type="button" className="pill-btn" onClick={() => setVerPeriodico(true)}>
-                📰 Ver el periódico
+                <NewspaperIcon size={18} /> Ver el periódico
               </button>
               <button type="button" className="pill-btn" onClick={() => descargarXlsx(libroSimulacion(ses.resultado.datos), ses.resultado.nombre)}>
                 <DownloadIcon size={18} /> Descargar Excel
@@ -622,9 +622,13 @@ function Evolucion({ ses, empresa }) {
           />
         ))}
         {linea.map((p, i) => (
-          <text key={i} x={x(i)} y={H - 6} textAnchor="middle" className="evo__t">
-            {p.tipo === 'inicio' ? 'Inicio' : p.tipo === 'noticia' ? '⚡' : p.indice + 1}
-          </text>
+          p.tipo === 'noticia' ? (
+            <g key={i} className="evo__t" style={{ color: 'currentColor' }}><BoltGlyph x={x(i)} y={H - 10} /></g>
+          ) : (
+            <text key={i} x={x(i)} y={H - 6} textAnchor="middle" className="evo__t">
+              {p.tipo === 'inicio' ? 'Inicio' : p.indice + 1}
+            </text>
+          )
         ))}
       </svg>
       <figcaption className="evo__legend">

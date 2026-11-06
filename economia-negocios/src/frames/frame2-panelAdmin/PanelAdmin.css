@@ -304,3 +304,6 @@
 .results__all { margin: 0 0 12px auto; display: inline-flex; }
 
 .results__btns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.results__btns .pill-btn { display: inline-flex; align-items: center; gap: 8px; }
+.results__del { flex: none; width: 40px; height: 40px; }
+@media (max-width: 640px) { .results__item .results__del { flex: none; position: absolute; top: 8px; right: 8px; } .results__item { position: relative; } }

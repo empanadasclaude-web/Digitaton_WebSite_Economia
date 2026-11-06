@@ -78,3 +78,42 @@ export function SheetIcon({ size = 26 }) {
     </svg>
   )
 }
+
+/** Rayo: noticia de última hora. */
+export function BoltIcon({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <path d="M13 3 5 13.5h6L10 21l8-10.5h-6L13 3z" />
+    </svg>
+  )
+}
+
+/** Periódico: la gaceta del curso. */
+export function NewspaperIcon({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <path d="M5 5h11v14H6a1 1 0 0 1-1-1V5z" />
+      <path d="M16 9h3v9a1 1 0 0 1-1 1h-2M8 9h5M8 12.5h5M8 16h3" />
+    </svg>
+  )
+}
+
+/** Gráfica: curvas de la simulación. */
+export function ChartIcon({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <path d="M4 4v16h16" />
+      <path d="m7 15 4-5 3 3 5-7" />
+    </svg>
+  )
+}
+
+/** Rayo para dibujar dentro de un <svg> (por ejemplo, en el eje de una gráfica). Centrado en (x, y). */
+export function BoltGlyph({ x, y, size = 12 }) {
+  const k = size / 24
+  return (
+    <g transform={`translate(${x - size / 2} ${y - size / 2}) scale(${k})`} fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M13 3 5 13.5h6L10 21l8-10.5h-6L13 3z" />
+    </g>
+  )
+}

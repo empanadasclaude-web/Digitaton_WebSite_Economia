@@ -1,6 +1,8 @@
 import { useEffect, useId, useState } from 'react'
+import ConfirmDialog from '../../components/ConfirmDialog'
 import GlassPanel from '../../components/GlassPanel'
-import { CloseIcon, DownloadIcon, SheetIcon } from '../../components/Icons'
+import { useData } from '../../data/DataContext'
+import { CloseIcon, DownloadIcon, NewspaperIcon, SheetIcon, TrashIcon } from '../../components/Icons'
 import Periodico from '../../sim/Periodico'
 import { descargarXlsx, libroConsolidado, libroSimulacion } from '../../sim/xlsx'
 
@@ -14,6 +16,8 @@ const formatDate = (iso) =>
  */
 export default function ResultsModal({ curso, temas, onClose }) {
   const uid = useId()
+  const { deleteResultado } = useData()
+  const [borrar, setBorrar] = useState(null) // resultado pendiente de confirmar
   const [periodico, setPeriodico] = useState(null) // datos de la simulación cuyo periódico se está viendo
   const resultados = [...(curso.resultados ?? [])].sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
   const temaNombre = (id) => temas.find((t) => t.id === id)?.nombre ?? 'Simulación'
@@ -89,7 +93,8 @@ export default function ResultsModal({ curso, temas, onClose }) {
                 {r.datos ? (
                   <div className="results__btns">
                     <button type="button" className="pill-btn pill-btn--sm" onClick={() => setPeriodico(r.datos)}>
-                      📰 Periódico
+                      <NewspaperIcon size={18} />
+                      Periódico
                     </button>
                     <button type="button" className="pill-btn pill-btn--sm" onClick={() => descargarXlsx(libroSimulacion(r.datos), r.nombre)}>
                       <DownloadIcon size={18} />
@@ -106,12 +111,29 @@ export default function ResultsModal({ curso, temas, onClose }) {
                     No disponible
                   </span>
                 )}
+                <button type="button" className="icon-btn results__del" onClick={() => setBorrar(r)} aria-label={`Eliminar ${r.nombre}`} title="Eliminar resultado">
+                  <TrashIcon size={18} />
+                </button>
               </li>
             ))}
           </ul>
           </>
         )}
       </GlassPanel>
+      {borrar && (
+        <ConfirmDialog
+          danger
+          title="¿Eliminar este resultado?"
+          message={`Se borrará «${borrar.nombre}» de ${curso.nombre}. Los indicadores del curso no cambian. Si aún no lo descargaste, no podrás recuperarlo.`}
+          confirmLabel="Sí, eliminar"
+          cancelLabel="Cancelar"
+          onConfirm={() => {
+            deleteResultado(curso.id, borrar.id)
+            setBorrar(null)
+          }}
+          onCancel={() => setBorrar(null)}
+        />
+      )}
       {periodico && <Periodico datos={periodico} onClose={() => setPeriodico(null)} />}
     </div>
   )

@@ -1,4 +1,5 @@
 import { ChevronIcon, PlusIcon, TrashIcon } from '../../components/Icons'
+import { GraficoBase, GraficoCambio } from './GraficoEditor'
 import { LETTERS, MAX_OPCIONES, MIN_OPCIONES, newOpcion } from './formState'
 
 /**
@@ -75,6 +76,23 @@ export default function PreguntaCard({ index, pregunta, indicadores, temas, erro
           />
         </div>
 
+        <GraficoBase
+          idBase={b}
+          value={pregunta.grafico}
+          errors={errors}
+          temas={temas}
+          temaPregunta={pregunta.temaId}
+          onChange={(grafico) =>
+            set({
+              grafico,
+              // al cambiar de tipo se descartan los ajustes por opción del tipo anterior
+              ...(grafico?.tipo !== pregunta.grafico?.tipo
+                ? { opciones: pregunta.opciones.map((o) => ({ ...o, grafico: null })) }
+                : {}),
+            })
+          }
+        />
+
         <p className="ef-label">Opciones</p>
 
         {pregunta.opciones.map((op, i) => (
@@ -120,6 +138,17 @@ export default function PreguntaCard({ index, pregunta, indicadores, temas, erro
                     />
                   </label>
                 ))}
+              </div>
+            )}
+
+            {pregunta.grafico?.tipo && (
+              <div className="opt__g">
+                <GraficoCambio
+                  idBase={`${b}-o${i}`}
+                  tipo={pregunta.grafico.tipo}
+                  value={op.grafico}
+                  onChange={(grafico) => setOpcion(i, { grafico })}
+                />
               </div>
             )}
           </div>

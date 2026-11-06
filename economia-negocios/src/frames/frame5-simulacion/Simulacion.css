@@ -310,3 +310,5 @@
 .noticia__titular { margin: 0 0 8px; font-size: clamp(1.4rem, min(2.6vw, 5vh), 2.2rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; animation: titular-in 700ms var(--ease-out) 150ms backwards; }
 @keyframes titular-in { from { opacity: 0; clip-path: inset(0 100% 0 0); } }
 @media (prefers-reduced-motion: reduce) { .noticia, .noticia__titular, .sim__chart { animation: none; } }
+.pill-btn svg { flex: none; }
+.qcard__btns .pill-btn, .qcard__foot .pill-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }

@@ -10,6 +10,7 @@ import { useTransition } from '../../components/PageTransition'
 import { nextEmpresaId, useData } from '../../data/DataContext'
 import IndicadoresEditor from './IndicadoresEditor'
 import LogoUpload from './LogoUpload'
+import NoticiasEditor from './NoticiasEditor'
 import PreguntaCard from './PreguntaCard'
 import { emptyForm, fromEmpresa, newPregunta, toEmpresa, validate } from './formState'
 import './EmpresaForm.css'
@@ -102,6 +103,10 @@ export default function EmpresaForm() {
             ...o,
             efectos: Object.fromEntries(Object.entries(o.efectos).filter(([k]) => keep.has(k))),
           })),
+        })),
+        eventos: (f.eventos ?? []).map((v) => ({
+          ...v,
+          efectos: Object.fromEntries(Object.entries(v.efectos).filter(([k]) => keep.has(k))),
         })),
       }
     })
@@ -299,6 +304,25 @@ export default function EmpresaForm() {
               <PlusIcon size={26} />
               <span>Agregar pregunta</span>
             </button>
+          </section>
+
+          {/* ---------- Noticias de última hora ---------- */}
+          <section aria-labelledby="sec-noticias" className="ef__section">
+            <div className="ef__h2-row">
+              <h2 id="sec-noticias" className="ef__h2">Noticias de última hora <span className="ef-opt">(opcional)</span></h2>
+              <p className="ef__count"># de noticias: {form.eventos.length}</p>
+            </div>
+            <p className="ef__help">
+              Hechos inesperados que lanzas durante la simulación para mover los indicadores (una sequía, una nueva
+              norma…). Solo salen noticias del tema que se está viendo o de temas cuya teoría ya se vio.
+            </p>
+            <NoticiasEditor
+              eventos={form.eventos}
+              indicadores={form.indicadores}
+              temas={temas}
+              errors={errorMap}
+              onChange={(eventos) => setForm((f) => ({ ...f, eventos }))}
+            />
           </section>
         </GlassPanel>
 

@@ -314,7 +314,17 @@ export function DataProvider({ children }) {
     })
   }, [])
 
-/** Copia de todos los datos en un objeto listo para guardar como .json. */
+/** Elimina un resultado (archivo Excel) de un curso. No cambia el estado del curso. */
+  const deleteResultado = useCallback((cursoId, resultadoId) => {
+    setDb((prev) => ({
+      ...prev,
+      cursos: prev.cursos.map((c) =>
+        c.id === cursoId ? { ...c, resultados: (c.resultados ?? []).filter((r) => r.id !== resultadoId) } : c,
+      ),
+    }))
+  }, [])
+
+  /** Copia de todos los datos en un objeto listo para guardar como .json. */
   const exportDb = useCallback(
     () => ({ version: DB_VERSION, exportadoEn: new Date().toISOString(), empresas: db.empresas, cursos: db.cursos }),
     [db],
@@ -346,11 +356,12 @@ export function DataProvider({ children }) {
       markContextoVisto,
       markTeoriaVista: markTeoriaVistaCb,
       guardarSimulacion,
+      deleteResultado,
       exportDb,
       importDb,
       sync,
     }),
-    [db, sync, createCurso, updateCurso, deleteCurso, saveEmpresa, deleteEmpresa, markContextoVisto, markTeoriaVistaCb, guardarSimulacion, exportDb, importDb],
+    [db, sync, createCurso, updateCurso, deleteCurso, saveEmpresa, deleteEmpresa, markContextoVisto, markTeoriaVistaCb, guardarSimulacion, deleteResultado, exportDb, importDb],
   )
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>
 }

@@ -65,3 +65,4 @@
   .pp__tools { display: none; }
   .pp__sheet { box-shadow: none; animation: none; max-width: none; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+.pp__kicker--alert { display: inline-flex; align-items: center; gap: 6px; }

@@ -205,7 +205,7 @@ export function libroSimulacion(d) {
         p.tipo === 'inicio'
           ? 'Valores de partida'
           : p.tipo === 'noticia'
-            ? `⚡ Última hora: ${p.titular}`
+            ? `Última hora: ${p.titular}`
             : `${d.preguntas[p.indice].decision.opcionId}. ${d.preguntas[p.indice].opciones.find((o) => o.id === d.preguntas[p.indice].decision.opcionId)?.texto ?? ''}`
       evol.push([p.tipo === 'inicio' ? 'Inicio' : k, nombre, ...d.indicadores.map((ind) => p.valores[ind.id])])
     })

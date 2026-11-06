@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
+import { BoltGlyph, BoltIcon } from '../components/Icons'
 import { armarPeriodico } from './armarPeriodico'
 import './Periodico.css'
 
@@ -25,11 +26,15 @@ function Grafico({ datos }) {
         {inds.map((ind, k) => (
           <polyline key={ind.id} fill="none" strokeWidth="2.2" strokeLinejoin="round" strokeLinecap="round" stroke={TINTAS[k % TINTAS.length]} strokeDasharray={k > 2 ? '5 3' : undefined} points={pasos.map((p, i) => `${x(i)},${y(p.valores[ind.id], ind)}`).join(' ')} />
         ))}
-        {pasos.map((p, i) => (
-          <text key={i} x={x(i)} y={H - 6} textAnchor="middle" className="pp__tick">
-            {p.tipo === 'inicio' ? 'Inicio' : p.tipo === 'noticia' ? '⚡' : (p.indice ?? i - pasos.slice(0, i).filter((q) => q.tipo === 'noticia').length) + 1}
-          </text>
-        ))}
+        {pasos.map((p, i) =>
+          p.tipo === 'noticia' ? (
+            <g key={i} className="pp__tick" style={{ color: '#a11d2d' }}><BoltGlyph x={x(i)} y={H - 10} /></g>
+          ) : (
+            <text key={i} x={x(i)} y={H - 6} textAnchor="middle" className="pp__tick">
+              {p.tipo === 'inicio' ? 'Inicio' : (p.indice ?? i - pasos.slice(0, i).filter((q) => q.tipo === 'noticia').length) + 1}
+            </text>
+          ),
+        )}
       </svg>
       <figcaption>
         {inds.map((ind, k) => (
@@ -98,7 +103,7 @@ export default function Periodico({ datos, onClose }) {
           <aside className="pp__side">
             {p.ultimaHora.length > 0 && (
               <section className="pp__box pp__box--alert">
-                <p className="pp__kicker pp__kicker--alert">⚡ Última hora</p>
+                <p className="pp__kicker pp__kicker--alert"><BoltIcon size={13} /> Última hora</p>
                 {p.ultimaHora.map((n) => (
                   <div key={n.titular} className="pp__news">
                     <h3>{n.titular}</h3>
