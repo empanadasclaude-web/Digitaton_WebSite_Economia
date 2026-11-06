@@ -30,12 +30,26 @@ import teoria from './seed/teoria.json'
  */
 const DB_KEY = 'edn.db.v1'
 
+/** Datos guardados antes de que existieran las preguntas de simulación: se completan con las de la semilla. */
+function conPreguntasSemilla(db) {
+  let cambio = false
+  const empresas = db.empresas.map((e) => {
+    const semilla = empresasSeed.find((s) => s.id === e.id)
+    if (semilla?.preguntas?.length && !(e.preguntas ?? []).length) {
+      cambio = true
+      return { ...e, preguntas: structuredClone(semilla.preguntas) }
+    }
+    return e
+  })
+  return cambio ? { ...db, empresas } : db
+}
+
 function loadDb() {
   try {
     const raw = localStorage.getItem(DB_KEY)
     if (raw) {
       const db = JSON.parse(raw)
-      if (Array.isArray(db?.empresas) && Array.isArray(db?.cursos)) return db
+      if (Array.isArray(db?.empresas) && Array.isArray(db?.cursos)) return conPreguntasSemilla(db)
     }
   } catch {
     /* almacenamiento bloqueado o datos corruptos: se usan las semillas */
@@ -160,6 +174,36 @@ export function DataProvider({ children }) {
     })
   }, [])
 
+  /**
+   * Cierra una simulación: guarda el resultado (descargable en Excel desde el panel),
+   * marca la simulación del tema como realizada y deja los indicadores finales como
+   * nuevo estado del curso (las decisiones se acumulan entre simulaciones).
+   * `resultado` = { id, nombre, temaId, fecha, participantes, datos }.
+   */
+  const guardarSimulacion = useCallback((cursoId, temaId, resultado, valoresFinales) => {
+    setDb((prev) => {
+      const c = prev.cursos.find((x) => x.id === cursoId)
+      if (!c || c.resultados?.some((r) => r.id === resultado.id)) return prev
+      const actual = progresoDeTema(c, temaId)
+      return {
+        ...prev,
+        cursos: prev.cursos.map((x) =>
+          x.id !== cursoId
+            ? x
+            : {
+                ...x,
+                resultados: [...(x.resultados ?? []), resultado],
+                estado: {
+                  ...x.estado,
+                  indicadores: x.estado.indicadores.map((i) => ({ ...i, valor: valoresFinales[i.id] ?? i.valor })),
+                  progresoTemas: { ...x.estado.progresoTemas, [temaId]: { teoria: actual.teoria, simulacion: true } },
+                },
+              },
+        ),
+      }
+    })
+  }, [])
+
 /** Copia de todos los datos en un objeto listo para guardar como .json. */
   const exportDb = useCallback(
     () => ({ version: DB_VERSION, exportadoEn: new Date().toISOString(), empresas: db.empresas, cursos: db.cursos }),
@@ -190,10 +234,11 @@ export function DataProvider({ children }) {
       saveEmpresa,
       markContextoVisto,
       markTeoriaVista: markTeoriaVistaCb,
+      guardarSimulacion,
       exportDb,
       importDb,
     }),
-    [db, createCurso, updateCurso, deleteCurso, saveEmpresa, markContextoVisto, markTeoriaVistaCb, exportDb, importDb],
+    [db, createCurso, updateCurso, deleteCurso, saveEmpresa, markContextoVisto, markTeoriaVistaCb, guardarSimulacion, exportDb, importDb],
   )
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>
 }

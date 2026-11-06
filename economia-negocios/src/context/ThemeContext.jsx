@@ -1,17 +1,17 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
-const KEY = 'edn.theme'
+const KEY = 'edn.theme.v2'
 const Ctx = createContext(null)
 
 const read = () => {
   try {
-    return localStorage.getItem(KEY) === 'uao' ? 'uao' : 'default'
+    return localStorage.getItem(KEY) === 'default' ? 'default' : 'uao'
   } catch {
-    return 'default'
+    return 'uao'
   }
 }
 
-/** Paleta de la página: 'default' (cobalto → hielo) o 'uao' (manual de identidad UAO). */
+/** Paleta de la página: 'uao' (manual de identidad UAO, la predeterminada) o 'default' (cobalto → hielo). */
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(read)
 

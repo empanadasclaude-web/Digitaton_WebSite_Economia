@@ -9,6 +9,7 @@ import { ChevronIcon } from '../../components/Icons'
 import { useTransition } from '../../components/PageTransition'
 import { useData, progresoDeTema } from '../../data/DataContext'
 import IsoScene from './IsoScene'
+import { saludEmpresa, ETIQUETA_SALUD } from '../../sim/motor'
 import './HomeGrupo.css'
 import './IsoScene.css'
 
@@ -34,6 +35,7 @@ export default function HomeGrupo() {
   if (!curso.estado.contextoVisto) return <Navigate to={`/curso/${curso.id}/contexto`} replace />
 
   const progresos = Object.fromEntries(temas.map((t) => [t.id, progresoDeTema(curso, t.id)]))
+  const openSimulacion = (t) => go(`/curso/${curso.id}/tema/${t.id}/simulacion`, { label: `Simulación T${t.orden}` })
   const indicadores = (curso.estado.indicadores ?? [])
     .map((i) => {
       const def = empresa.indicadores.find((d) => d.id === i.id)
@@ -41,6 +43,7 @@ export default function HomeGrupo() {
     })
     .filter(Boolean)
 
+  const salud = saludEmpresa(empresa.indicadores, Object.fromEntries((curso.estado.indicadores ?? []).map((i) => [i.id, i.valor])))
   const openTema = (t) => go(`/curso/${curso.id}/tema/${t.id}`, { label: `Tema ${t.orden}` })
 
   return (
@@ -77,6 +80,10 @@ export default function HomeGrupo() {
       <div className="home__mid">
         <aside className="metrics rise" style={{ '--d': 1 }} aria-label="Métricas de la empresa">
           <h2 className="metrics__title">Métricas de la empresa</h2>
+          <p className={`salud salud--${salud}`}>
+            <i aria-hidden="true" />
+            {ETIQUETA_SALUD[salud]}
+          </p>
           <ul className="metrics__list">
             {indicadores.map((i) => {
               const min = i.min ?? 0
@@ -93,7 +100,7 @@ export default function HomeGrupo() {
           </ul>
         </aside>
         <section className="home__scene rise" style={{ '--d': 1 }}>
-          <IsoScene temas={temas} progreso={progresos} activeId={hover} onHover={setHover} onSelect={openTema} />
+          <IsoScene temas={temas} progreso={progresos} activeId={hover} onHover={setHover} onSelect={openTema} salud={salud} />
         </section>
       </div>
 
@@ -121,9 +128,16 @@ export default function HomeGrupo() {
                 <li className={p.teoria ? 'ok' : ''}>{p.teoria ? 'Teoría vista' : 'Teoría pendiente'}</li>
                 <li className={p.simulacion ? 'ok' : ''}>{p.simulacion ? 'Simulación realizada' : 'Sin simulación'}</li>
               </ul>
-              <button type="button" className="pill-btn tcard__go" onClick={() => openTema(t)}>
-                {p.completo ? 'Repasar tema' : 'Ir a Tema'}
-              </button>
+              <div className="tcard__acts">
+                <button type="button" className="pill-btn tcard__go" onClick={() => openTema(t)}>
+                  {p.completo ? 'Repasar tema' : 'Ir a Tema'}
+                </button>
+                {p.teoria && !p.simulacion && (
+                  <button type="button" className="pill-btn tcard__sim" onClick={() => openSimulacion(t)}>
+                    Hacer simulación
+                  </button>
+                )}
+              </div>
             </li>
           )
         })}

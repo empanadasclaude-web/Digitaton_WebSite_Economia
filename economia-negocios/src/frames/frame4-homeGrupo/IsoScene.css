@@ -91,7 +91,60 @@
   100% { transform: translate(-63px, -31.5px); opacity: 0; }
 }
 
+/* ───── Estado de la empresa según las métricas ───── */
+.fx { display: none; }
+.crack { fill: none; stroke: rgba(34, 8, 14, 0.85); stroke-width: 1.7; stroke-linejoin: bevel; stroke-linecap: round; }
+.iso--medio .crack--m,
+.iso--malo .crack { display: inline; animation: fx-in 700ms ease backwards; }
+.iso--malo .fx--fire { display: inline; animation: fx-in 700ms ease backwards; }
+@keyframes fx-in { from { opacity: 0; } }
+
+.fl { transform-box: fill-box; transform-origin: 50% 100%; animation: flame 0.7s ease-in-out infinite alternate; animation-delay: calc(var(--d, 0) * -0.3s); }
+.fl--o { fill: #ff5a14; }
+.fl--i { fill: #ffd23f; animation-duration: 0.5s; }
+@keyframes flame { from { transform: scale(1, 1) skewX(-3deg); } to { transform: scale(0.86, 1.16) skewX(4deg); } }
+.smoke--dark { fill: #2b2024; }
+
+/* Mal estado: edificios sucios y apagados, ventanas parpadeando, todo trabaja lento o se detiene */
+.ib__t, .ib__l, .ib__r, .ic__body, .ic__top, .iw { transition: fill 700ms ease; }
+.iso--medio .ib__t { fill: #f1ebe8; }
+.iso--medio .ib__l { fill: #ddd2d1; }
+.iso--medio .ib__r { fill: #c9bcbd; }
+.iso--medio .smoke { fill: #d9d0d2; }
+.iso--medio .pipe { animation-duration: 2.8s; }
+.iso--medio .tw__blades { animation-duration: 9s; }
+.iso--medio .truck--in { animation-duration: 20s; }
+.iso--medio .truck--out { animation-duration: 16s; }
+
+.iso--malo .ib__t { fill: #cdc1c2; }
+.iso--malo .ib__l { fill: #9d8d91; }
+.iso--malo .ib__r { fill: #7f6f74; }
+.iso--malo .ib--blue .ib__t { fill: #8a6f78; }
+.iso--malo .ib--blue .ib__l { fill: #6e5560; }
+.iso--malo .ib--blue .ib__r { fill: #5a444d; }
+.iso--malo .ic__body, .iso--malo .ic--blue .ic__body { fill: #8f8186; }
+.iso--malo .ic__top, .iso--malo .ic--blue .ic__top { fill: #b3a6aa; }
+.iso--malo .gate { fill: #4b3a40; }
+.iso--malo .iw { fill: #ff9a3c; animation: flick 1.3s steps(1) infinite; animation-delay: calc(var(--i) * -0.37s); }
+@keyframes flick { 0%, 100% { opacity: 0.1; } 18% { opacity: 0.95; } 30% { opacity: 0.15; } 55% { opacity: 0.8; } 70% { opacity: 0.08; } }
+.iso--malo .smoke:not(.smoke--dark) { fill: #3a2d31; animation-duration: 3.6s; }
+.iso--malo .smoke { animation-duration: 3.2s; }
+.iso--malo .pipe { animation-play-state: paused; opacity: 0.35; }
+.iso--malo .tw__blades { animation-duration: 26s; }
+.iso--malo .beacon { fill: #ff2a2a; animation-duration: 0.5s; }
+.iso--malo .truck--in { animation-duration: 38s; }
+.iso--malo .truck--out { animation-duration: 30s; }
+
+/* Buen estado: ventanas encendidas, turbinas y camiones a buen ritmo */
+.iso--bueno .iw { fill: var(--warm); }
+.iso--bueno .tw__blades { animation-duration: 3.6s; }
+.iso--bueno .pipe { animation-duration: 0.9s; }
+.iso--bueno .truck--in { animation-duration: 11s; }
+.iso--bueno .truck--out { animation-duration: 9s; }
+
 @media (prefers-reduced-motion: reduce) {
+  .fl { animation: none; }
+
   .pipe, .smoke, .tw__blades, .iw, .beacon, .truck--in, .truck--out { animation: none; }
   .truck--b { display: none; }
 }

@@ -49,6 +49,849 @@
         "max": 100
       }
     ],
-    "preguntas": []
+    "preguntas": [
+      {
+        "id": "emp-1-tema-1-p1",
+        "temaId": "tema-1",
+        "conceptoAcademico": "Determinantes de la demanda: precio de los bienes sustitutos",
+        "texto": "Una marca importada de yogur baja su precio y los supermercados empiezan a promocionarla. Para tus clientes, ese yogur es un bien sustituto del tuyo y tu demanda se desplaza a la izquierda. ¿Qué decide LacteosVida?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Mantener el precio y reforzar la frescura y el origen local de la marca",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": -4
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": 6
+              },
+              {
+                "indicadorId": "presupuesto",
+                "delta": -3
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Bajar el precio para igualar a la marca importada",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": 8
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": -8
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "No hacer nada y esperar a que la promoción termine",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": -10
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": -3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-1-p2",
+        "temaId": "tema-1",
+        "conceptoAcademico": "Determinantes de la oferta: precio de los insumos",
+        "texto": "El precio de la leche cruda sube y tu curva de oferta se desplaza a la izquierda: producir cada litro cuesta más. ¿Cómo responde la empresa?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Trasladar todo el aumento al precio de venta",
+            "efectos": [
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 6
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": -8
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Absorber el costo y mantener los precios actuales",
+            "efectos": [
+              {
+                "indicadorId": "rentabilidad",
+                "delta": -10
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": 3
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": 2
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "Buscar proveedores alternativos y mejorar la eficiencia de la planta",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -6
+              },
+              {
+                "indicadorId": "productividad",
+                "delta": 8
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-1-p3",
+        "temaId": "tema-1",
+        "conceptoAcademico": "Determinantes de la demanda: gustos y preferencias",
+        "texto": "Crece entre los consumidores la preferencia por productos deslactosados y bajos en azúcar. La demanda de ese tipo de productos se desplaza a la derecha. ¿Qué haces?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Lanzar una línea deslactosada y baja en azúcar",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -8
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": 9
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": 5
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Invertir en una campaña publicitaria sobre los beneficios de la leche entera",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -6
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": 4
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "Mantener el portafolio actual sin cambios",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": -6
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": -2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-1-p4",
+        "temaId": "tema-1",
+        "conceptoAcademico": "Equilibrio de mercado: excedente",
+        "texto": "Al precio actual del yogur, la cantidad ofrecida supera la cantidad demandada: hay excedente y el inventario se acumula en las neveras. ¿Qué decide la empresa?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Bajar el precio hasta acercarse al equilibrio",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": 8
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": -4
+              },
+              {
+                "indicadorId": "productividad",
+                "delta": 2
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Reducir la producción de yogur",
+            "efectos": [
+              {
+                "indicadorId": "productividad",
+                "delta": -5
+              },
+              {
+                "indicadorId": "presupuesto",
+                "delta": 5
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 3
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "Mantener el precio y almacenar el excedente",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -8
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": -5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-1-p5",
+        "temaId": "tema-1",
+        "conceptoAcademico": "Desplazamientos de la demanda y escasez",
+        "texto": "LacteosVida entra a una ciudad nueva: aumenta el número de compradores, la demanda de queso se desplaza a la derecha y al precio actual hay escasez. ¿Cómo se ajusta la empresa?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Subir el precio hacia el nuevo equilibrio",
+            "efectos": [
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 8
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": 2
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Aumentar la producción para atender la nueva demanda",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -7
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": 9
+              },
+              {
+                "indicadorId": "productividad",
+                "delta": 4
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "Racionar el queso entre los clientes que ya tenía",
+            "efectos": [
+              {
+                "indicadorId": "satisfaccion",
+                "delta": -8
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": -3
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-2-p1",
+        "temaId": "tema-2",
+        "conceptoAcademico": "Elasticidad precio de la demanda: demanda inelástica (ε < 1)",
+        "texto": "La leche entera tiene una elasticidad precio de 0,5: es un producto básico y los clientes casi no cambian su consumo cuando el precio varía. La empresa quiere aumentar sus ingresos por ventas. ¿Qué decide?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Subir el precio 10 %: la cantidad cae menos de 10 %",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": 4
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 7
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": -3
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Bajar el precio 10 % para vender más litros",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": -4
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": -8
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": 4
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "Mantener el precio como está",
+            "efectos": [
+              {
+                "indicadorId": "satisfaccion",
+                "delta": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-2-p2",
+        "temaId": "tema-2",
+        "conceptoAcademico": "Elasticidad precio de la demanda: demanda elástica (ε > 1)",
+        "texto": "El kumis tiene una elasticidad precio de 1,5: los clientes reaccionan fuerte a los cambios de precio. La empresa busca aumentar los ingresos del kumis. ¿Qué decide?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Subir el precio 10 %: la cantidad cae más de 10 %",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": -6
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": -2
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Bajar el precio 10 %: la cantidad sube más de 10 %",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": 8
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": -1
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": 3
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "Mantener el precio y lanzar una presentación más grande al mismo precio",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -4
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": 4
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-2-p3",
+        "temaId": "tema-2",
+        "conceptoAcademico": "Elasticidad cruzada: bienes complementarios (ε cruzada < 0)",
+        "texto": "Una panadería aliada sube 10 % el precio de su pan y las ventas de queso fresco caen: pan y queso son bienes complementarios (elasticidad cruzada negativa). ¿Cómo actúa LacteosVida?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Armar un combo de queso con pan junto a la panadería",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -4
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": 6
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": 4
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Subir el precio del queso para compensar la caída en ventas",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": -5
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 2
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "No intervenir: el pan es de otra empresa",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": -6
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-2-p4",
+        "temaId": "tema-2",
+        "conceptoAcademico": "Elasticidad ingreso: bien normal de lujo (εy > 1)",
+        "texto": "La economía mejora y el ingreso de los hogares sube 10 %. El yogur griego tiene una elasticidad ingreso de 2 (bien de lujo) y la leche entera de 0,3 (bien básico). ¿Dónde pone el esfuerzo la empresa?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Potenciar la línea premium (yogur griego y quesos madurados)",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -6
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": 10
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 6
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Seguir enfocada en los productos básicos",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": 2
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 1
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "Bajar los precios de los productos básicos",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": 3
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": -6
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-2-p5",
+        "temaId": "tema-2",
+        "conceptoAcademico": "Elasticidad precio y decisiones de promoción",
+        "texto": "Un competidor lanza descuentos en yogur convencional, cuya elasticidad precio es 1,3 (elástico). La directiva debe decidir si responde con promociones. ¿Qué decide?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Igualar los descuentos en todo el portafolio",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": 7
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": -8
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Promocionar solo los productos de demanda elástica, por tiempo limitado",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": 6
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": -2
+              },
+              {
+                "indicadorId": "presupuesto",
+                "delta": -3
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "No bajar precios y diferenciarse por calidad y frescura",
+            "efectos": [
+              {
+                "indicadorId": "satisfaccion",
+                "delta": 5
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": -3
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-3-p1",
+        "temaId": "tema-3",
+        "conceptoAcademico": "PIB per cápita y renta de los hogares",
+        "texto": "El PIB per cápita del país aumenta: la renta por habitante crece y las familias tienen más capacidad de compra. ¿Qué productos impulsa la empresa?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Los productos premium, cuya demanda crece más con el ingreso",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -5
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": 8
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 4
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Los productos básicos de consumo diario",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": 3
+              },
+              {
+                "indicadorId": "productividad",
+                "delta": 1
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "Todo el portafolio con una campaña general",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -7
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": 5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-3-p2",
+        "temaId": "tema-3",
+        "conceptoAcademico": "Inflación (IPC) y decisiones de precios",
+        "texto": "La inflación está por encima de la meta y los costos de la empresa suben mes a mes. ¿Cómo maneja los precios?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Ajustar los precios de forma gradual",
+            "efectos": [
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 5
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": -4
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Congelar los precios para no perder clientes",
+            "efectos": [
+              {
+                "indicadorId": "rentabilidad",
+                "delta": -9
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": 5
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "Pactar contratos de precio fijo con los proveedores",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -4
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 6
+              },
+              {
+                "indicadorId": "productividad",
+                "delta": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-3-p3",
+        "temaId": "tema-3",
+        "conceptoAcademico": "Tasa de interés y política monetaria",
+        "texto": "El banco central sube la tasa de interés para frenar la inflación. LacteosVida planeaba financiar con un crédito la ampliación de su planta. ¿Qué decide?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Aplazar la inversión hasta que la tasa baje",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": 6
+              },
+              {
+                "indicadorId": "productividad",
+                "delta": -4
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": -3
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Tomar el crédito de todas formas",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -9
+              },
+              {
+                "indicadorId": "productividad",
+                "delta": 8
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "Financiar la ampliación por etapas con recursos propios",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -4
+              },
+              {
+                "indicadorId": "productividad",
+                "delta": 4
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-3-p4",
+        "temaId": "tema-3",
+        "conceptoAcademico": "Tasa de cambio y economía abierta",
+        "texto": "El dólar sube: los empaques y la maquinaria importados cuestan más, pero vender en el exterior se vuelve más atractivo. ¿Qué estrategia elige?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Explorar la exportación de quesos madurados",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": 8
+              },
+              {
+                "indicadorId": "presupuesto",
+                "delta": -5
+              },
+              {
+                "indicadorId": "productividad",
+                "delta": 2
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Reemplazar insumos importados por insumos locales",
+            "efectos": [
+              {
+                "indicadorId": "rentabilidad",
+                "delta": 5
+              },
+              {
+                "indicadorId": "productividad",
+                "delta": -2
+              },
+              {
+                "indicadorId": "presupuesto",
+                "delta": -3
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "No hacer cambios y asumir el mayor costo",
+            "efectos": [
+              {
+                "indicadorId": "rentabilidad",
+                "delta": -7
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "emp-1-tema-3-p5",
+        "temaId": "tema-3",
+        "conceptoAcademico": "Ciclo económico y desempleo",
+        "texto": "El desempleo aumenta y la economía entra en una fase de contracción: el consumo de los hogares se enfría. ¿Cómo prepara la empresa su respuesta?",
+        "opciones": [
+          {
+            "id": "A",
+            "texto": "Lanzar una línea económica de menor precio",
+            "efectos": [
+              {
+                "indicadorId": "ventas",
+                "delta": 6
+              },
+              {
+                "indicadorId": "rentabilidad",
+                "delta": -4
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": 3
+              }
+            ]
+          },
+          {
+            "id": "B",
+            "texto": "Recortar costos, incluido personal",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": 6
+              },
+              {
+                "indicadorId": "productividad",
+                "delta": -3
+              },
+              {
+                "indicadorId": "satisfaccion",
+                "delta": -6
+              }
+            ]
+          },
+          {
+            "id": "C",
+            "texto": "Mantener la inversión para estar listos en la recuperación",
+            "efectos": [
+              {
+                "indicadorId": "presupuesto",
+                "delta": -6
+              },
+              {
+                "indicadorId": "ventas",
+                "delta": 2
+              },
+              {
+                "indicadorId": "productividad",
+                "delta": 5
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
