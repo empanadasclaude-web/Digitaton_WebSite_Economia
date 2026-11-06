@@ -9,6 +9,8 @@
  * Variables de entorno:
  *   UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN   (las crea la integración; o KV_REST_API_*)
  *   ALLOWED_EMAILS     (opcional) correos separados por coma; por defecto los de la plataforma
+ *   ALLOWED_DOMAINS    (opcional) dominios completos autorizados, por coma; por defecto uao.edu.co
+ *   REVIEW_CODE        (opcional) código de acceso para evaluadores sin cuenta autorizada; sin él, ese acceso no existe
  *   SESSION_SECRET     (opcional) secreto para firmar el token; por defecto se deriva del token de Redis
  *
  * Claves en Redis: edn:idx (índice + revisión), edn:e:{id} (cada empresa), edn:c:{id} (cada curso).
@@ -23,6 +25,19 @@ const PERMITIDOS = (process.env.ALLOWED_EMAILS || 'cichavez@uao.edu.co,empanadas
   .split(',')
   .map((e) => e.trim().toLowerCase())
   .filter(Boolean)
+const DOMINIOS = (process.env.ALLOWED_DOMAINS ?? 'uao.edu.co')
+  .split(',')
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean)
+const REVIEW_CODE = process.env.REVIEW_CODE || ''
+const REVIEW_EMAIL = 'evaluador@revision.local'
+const permitido = (email) =>
+  PERMITIDOS.includes(email) || DOMINIOS.includes(String(email).split('@')[1]) || (Boolean(REVIEW_CODE) && email === REVIEW_EMAIL)
+const igual = (a, b) => {
+  const x = Buffer.from(String(a))
+  const y = Buffer.from(String(b))
+  return x.length === y.length && timingSafeEqual(x, y)
+}
 const SESION_MS = 12 * 60 * 60 * 1000
 const MAX_ITEM = 900_000 // bytes por empresa/curso (límite de petición de Upstash: 1 MB)
 
@@ -45,7 +60,7 @@ function leerToken(req) {
   if (a.length !== b.length || !timingSafeEqual(a, b)) return null
   try {
     const d = JSON.parse(Buffer.from(payload, 'base64url').toString())
-    return d.exp > Date.now() && PERMITIDOS.includes(d.email) ? d : null
+    return d.exp > Date.now() && permitido(d.email) ? d : null
   } catch {
     return null
   }
@@ -77,6 +92,10 @@ export default async function handler(req, res) {
     // Paso 1: cambiar el token de Google por el token propio.
     if (req.method === 'POST') {
       const body = typeof req.body === 'string' ? parse(req.body) : req.body
+      if (body?.accion === 'entrar-codigo') {
+        if (!REVIEW_CODE || typeof body.codigo !== 'string' || !igual(body.codigo.trim(), REVIEW_CODE)) return send(403, { error: 'codigo' })
+        return send(200, { ...emitirToken(REVIEW_EMAIL), email: REVIEW_EMAIL })
+      }
       if (body?.accion !== 'entrar' || typeof body.access_token !== 'string') return send(400, { error: 'peticion' })
       const g = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
         headers: { Authorization: `Bearer ${body.access_token}` },
@@ -84,7 +103,7 @@ export default async function handler(req, res) {
       if (!g.ok) return send(401, { error: 'google' })
       const perfil = await g.json()
       const email = String(perfil.email ?? '').toLowerCase()
-      if (perfil.email_verified === false || !PERMITIDOS.includes(email)) return send(403, { error: 'no-autorizado' })
+      if (perfil.email_verified === false || !permitido(email) || email === REVIEW_EMAIL) return send(403, { error: 'no-autorizado' })
       return send(200, { ...emitirToken(email), email })
     }
 

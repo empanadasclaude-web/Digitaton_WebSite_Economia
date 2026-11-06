@@ -151,3 +151,7 @@
   translate: -50% 0;
   z-index: 2;
 }
+
+.login__codigo { margin-top: 14px; text-align: center; font-size: 0.88rem; }
+.login__codigo form { display: flex; gap: 8px; justify-content: center; align-items: center; }
+.login__codigo .input { height: 42px; max-width: 220px; }

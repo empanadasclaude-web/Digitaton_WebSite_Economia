@@ -90,6 +90,7 @@ export default function ResultsModal({ curso, temas, onClose }) {
                     {r.participantes != null && ` · ${r.participantes} participantes`}
                   </p>
                 </div>
+                <div className="results__actions">
                 {r.datos ? (
                   <div className="results__btns">
                     <button type="button" className="pill-btn pill-btn--sm" onClick={() => setPeriodico(r.datos)}>
@@ -114,6 +115,7 @@ export default function ResultsModal({ curso, temas, onClose }) {
                 <button type="button" className="icon-btn results__del" onClick={() => setBorrar(r)} aria-label={`Eliminar ${r.nombre}`} title="Eliminar resultado">
                   <TrashIcon size={18} />
                 </button>
+                </div>
               </li>
             ))}
           </ul>

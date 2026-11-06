@@ -117,3 +117,22 @@ export function BoltGlyph({ x, y, size = 12 }) {
     </g>
   )
 }
+
+export function UploadIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <path d="M12 15V4m0 0L8 8m4-4 4 4" />
+      <path d="M5 19h14" />
+    </svg>
+  )
+}
+
+/** Documento con llaves: archivo JSON / plantilla. */
+export function CodeFileIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...base}>
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z" />
+      <path d="M14 3v5h5M10 12.5l-1.5 1.5 1.5 1.5M14 12.5l1.5 1.5-1.5 1.5" />
+    </svg>
+  )
+}

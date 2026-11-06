@@ -28,6 +28,12 @@ export async function entrarServidor(accessToken) {
   return r.ok && r.token ? { token: r.token, exp: r.exp } : null
 }
 
+/** Acceso de evaluador: cambia el código por un token del servidor (null si el código no vale). */
+export async function entrarConCodigo(codigo) {
+  const r = await llamar({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ accion: 'entrar-codigo', codigo }) })
+  return r.ok && r.token ? { token: r.token, exp: r.exp } : null
+}
+
 export const leerServidor = (token) => llamar({ headers: cabeceras(token) })
 
 export const guardarServidor = (token, db, baseRev) =>

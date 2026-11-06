@@ -1,14 +1,14 @@
 import { useRef, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useGoogleLogin } from '@react-oauth/google'
-import { entrarServidor } from '../../data/sync'
+import { entrarConCodigo, entrarServidor } from '../../data/sync'
 import AuroraBackground from '../../components/AuroraBackground'
 import GlassPanel from '../../components/GlassPanel'
 import UaoLogo from '../../components/UaoLogo'
 import GoogleIcon from '../../components/GoogleIcon'
 import { useTransition } from '../../components/PageTransition'
 import { useAuth } from '../../context/AuthContext'
-import { ALLOWED_EMAILS, DEV_FALLBACK, GOOGLE_CLIENT_ID } from '../../config/auth'
+import { ALLOWED_EMAILS, DEV_FALLBACK, GOOGLE_CLIENT_ID, REVIEW_EMAIL } from '../../config/auth'
 import './Login.css'
 
 const MESSAGES = {
@@ -74,9 +74,27 @@ export default function Login() {
     if (!result.ok) {
       setError(MESSAGES[result.reason])
       setLoading(false)
+      return
     }
     const firstName = profile.given_name ?? profile.name?.split(' ')[0] ?? ''
     go('/', { label: firstName ? `Hola, ${firstName}` : 'Bienvenido' })
+  }
+
+  const [verCodigo, setVerCodigo] = useState(false)
+  const [codigo, setCodigo] = useState('')
+
+  const entrarEvaluador = async (e) => {
+    e.preventDefault()
+    if (!codigo.trim()) return
+    setError(null)
+    setLoading(true)
+    const sync = await entrarConCodigo(codigo.trim())
+    if (!sync) {
+      setError('Código no válido, o el acceso de evaluador no está activo.')
+      setLoading(false)
+      return
+    }
+    handleProfile({ email: REVIEW_EMAIL, email_verified: true, name: 'Evaluador', given_name: 'Evaluador', sync })
   }
 
   const handleFail = (reason) => {
@@ -112,6 +130,27 @@ export default function Login() {
             Falta configurar <code>VITE_GOOGLE_CLIENT_ID</code> en el archivo <code>.env</code>.
           </div>
         )}
+
+        <div className="login__codigo">
+          {verCodigo ? (
+            <form onSubmit={entrarEvaluador}>
+              <input
+                className="input"
+                type="password"
+                autoComplete="off"
+                value={codigo}
+                placeholder="Código de evaluador"
+                aria-label="Código de evaluador"
+                onChange={(e) => setCodigo(e.target.value)}
+              />
+              <button type="submit" className="pill-btn pill-btn--sm" disabled={loading || !codigo.trim()}>Entrar</button>
+            </form>
+          ) : (
+            <button type="button" className="link-btn" onClick={() => setVerCodigo(true)}>
+              Soy evaluador y tengo un código
+            </button>
+          )}
+        </div>
 
         <p className="login__error" role="alert" aria-live="assertive">
           {error}

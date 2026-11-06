@@ -511,3 +511,15 @@
   .ne__grid { grid-template-columns: 1fr; }
   .opt__g { margin-left: 0; }
 }
+
+/* ---------- Importar / exportar ---------- */
+.ef__tools { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 16px; }
+.ef__tools .pill-btn { display: inline-flex; align-items: center; gap: 8px; }
+.ef__import { margin: 0 0 16px; padding: 14px 18px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.24); background: rgba(255, 255, 255, 0.12); font-size: 0.9rem; line-height: 1.5; }
+.ef__import--err { border-color: var(--danger); }
+.ef__import p { margin: 0; }
+.ef__import ul { margin: 8px 0 0; padding-left: 18px; color: var(--ink-soft); }
+.ef__import .link-btn { margin-top: 8px; }
+.ef__tools .pill-btn { background: rgba(255, 255, 255, 0.16); color: var(--ink); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.45); }
+.ef__tools .pill-btn:hover { background: rgba(255, 255, 255, 0.28); }
+.ef__tools .pill-btn:hover:not(:disabled), .ef__tools .pill-btn:focus-visible { background: rgba(255, 255, 255, 0.3); color: var(--ink); transform: none; }

@@ -4,7 +4,7 @@ import AuroraBackground from '../../components/AuroraBackground'
 import ConfirmDialog from '../../components/ConfirmDialog'
 import EliminarEmpresaDialog from '../../components/EliminarEmpresaDialog'
 import GlassPanel from '../../components/GlassPanel'
-import { CloseIcon, PlusIcon } from '../../components/Icons'
+import { CloseIcon, CodeFileIcon, DownloadIcon, PlusIcon, UploadIcon } from '../../components/Icons'
 import { setFlash } from '../../components/flash'
 import { useTransition } from '../../components/PageTransition'
 import { nextEmpresaId, useData } from '../../data/DataContext'
@@ -13,6 +13,7 @@ import LogoUpload from './LogoUpload'
 import NoticiasEditor from './NoticiasEditor'
 import PreguntaCard from './PreguntaCard'
 import { emptyForm, fromEmpresa, newPregunta, toEmpresa, validate } from './formState'
+import { armarArchivo, descargarJson, importarArchivo } from './intercambio'
 import './EmpresaForm.css'
 
 function Field({ id, label, optional, error, hint, className = '', children }) {
@@ -57,6 +58,9 @@ export default function EmpresaForm() {
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [focusUid, setFocusUid] = useState(null)
   const saved = useRef(false)
+  const fileRef = useRef(null)
+  const [importado, setImportado] = useState(null) // { ok, texto, avisos } tras importar
+  const [pendiente, setPendiente] = useState(null) // resultado de importar a la espera de confirmar el reemplazo
 
   const errorMap = useMemo(() => new Map(errors.map((e) => [e.id, e.msg])), [errors])
 
@@ -120,6 +124,37 @@ export default function EmpresaForm() {
     setFocusUid(p.uid)
   }
 
+  const nombreArchivo = (suf) => `${(form.nombre.trim() || 'empresa').replace(/[^\w\-]+/g, '_')}${suf}.json`
+  const exportar = (plantilla) =>
+    descargarJson(armarArchivo(form, temas, catalogoIndicadores, { plantilla }), plantilla ? 'plantilla-empresa-para-IA.json' : nombreArchivo(''))
+
+  const aplicarImport = (r) => {
+    setForm(r.form)
+    setSubmitted(false)
+    setErrors([])
+    const { preguntas, noticias, indicadores } = r.resumen
+    setImportado({
+      ok: true,
+      texto: `Archivo importado: ${indicadores} indicadores, ${preguntas} preguntas y ${noticias} noticias. Revisa el formulario y guarda cuando esté listo.`,
+      avisos: r.avisos,
+    })
+    setPendiente(null)
+  }
+
+  const onArchivo = async (e) => {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    try {
+      if (file.size > 2_000_000) throw new Error('El archivo es demasiado grande (máximo 2 MB).')
+      const r = importarArchivo(await file.text(), temas, form.logo)
+      if (dirty) setPendiente(r)
+      else aplicarImport(r)
+    } catch (err) {
+      setImportado({ ok: false, texto: err.message || 'No se pudo leer el archivo.', avisos: [] })
+    }
+  }
+
   const leave = () => go('/', { label: 'Panel' })
   const requestClose = () => (dirty ? setConfirmClose(true) : leave())
 
@@ -157,6 +192,33 @@ export default function EmpresaForm() {
             <p className="ef__id">ID Empresa : {String(empresaId).replace(/\D/g, '') || empresaId}</p>
           </div>
         </header>
+
+        <div className="ef__tools rise" style={{ '--d': 1 }}>
+          <button type="button" className="pill-btn pill-btn--sm pill-btn--ghost" onClick={() => fileRef.current?.click()}>
+            <UploadIcon size={18} /> Importar JSON
+          </button>
+          <button type="button" className="pill-btn pill-btn--sm pill-btn--ghost" onClick={() => exportar(false)}>
+            <DownloadIcon size={18} /> Exportar JSON
+          </button>
+          <button type="button" className="pill-btn pill-btn--sm pill-btn--ghost" onClick={() => exportar(true)} title="Archivo con instrucciones y un ejemplo para que una IA genere la empresa">
+            <CodeFileIcon size={18} /> Plantilla para IA
+          </button>
+          <input ref={fileRef} type="file" accept="application/json,.json" hidden onChange={onArchivo} />
+        </div>
+
+        {importado && (
+          <div className={`ef__import${importado.ok ? '' : ' ef__import--err'}`} role="status">
+            <p>{importado.texto}</p>
+            {importado.avisos.length > 0 && (
+              <ul>
+                {importado.avisos.slice(0, 6).map((a, i) => (
+                  <li key={i}>{a}</li>
+                ))}
+              </ul>
+            )}
+            <button type="button" className="link-btn" onClick={() => setImportado(null)}>Cerrar</button>
+          </div>
+        )}
 
         {editing && (
           <p className="ef__note rise" style={{ '--d': 1 }}>
@@ -362,6 +424,18 @@ export default function EmpresaForm() {
             go('/', { label: 'Panel' })
           }}
           onCancel={() => setConfirmDelete(false)}
+        />
+      )}
+
+      {pendiente && (
+        <ConfirmDialog
+          danger
+          title="¿Reemplazar lo que hay en el formulario?"
+          message="Importar llena el formulario con el contenido del archivo y se pierde lo que tienes escrito ahora. Todavía no se guarda nada."
+          confirmLabel="Sí, importar"
+          cancelLabel="Cancelar"
+          onConfirm={() => aplicarImport(pendiente)}
+          onCancel={() => setPendiente(null)}
         />
       )}
 

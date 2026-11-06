@@ -270,9 +270,6 @@
   .results__item {
     flex-wrap: wrap;
   }
-  .results__item .pill-btn {
-    flex: 1 1 100%;
-  }
 }
 
 /* Zona clicable de la tarjeta de curso: entra al grupo */
@@ -306,4 +303,13 @@
 .results__btns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
 .results__btns .pill-btn { display: inline-flex; align-items: center; gap: 8px; }
 .results__del { flex: none; width: 40px; height: 40px; }
-@media (max-width: 640px) { .results__item .results__del { flex: none; position: absolute; top: 8px; right: 8px; } .results__item { position: relative; } }
+.results__item { flex-wrap: wrap; }
+.results__info { flex: 1 1 200px; }
+.results__actions { display: flex; align-items: center; gap: 8px; margin-left: auto; max-width: 100%; }
+.results__actions .results__btns { justify-content: flex-end; }
+.results { overflow-x: hidden; }
+@media (max-width: 640px) {
+  .results__actions { width: 100%; }
+  .results__actions .results__btns { flex: 1 1 auto; }
+  .results__actions .pill-btn { flex: 1 1 auto; justify-content: center; }
+}
