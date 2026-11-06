@@ -18,9 +18,20 @@ import './AccountMenu.css'
  *
  * `onNotice(msg)`: avisa al frame (toast) tras exportar/importar.
  */
+const SYNC_TEXTO = {
+  local: 'Tus datos viven en este navegador.',
+  conectando: 'Conectando con el servidor…',
+  guardando: 'Guardando en el servidor…',
+  ok: 'Tus datos están guardados en el servidor y los ves desde cualquier dispositivo.',
+  actualizado: 'Se cargaron cambios hechos desde otro dispositivo.',
+  'sin-conexion': 'Sin conexión con el servidor: tus cambios quedan en este navegador y se guardarán al próximo cambio.',
+  vencida: 'La sesión con el servidor venció: cierra sesión y vuelve a entrar para seguir guardando.',
+  grande: 'Un curso o empresa pesa demasiado (¿logo?) y no se pudo guardar en el servidor.',
+}
+
 export default function AccountMenu({ onNotice, className = '' }) {
   const { user, signOut } = useAuth()
-  const { exportDb, importDb } = useData()
+  const { exportDb, importDb, sync } = useData()
   const go = useTransition()
   const btnRef = useRef(null)
   const popRef = useRef(null)
@@ -128,7 +139,7 @@ export default function AccountMenu({ onNotice, className = '' }) {
             </p>
 
             <div className="acct__backup">
-              <p className="acct__hint">Tus datos viven en este navegador. Descarga una copia para no perderlos o llevarlos a otro equipo.</p>
+              <p className="acct__hint">{SYNC_TEXTO[sync] ?? SYNC_TEXTO.local} Descarga una copia cuando quieras.</p>
               <div className="acct__row">
                 <button type="button" className="link-btn" onClick={handleExport}>
                   Exportar datos

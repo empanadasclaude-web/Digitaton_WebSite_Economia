@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useGoogleLogin } from '@react-oauth/google'
+import { entrarServidor } from '../../data/sync'
 import AuroraBackground from '../../components/AuroraBackground'
 import GlassPanel from '../../components/GlassPanel'
 import UaoLogo from '../../components/UaoLogo'
@@ -28,7 +29,10 @@ function GoogleButton({ disabled, onStart, onProfile, onFail }) {
           headers: { Authorization: `Bearer ${access_token}` },
         })
         if (!res.ok) throw new Error('userinfo')
-        onProfile(await res.json())
+        const perfil = await res.json()
+        // Token del servidor para guardar los datos (si no hay servidor, la plataforma sigue en modo local).
+        const sync = await entrarServidor(access_token)
+        onProfile({ ...perfil, sync })
       } catch {
         onFail('failed')
       }

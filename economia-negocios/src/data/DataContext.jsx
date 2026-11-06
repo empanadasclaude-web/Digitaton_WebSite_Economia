@@ -1,4 +1,6 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useAuth } from '../context/AuthContext'
+import { guardarServidor, leerServidor } from './sync'
 import temas from './seed/temas.json'
 import catalogoIndicadores from './seed/catalogoIndicadores.json'
 import empresasSeed from './seed/empresas.json'
@@ -101,6 +103,82 @@ export function DataProvider({ children }) {
       /* noop (p. ej. cuota llena por un logo muy pesado) */
     }
   }, [db])
+
+  // ── Persistencia en el servidor (Redis) ──────────────────────────────────────
+  // Estados: 'local' (sin servidor) · 'conectando' · 'ok' · 'guardando' · 'sin-conexion' ·
+  // 'vencida' (hay que volver a iniciar sesión) · 'actualizado' (se trajeron cambios de otro dispositivo).
+  const { user } = useAuth()
+  const syncInfo = user?.sync ?? null
+  const token = syncInfo && syncInfo.exp > Date.now() ? syncInfo.token : null
+  const [sync, setSync] = useState('local')
+  const rev = useRef(0)
+  const listo = useRef(false) // ya se leyó el servidor: desde ahora los cambios se guardan
+  const omitir = useRef(false) // el cambio de db vino del servidor: no devolverlo
+  const iniciando = useRef(null)
+  const dbRef = useRef(db)
+  dbRef.current = db
+
+  const adoptar = useCallback((remota) => {
+    const data = { empresas: remota.empresas, cursos: remota.cursos.map((c) => ({ resultados: [], ...c })) }
+    if (validateDb(data)) return false
+    omitir.current = true
+    setDb(conPreguntasSemilla(data))
+    return true
+  }, [])
+
+  useEffect(() => {
+    listo.current = false
+    if (!token) {
+      setSync(syncInfo ? 'vencida' : 'local')
+      return
+    }
+    if (iniciando.current === token) return
+    iniciando.current = token
+    setSync('conectando')
+    ;(async () => {
+      const r = await leerServidor(token)
+      if (r.status === 401) return setSync('vencida')
+      if (!r.ok) return setSync(r.status === 501 || r.status === 404 ? 'local' : 'sin-conexion')
+      rev.current = r.rev ?? 0
+      if (r.db && adoptar(r.db)) {
+        listo.current = true
+        return setSync('ok')
+      }
+      // Servidor vacío: los datos de este navegador (semillas + cambios) se vuelven los datos oficiales.
+      const g = await guardarServidor(token, dbRef.current, rev.current)
+      if (g.ok) {
+        rev.current = g.rev
+        listo.current = true
+        setSync('ok')
+      } else setSync('sin-conexion')
+    })()
+  }, [token, syncInfo, adoptar])
+
+  useEffect(() => {
+    if (!listo.current || !token) return
+    if (omitir.current) {
+      omitir.current = false
+      return
+    }
+    setSync('guardando')
+    const t = setTimeout(async () => {
+      const g = await guardarServidor(token, db, rev.current)
+      if (g.ok) {
+        rev.current = g.rev
+        return setSync('ok')
+      }
+      if (g.status === 409) {
+        // Otro dispositivo guardó antes: se trae su versión para no pisarla.
+        const r = await leerServidor(token)
+        if (r.ok && r.db && adoptar(r.db)) {
+          rev.current = r.rev
+          return setSync('actualizado')
+        }
+      }
+      setSync(g.status === 401 ? 'vencida' : g.status === 413 ? 'grande' : 'sin-conexion')
+    }, 900)
+    return () => clearTimeout(t)
+  }, [db, token, adoptar])
 
   const createCurso = useCallback(({ nombre, empresaId }) => {
     setDb((prev) => {
@@ -237,8 +315,9 @@ export function DataProvider({ children }) {
       guardarSimulacion,
       exportDb,
       importDb,
+      sync,
     }),
-    [db, createCurso, updateCurso, deleteCurso, saveEmpresa, markContextoVisto, markTeoriaVistaCb, guardarSimulacion, exportDb, importDb],
+    [db, sync, createCurso, updateCurso, deleteCurso, saveEmpresa, markContextoVisto, markTeoriaVistaCb, guardarSimulacion, exportDb, importDb],
   )
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>
 }

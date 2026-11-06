@@ -40,6 +40,7 @@ export function AuthProvider({ children }) {
       givenName: profile.given_name ?? (profile.name ?? profile.email).split(' ')[0],
       picture: profile.picture ?? null,
       loggedAt: Date.now(),
+      sync: profile.sync ?? null, // { token, exp } del servidor; null si no hay servidor
     }
     try {
       localStorage.setItem(SESSION_KEY, JSON.stringify(session))
