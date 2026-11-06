@@ -9,20 +9,9 @@
  *   ses:{c}:tok  token secreto del docente      ses:{c}:state  estado público de la sesión
  *   ses:{c}:p    hash id → participante          ses:{c}:v      hash "pregunta:id" → opción
  */
-const URL_REST = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL
-const TOKEN_REST = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN
+import { hayRedis, redis, variablesVisibles } from './_redis.js'
 const TTL = 60 * 60 * 24
 const MAX_PARTICIPANTES = 300
-
-async function redis(commands) {
-  const r = await fetch(`${URL_REST}/pipeline`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${TOKEN_REST}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(commands),
-  })
-  if (!r.ok) throw new Error(`Redis ${r.status}`)
-  return (await r.json()).map((x) => x.result)
-}
 
 const key = (c, k) => `ses:${c}:${k}`
 const okCodigo = (c) => typeof c === 'string' && /^[A-Z0-9]{4,8}$/.test(c)
@@ -39,8 +28,8 @@ export default async function handler(req, res) {
   const send = (code, body) => res.status(code).json(body)
   try {
     const q = req.query ?? {}
-    if (req.method === 'GET' && q.ping) return send(200, { ok: true, redis: Boolean(URL_REST && TOKEN_REST) })
-    if (!URL_REST || !TOKEN_REST) return send(501, { error: 'sin-redis' })
+    if (req.method === 'GET' && q.ping) return send(200, { ok: true, redis: hayRedis, variables: variablesVisibles() })
+    if (!hayRedis) return send(501, { error: 'sin-redis' })
 
     if (req.method === 'GET') {
       const c = String(q.codigo ?? '').toUpperCase()
