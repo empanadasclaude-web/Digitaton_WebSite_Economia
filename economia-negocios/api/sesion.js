@@ -8,6 +8,7 @@
  * Claves por sesión (todas vencen a las 24 h):
  *   ses:{c}:tok  token secreto del docente      ses:{c}:state  estado público de la sesión
  *   ses:{c}:p    hash id → participante          ses:{c}:v      hash "pregunta:id" → opción
+ * a
  */
 import { hayRedis, redis, variablesVisibles } from './_redis.js'
 const TTL = 60 * 60 * 24
